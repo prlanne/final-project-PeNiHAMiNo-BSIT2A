@@ -4,7 +4,12 @@ const Product = require('../models/Product');
 const recordSale = async (req, res) => {
     try {
         const { productName, quantity } = req.body;
-        const product = await Product.findOne({ name: productName });
+
+        // ✅ FIX: Find product belonging to THIS user only
+        const product = await Product.findOne({
+            name: productName,
+            userId: req.user.id
+        });
 
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
@@ -18,7 +23,13 @@ const recordSale = async (req, res) => {
         product.stock -= quantity;
         await product.save();
 
-        const newSale = new Sale({ productName, quantity, total });
+        // ✅ FIX: Save the sale with the logged-in user's ID
+        const newSale = new Sale({
+            userId: req.user.id,
+            productName,
+            quantity,
+            total
+        });
         await newSale.save();
 
         res.status(201).json({ message: 'Sale recorded successfully', sale: newSale });
@@ -27,4 +38,14 @@ const recordSale = async (req, res) => {
     }
 };
 
-module.exports = { recordSale };
+const getSales = async (req, res) => {
+    try {
+        // ✅ FIX: Only return sales belonging to the logged-in user
+        const sales = await Sale.find({ userId: req.user.id }).sort({ saleDate: -1 });
+        res.status(200).json(sales);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching sales', error: error.message });
+    }
+};
+
+module.exports = { recordSale, getSales };
