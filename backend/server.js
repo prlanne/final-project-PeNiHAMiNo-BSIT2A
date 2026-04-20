@@ -5,18 +5,17 @@ const mongoose = require("mongoose");
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
-// --- IMPORT ROUTES (Fixed paths to match your folder) ---
+// IMPORT ROUTES (Fixed paths to match your folder)
 const usersRouter = require("./routes/userRoutes");
 const authRoutes = require("./routes/auth"); 
 const productRouter = require("./routes/productRoutes");
-// FIXED: Changed "runtime/saleRoutes" to "routes/saleRoutes" to match your image
 const saleRouter = require("./routes/saleRoutes"); 
 const expenseRouter = require("./routes/expenseRoutes");
 const purchaseRouter = require("./routes/purchaseRoutes"); 
 
 const app = express();
 
-// --- MIDDLEWARE ---
+// MIDDLEWARE
 app.use(cors()); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// --- API ROUTES ---
+// API ROUTES
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRoutes); 
 app.use("/api/products", productRouter);
@@ -41,7 +40,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: "Something went wrong on the server!" });
 });
 
-// --- MONGODB CONNECTION & START ---
+// MONGODB CONNECTION & START 
 async function start() {
   try {
     // If .env is missing, it will use the local bentaboard database
@@ -58,5 +57,9 @@ async function start() {
     process.exit(1);
   }
 }
+
+const dataRouter = require("./routes/dataRoutes");
+// ... with other routes
+app.use("/api/data", dataRouter);
 
 start();
