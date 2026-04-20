@@ -1,30 +1,20 @@
 const jwt = require('jsonwebtoken');
-
 const protect = (req, res, next) => {
-    let token;
+    const authHeader = req.headers.authorization;
 
-    // Check if the authorization header exists and starts with 'Bearer'
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            // Extract the token from the header
-            token = req.headers.authorization.split(' ')[1];
-
-            // Verify the token using your secret key
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            // Attach the user info (from the JWT payload) to the request object
-            req.user = decoded;
-
-            // Move to the next middleware or route handler
-            next();
-        } catch (error) {
-            res.status(401).json({ message: 'Not authorized, token failed or expired.' });
-        }
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ msg: 'No token provided. Authorization denied.' });
     }
 
-    if (!token) {
-        res.status(401).json({ message: 'Not authorized, no token provided.' });
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded; // payload: { id: user._id, role: user.role }
+        next();
+    } catch (err) {
+        return res.status(401).json({ msg: 'Token is invalid or expired.' });
     }
 };
 
-module.exports = { protect };
+module.exports = protect;
