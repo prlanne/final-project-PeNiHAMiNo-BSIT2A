@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 
 const saleSchema = new mongoose.Schema({
+    // ✅ FIX: Every sale is now owned by a specific user
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     productName: { type: String, required: true },
     quantity: { type: Number, required: true },
-    total: { type: Number, required: true }, // We will calculate this in the route
+    total: { type: Number, required: true },
     saleDate: { type: Date, default: Date.now }
 });
 
