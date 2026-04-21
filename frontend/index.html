@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <title>Hub | BentaBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="auth-overlay">
+    <div class="benta-clock">
+        <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--primary);"></i>
+        <span id="realTimeClock">--:--</span>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <img src="img/bentaboard.png" alt="BentaBoard Logo" class="loading-logo">
+            <h2 class="fw-bold tracking-tight mb-3" style="color: var(--primary);">BentaBoard</h2>
+            <div class="loading-bar-container">
+                <div id="loadingBar" class="loading-bar"></div>
+            </div>
+            <div class="loading-text mt-2">
+                <span id="loadingCounter">0</span>% <span class="loading-dots">System Initializing...</span>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center py-5">
+        <div class="hub-logo-container mb-2">
+            <img src="img/bentaboard.png" alt="BentaBoard Circle Logo" class="hub-logo">
+            <h1 class="fw-bold tracking-tight m-0">BentaBoard</h1>
+        </div>
+        <p class="text-muted mb-5">“From bawat benta to tunay na kita—track it right.”</p>
+
+        <div class="hub-grid">
+            <a href="dashboard.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="layout-dashboard" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Dashboard</h4>
+            </a>
+            <a href="inventory.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="package" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Inventory</h4>
+            </a>
+            <a href="saleslogs.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="shopping-cart" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Sales Logs</h4>
+            </a>
+            <a href="expenses.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="trending-down" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Expenses</h4>
+            </a>
+            <a href="purchases.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="shopping-bag" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Purchases</h4>
+            </a>
+            <a href="analytics.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="bar-chart-2" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Analytics</h4>
+            </a>
+            <a href="reports.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="file-text" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Reports</h4>
+            </a>
+            <a href="weather.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="cloud-sun" style="width: 48px; height: 48px;"></i>
+                 <h4 class="fw-bold m-0 mt-3">Weather</h4>
+            </a>
+            <a href="settings.html" class="custom-card hub-card btn-lift">
+                <i data-lucide="settings" style="width: 48px; height: 48px;"></i>
+                <h4 class="fw-bold m-0 mt-3">Settings</h4>
+            </a>
+            <a href="#" id="hubLogoutBtn" class="custom-card hub-card btn-lift text-danger">
+                <i data-lucide="log-out" style="width: 48px; height: 48px; color: var(--danger);"></i>
+                <h4 class="fw-bold m-0 mt-3">Logout</h4>
+            </a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="welcomeMotivationalModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden; background: var(--card-bg);">
+                <div class="modal-body text-center p-5">
+                    
+                    <div class="d-flex flex-column align-items-center mb-4">
+                        <img src="img/bentaboard.png" alt="BentaBoard Logo" style="width: 75px; height: 75px; margin-bottom: 15px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h2 class="fw-bold tracking-tight m-0 text-dark">BentaBoard</h2>
+                    </div>
+                    
+                    <h4 class="fw-semibold mb-1 text-muted">Hi, <span id="welcomePopupName" class="text-primary fw-bold">[Name]</span>!</h4>
+                    <h5 class="fw-medium mb-4 text-dark">Welcome back to your system.</h5>
+                    
+                    <p class="text-muted mb-4 small">Track your sales, manage your inventory, and unlock success.</p>
+                    
+                    <button type="button" class="btn btn-primary btn-lift w-100 py-3 fw-bold rounded-pill" data-bs-dismiss="modal">Access Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/script.js"></script>
+
+</body>
+</html>
