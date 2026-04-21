@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <title>Login | BentaBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="auth-overlay">
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        
+        <div class="auth-card custom-card w-100" style="max-width: 450px;" id="loginFormContainer">
+            <div class="text-center mb-4">
+                <img src="img/bentaboard.png" alt="BentaBoard Logo" style="width: 70px; height: 70px; margin-bottom: 15px; border-radius: 50%;">
+                <h2 class="fw-bold tracking-tight">Welcome to BentaBoard!</h2>
+                <p class="text-muted small">Please log in to access your account</p>
+            </div>
+            
+                       <form id="loginForm" onsubmit="handleAuth(event, 'login')">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-muted">Username</label>
+                    <input type="text" class="form-control py-2" name="loginUser" placeholder="Enter your username" autocomplete="off" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-muted">Password</label>
+                    <input type="password" class="form-control py-2" name="loginPass" placeholder="Enter your password" autocomplete="off" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold btn-lift mt-2">Login</button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted small">Don't have an account? <a href="register.html" class="text-primary fw-bold text-decoration-none">Sign Up</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
