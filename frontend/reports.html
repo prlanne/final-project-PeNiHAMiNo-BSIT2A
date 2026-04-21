@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BentaBoard Reports | Financial Summary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-body-tertiary">
+
+    <aside class="sidebar">
+        <div class="sidebar-header" id="sidebarLogoContainer">
+            <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
+            <div class="sidebar-header-text">
+                <h1 class="m-0 text-white" style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;">BentaBoard</h1>
+                <p class="m-0" style="font-size: 0.75rem; color: #9ca3af;">"From bawat benta to tunay na kita—track it right."</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i data-lucide="home"></i> Hub</a>
+            <a href="dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="inventory.html"><i data-lucide="package"></i> Inventory</a>
+            <a href="saleslogs.html"><i data-lucide="shopping-cart"></i> Sales</a>
+            <a href="expenses.html"><i data-lucide="trending-down"></i> Expenses</a>
+            <a href="purchases.html"><i data-lucide="shopping-bag"></i> Purchases</a>
+            <a href="analytics.html"><i data-lucide="bar-chart-2"></i> Analytics</a>
+            <a href="reports.html" class="active"><i data-lucide="file-text"></i> Reports</a>
+            <a href="weather.html"><i data-lucide="cloud-sun"></i> Weather</a>
+            <a href="settings.html"><i data-lucide="settings"></i> Settings</a>
+        </div>
+        <div class="mt-auto">
+            <div class="d-flex align-items-center gap-3 mb-4 text-white">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i data-lucide="user" size="20"></i></div>
+                <div><div class="fw-bold small" id="userNameDisplay">User</div><div class="text-success small" style="font-size: 0.7rem;">● Online</div></div>
+            </div>
+            <button id="logoutBtn" class="btn btn-danger w-100 btn-lift bg-danger bg-opacity-10 text-danger border-0 d-flex align-items-center justify-content-center gap-2"><i data-lucide="log-out" size="18"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="container py-2">
+            
+            <!-- Header -->
+            <div class="mb-5 border-bottom pb-4">
+                <h1 class="fw-bold m-0 text-dark">BentaBoard Financial <span class="text-primary">&</span> Reports</h1>
+                <p class="text-muted small mt-1 mb-0">Lifetime summary of your business operations and transactions.</p>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="row mb-5 justify-content-center">
+                <div class="col-md-8 text-center">
+                    <h5 class="fw-semibold text-dark mb-3">View your financial summary</h5>
+                    <div class="input-group mb-2 custom-card rounded-pill p-1 shadow-sm" style="border: 1px solid var(--border); background-color: white;">
+                        <span class="input-group-text bg-white border-0 text-primary px-3">
+                            <i data-lucide="calendar"></i>
+                        </span>
+                        <select id="reportTimeframeSelect" class="form-select form-select-lg border-0 bg-white" style="background-color: white;" onchange="changeAnalyticsTimeframe(this.value)">
+                            <option value="daily">Today</option>
+                            <option value="weekly" selected>This Week</option>
+                            <option value="monthly">This Month</option>
+                            <option value="yearly">This Year</option>
+                            <option value="all">All Time</option>
+                        </select>
+                        <button class="btn btn-primary btn-lift rounded-pill px-4 fw-medium" type="button" onclick="window.print()">
+                            <i data-lucide="printer" class="me-2" size="18"></i> Print Report
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Financial Summary Card -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="custom-card bg-white rounded-4 shadow" style="border: 1px solid var(--border); padding: 0 !important; overflow: hidden;">
+                        
+                        <!-- Card Header -->
+                        <div class="d-flex justify-content-between align-items-center px-4 pt-4 pb-3 border-bottom">
+                            <div class="d-flex align-items-center gap-3">
+                                <i data-lucide="file-text" class="text-primary p-2 rounded-3" style="background-color: rgba(0, 168, 255, 0.1);"></i>
+                                <h4 class="fw-bold m-0">Financial Summary</h4>
+                            </div>
+                            <span class="badge bg-success rounded-pill px-3 py-2 fw-semibold print-hide" style="font-size: 0.75rem;">LIVE DATA</span>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="px-4 pb-4">
+                            <!-- Summary Metric Cards -->
+                            <div class="row g-3 text-center mt-3 mb-4">
+                                <div class="col-6 col-md-3">
+                                    <div class="weather-detail-box">
+                                        <i data-lucide="trending-up" class="text-success mb-2"></i>
+                                        <p class="text-muted small m-0 fw-medium">Total Sales</p>
+                                        <h4 class="fw-bold m-0 text-dark" id="reportSalesTotal">₱0</h4>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="weather-detail-box">
+                                        <i data-lucide="trending-down" class="text-danger mb-2"></i>
+                                        <p class="text-muted small m-0 fw-medium">Total Expenses</p>
+                                        <h4 class="fw-bold m-0 text-dark" id="reportExpTotal">₱0</h4>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="weather-detail-box">
+                                        <i data-lucide="package" class="text-primary mb-2"></i>
+                                        <p class="text-muted small m-0 fw-medium">Items Sold</p>
+                                        <h4 class="fw-bold m-0 text-dark" id="reportItems">0</h4>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="weather-detail-box">
+                                        <i data-lucide="wallet" class="text-warning mb-2"></i>
+                                        <p class="text-muted small m-0 fw-medium">Net Profit</p>
+                                        <h4 class="fw-bold m-0 text-dark" id="reportNet">₱0</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complete Transaction History -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="custom-card bg-white rounded-4 shadow" style="border: 1px solid var(--border); padding: 0 !important; overflow: hidden;">
+                        
+                        <!-- Card Header -->
+                        <div class="d-flex justify-content-between align-items-center px-4 pt-4 pb-3 border-bottom">
+                            <div class="d-flex align-items-center gap-3">
+                                <i data-lucide="list" class="text-primary p-2 rounded-3" style="background-color: rgba(0, 168, 255, 0.1);"></i>
+                                <h4 class="fw-bold m-0">Complete Transaction History</h4>
+                            </div>
+                            <span class="badge bg-success rounded-pill px-3 py-2 fw-semibold" style="font-size: 0.75rem;">LIVE DATA</span>
+                        </div>
+                        
+                        <!-- Table Content -->
+                        <div class="px-4 pb-4 pt-2">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%;">Date</th>
+                                            <th style="width: 15%;">Type</th>
+                                            <th style="width: 45%;">Description</th>
+                                            <th style="width: 20%;" class="text-end">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reportBreakdownBody">
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted py-5">
+                                                <i data-lucide="database" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                                                <p class="mt-3 fw-medium">No transactions recorded yet</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="benta-clock">
+        <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--primary);"></i>
+        <span id="realTimeClock">--:--</span>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('reportTimeframeSelect');
+            if (select) {
+                select.value = currentFilter || 'weekly';
+            }
+        });
+    </script>
+</body>
+</html>
