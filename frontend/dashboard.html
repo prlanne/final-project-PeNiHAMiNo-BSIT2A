@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <title>Dashboard Totals | BentaBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <aside class="sidebar">
+       <div class="sidebar-header" id="sidebarLogoContainer">
+    <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
+    <div class="sidebar-header-text">
+        <h1 class="m-0 text-white" style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;">BentaBoard</h1>
+        <p class="m-0" style="font-size: 0.75rem; color: #9ca3af;">“From bawat benta to tunay na kita—track it right.”</p>
+    </div>
+</div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i data-lucide="home"></i> Hub</a>
+            <a href="dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="inventory.html"><i data-lucide="package"></i> Inventory</a>
+            <a href="saleslogs.html"><i data-lucide="shopping-cart"></i> Sales</a>
+            <a href="expenses.html"><i data-lucide="trending-down"></i> Expenses</a>
+            <a href="purchases.html"><i data-lucide="shopping-bag"></i> Purchases</a>
+            <a href="analytics.html"><i data-lucide="bar-chart-2"></i> Analytics</a>
+            <a href="reports.html"><i data-lucide="file-text"></i> Reports</a>
+            <a href="weather.html"><i data-lucide="cloud-sun"></i> Weather</a>
+            <a href="settings.html"><i data-lucide="settings"></i> Settings</a>
+        </div>
+        <div class="mt-auto">
+            <div class="d-flex align-items-center gap-3 mb-4 text-white">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i data-lucide="user" size="20"></i></div>
+                <div><div class="fw-bold small" id="userNameDisplay">User</div><div class="text-success small" style="font-size: 0.7rem;">● Online</div></div>
+            </div>
+            <button id="logoutBtn" class="btn btn-danger w-100 btn-lift bg-danger bg-opacity-10 text-danger border-0 d-flex align-items-center justify-content-center gap-2"><i data-lucide="log-out" size="18"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <h2 class="fw-bold tracking-tight mb-1">Business Action Dashboard</h2>
+        <p class="text-muted mb-5">Overview of your metrics and key business actions.</p>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="custom-card card-sales p-4 h-100">
+                    <h6 class="text-muted fw-semibold mb-1">Total Revenue</h6>
+                    <h3 class="fw-bold text-dark m-0" id="displaySales">₱0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="custom-card card-outflow p-4 h-100">
+                    <h6 class="text-muted fw-semibold mb-1">Total Expenses</h6>
+                    <h3 class="fw-bold text-danger m-0" id="displayOutflow">₱0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="custom-card card-profit p-4 h-100 text-white shadow-lg">
+                    <h6 class="text-white-50 fw-semibold mb-1">Net Profit</h6>
+                    <h3 class="fw-bold m-0" id="displayProfit">₱0</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-hub-grid">
+
+            <div class="custom-card action-card">
+                <div class="action-card-header">
+                    <i data-lucide="package"></i>
+                    <h5 class="fw-bold m-0">Inventory: Add Product</h5>
+                </div>
+                <p class="text-muted small mb-3 text-start">Add new product stock and pricing.</p>
+                <form id="dashboardProductForm">
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Item Name</label>
+                        <input type="text" name="pName" class="form-control" required>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Price (₱)</label>
+                        <input type="number" name="pPrice" class="form-control" required min="1">
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Stock</label>
+                        <input type="number" name="pStock" class="form-control" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 btn-lift fw-semibold py-2">Save Product</button>
+                </form>
+            </div>
+
+            <div class="custom-card action-card">
+                <div class="action-card-header">
+                    <i data-lucide="shopping-cart"></i>
+                    <h5 class="fw-bold m-0">Record a New Sale</h5>
+                </div>
+                <p class="text-muted small mb-3 text-start">Log a transaction and update stock.</p>
+                <form id="dashboardSalesForm">
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Select Product</label>
+                        <select name="saleSelect" id="dashboardSaleSelect" class="form-select" required>
+                            </select>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Quantity Sold</label>
+                        <input type="number" name="saleQty" class="form-control" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 btn-lift fw-semibold py-2">Confirm Sale</button>
+                </form>
+            </div>
+
+            <div class="custom-card action-card">
+                <div class="action-card-header">
+                    <i data-lucide="trending-down"></i>
+                    <h5 class="fw-bold m-0">Log Business Expense</h5>
+                </div>
+                <p class="text-muted small mb-3 text-start">Log business outflows and costs.</p>
+                <form id="dashboardExpenseForm">
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Category / Description</label>
+                        <input type="text" name="expCat" class="form-control" required>
+                    </div>
+                    <div class="mb-3 text-start">
+                        <label class="small fw-semibold text-muted">Amount (₱)</label>
+                        <input type="number" name="expAmt" class="form-control" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100 btn-lift fw-semibold py-2">Save Expense</button>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+    <script src="js/script.js"></script>
+
+    <div class="benta-clock">
+        <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--primary);"></i>
+        <span id="realTimeClock">--:--</span>
+    </div>
+
+</body>
+</html>
