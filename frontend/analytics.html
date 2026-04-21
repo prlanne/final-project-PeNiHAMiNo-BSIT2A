@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Analytics | BentaBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header" id="sidebarLogoContainer">
+    <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
+    <div class="sidebar-header-text">
+        <h1 class="m-0 text-white" style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;">BentaBoard</h1>
+        <p class="m-0" style="font-size: 0.75rem; color: #9ca3af;">“From bawat benta to tunay na kita—track it right.”</p>
+    </div>
+</div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i data-lucide="home"></i> Hub</a>
+            <a href="dashboard.html"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a href="inventory.html"><i data-lucide="package"></i> Inventory</a>
+            <a href="saleslogs.html"><i data-lucide="shopping-cart"></i> Sales</a>
+            <a href="expenses.html"><i data-lucide="trending-down"></i> Expenses</a>
+            <a href="purchases.html"><i data-lucide="shopping-bag"></i> Purchases</a>
+            <a href="analytics.html"><i data-lucide="bar-chart-2"></i> Analytics</a>
+            <a href="reports.html"><i data-lucide="file-text"></i> Reports</a>
+            <a href="weather.html"><i data-lucide="cloud-sun"></i> Weather</a>
+            <a href="settings.html"><i data-lucide="settings"></i> Settings</a>
+        </div>
+        <div class="mt-auto">
+            <div class="d-flex align-items-center gap-3 mb-4 text-white">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i data-lucide="user" size="20"></i></div>
+                <div><div class="fw-bold small" id="userNameDisplay">User</div><div class="text-success small" style="font-size: 0.7rem;">● Online</div></div>
+            </div>
+            <button id="logoutBtn" class="btn btn-danger w-100 btn-lift bg-danger bg-opacity-10 text-danger border-0 d-flex align-items-center justify-content-center gap-2"><i data-lucide="log-out" size="18"></i> Logout</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold tracking-tight mb-1">Revenue Analytics</h2>
+                <p class="text-muted">Track your business performance over time.</p>
+            </div>
+            <div class="btn-group bg-white p-1 rounded-3 border shadow-sm">
+                <button onclick="changeAnalyticsTimeframe('daily')" class="btn btn-sm px-3 fw-bold timeframe-btn active" id="btn-daily">Daily</button>
+                <button onclick="changeAnalyticsTimeframe('weekly')" class="btn btn-sm px-3 fw-bold timeframe-btn" id="btn-weekly">Weekly</button>
+                <button onclick="changeAnalyticsTimeframe('monthly')" class="btn btn-sm px-3 fw-bold timeframe-btn" id="btn-monthly">Monthly</button>
+                <button onclick="changeAnalyticsTimeframe('yearly')" class="btn btn-sm px-3 fw-bold timeframe-btn" id="btn-yearly">Yearly</button>
+            </div>
+        </div>
+
+        <div class="custom-card p-4">
+            <div id="analyticsChartContainer">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .timeframe-btn { color: var(--text-muted); border: none !important; transition: all 0.3s; }
+        .timeframe-btn.active { background: var(--primary) !important; color: white !important; }
+    </style>
+    <script src="js/script.js"></script>
+
+    <div class="benta-clock">
+        <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--primary);"></i>
+        <span id="realTimeClock">--:--</span>
+    </div>
+
+</body>
+</html>
