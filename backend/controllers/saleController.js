@@ -5,7 +5,7 @@ const recordSale = async (req, res) => {
     try {
         const { productName, quantity } = req.body;
 
-        // ✅ FIX: Find product belonging to THIS user only
+        // FIX: Find product belonging to THIS user only
         const product = await Product.findOne({
             name: productName,
             userId: req.user.id
@@ -23,7 +23,7 @@ const recordSale = async (req, res) => {
         product.stock -= quantity;
         await product.save();
 
-        // ✅ FIX: Save the sale with the logged-in user's ID
+        //  FIX: Save the sale with the logged-in user's ID
         const newSale = new Sale({
             userId: req.user.id,
             productName,
@@ -40,8 +40,12 @@ const recordSale = async (req, res) => {
 
 const getSales = async (req, res) => {
     try {
-        // ✅ FIX: Only return sales belonging to the logged-in user
-        const sales = await Sale.find({ userId: req.user.id }).sort({ saleDate: -1 });
+        // If admin requests with ?userId=, return that user's sales
+        const targetUserId = (req.user.role === 'Admin' && req.query.userId) 
+            ? req.query.userId 
+            : req.user.id;
+            
+        const sales = await Sale.find({ userId: targetUserId }).sort({ saleDate: -1 });
         res.status(200).json(sales);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching sales', error: error.message });
