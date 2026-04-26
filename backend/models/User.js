@@ -33,8 +33,10 @@ const UserSchema = new mongoose.Schema({
         default: Date.now 
     }
 }, { 
-    // This helper option removes the __v version key from your documents
-    versionKey: false 
+    versionKey: false,
+    collection: 'users'
 });
 
-module.exports = mongoose.model('User', UserSchema);
+// ✅ Save to 'test' database
+const db = mongoose.connection.useDb('test');
+module.exports = db.model('User', UserSchema);
