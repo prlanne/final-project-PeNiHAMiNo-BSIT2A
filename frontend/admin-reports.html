@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <title>Seller Reports | BentaBoard Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="bentaboard-notifications.css" rel="stylesheet">
+    <link href="css/admin-theme.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <aside class="sidebar admin-sidebar">
+        <div class="sidebar-header">
+            <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
+            <div class="sidebar-header-text">
+                <h1 class="m-0 text-white" style="font-size: 1.25rem; font-weight: 700;">BentaBoard</h1>
+                <p class="m-0" style="font-size: 0.75rem; color: #9ca3af;">Admin Control Panel</p>
+            </div>
+        </div>
+        <div class="text-center mb-3">
+            <span class="badge bg-danger rounded-pill px-3 py-1" style="font-size: 0.7rem; letter-spacing: 1px;">
+                <i data-lucide="shield-check" style="width: 12px; height: 12px;"></i> ADMIN MODE
+            </span>
+        </div>
+        <div class="nav-links">
+            <a href="admin-dashboard.html"><i data-lucide="layout-dashboard"></i> Admin Hub</a>
+            <a href="admin-users.html"><i data-lucide="users"></i> Manage Users</a>
+            <a href="admin-reports.html" class="active"><i data-lucide="file-text"></i> View All Reports</a>
+            <a href="admin-settings.html"><i data-lucide="settings"></i> System Settings</a>
+            
+        </div>
+        <div class="mt-auto">
+            <div class="d-flex align-items-center gap-3 mb-4 text-white">
+                <div class="bg-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;"><i data-lucide="shield-check" size="20"></i></div>
+                <div><div class="fw-bold small" id="userNameDisplay">Admin</div><div class="text-success small" style="font-size: 0.7rem;">● Online</div></div>
+            </div>
+            <button id="logoutBtn" class="btn btn-danger w-100 btn-lift bg-danger bg-opacity-10 text-danger border-0 d-flex align-items-center justify-content-center gap-2">
+                <i data-lucide="log-out" size="18"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <div>
+                <h2 class="fw-bold tracking-tight mb-1">Seller Reports</h2>
+                <p class="text-muted mb-0">View complete financial reports for each seller.</p>
+            </div>
+            <button class="btn btn-outline-primary btn-lift" onclick="window.print()">
+                <i data-lucide="printer" style="width: 16px; height: 16px;"></i> Print
+            </button>
+        </div>
+
+        <!-- Seller List View -->
+        <div id="sellerListView">
+            <div class="custom-card p-4 mb-4">
+                <h5 class="fw-bold mb-3"><i data-lucide="users" class="text-primary me-2"></i>All Sellers</h5>
+                <div id="sellerSearchBox" class="mb-3">
+                    <input type="text" id="sellerSearchInput" class="form-control" placeholder="🔍 Search seller by name..." oninput="filterSellerList()">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Seller</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminSellersTableBody">
+                            <tr><td colspan="5" class="text-center text-muted py-4">Loading sellers...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Single Seller Report View (Hidden by default) -->
+        <div id="singleSellerReportView" style="display: none;">
+            <!-- Back Button -->
+            <button class="btn btn-outline-secondary mb-4 btn-lift" onclick="goBackToSellerList()">
+                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back to Seller List
+            </button>
+
+            <!-- Seller Info Header -->
+            <div class="custom-card p-4 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i data-lucide="user" size="28" style="color: white;"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold m-0" id="sellerReportName">Seller Name</h4>
+                        <p class="text-muted m-0" id="sellerReportUsername">@username</p>
+                    </div>
+                    <div class="ms-auto">
+                        <span class="badge bg-success rounded-pill px-3 py-2" style="font-size: 0.75rem;">
+                            <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> Seller Reports
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter -->
+            <div class="d-flex justify-content-end mb-4">
+                <select id="adminReportFilter" class="form-select" style="max-width: 200px;">
+                    <option value="daily">Today</option>
+                    <option value="weekly">This Week</option>
+                    <option value="monthly">This Month</option>
+                    <option value="yearly">This Year</option>
+                    <option value="all" selected>All Time</option>
+                </select>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row g-3 text-center mb-4">
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="trending-up" class="text-success mb-2"></i>
+                        <p class="text-muted small m-0">Total Sales</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportSales">₱0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="trending-down" class="text-danger mb-2"></i>
+                        <p class="text-muted small m-0">Expenses</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportExp">₱0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="wallet" class="text-warning mb-2"></i>
+                        <p class="text-muted small m-0">Net Profit</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportNet">₱0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="package" class="text-primary mb-2"></i>
+                        <p class="text-muted small m-0">Items Sold</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportItems">0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="shopping-bag" class="text-info mb-2"></i>
+                        <p class="text-muted small m-0">Products</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportProducts">0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <div class="weather-detail-box">
+                        <i data-lucide="truck" class="text-secondary mb-2"></i>
+                        <p class="text-muted small m-0">Purchases</p>
+                        <h4 class="fw-bold m-0 text-dark" id="adminReportPurchases">₱0</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Table -->
+            <div class="custom-card p-4">
+                <h5 class="fw-bold mb-3">Transaction Breakdown</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminReportBreakdownBody">
+                            <tr><td colspan="4" class="text-center text-muted py-4">Loading transactions...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="benta-clock">
+        <i data-lucide="clock" style="width: 16px; height: 16px; color: var(--primary);"></i>
+        <span id="realTimeClock">--:--</span>
+    </div>
+
+    <script src="js/admin-script.js"></script>
+    
+</body>
+</html>
