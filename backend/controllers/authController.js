@@ -1,28 +1,33 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const Admin = require('../models/Admin');
 
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username });
+        
+        //  Only search in Admin collection
+        const admin = await Admin.findOne({ username });
 
-        if (!user) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
+        if (!admin) {
+            return res.status(400).json({ msg: 'Invalid Admin Credentials' });
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid Credentials' });
+            return res.status(400).json({ msg: 'Invalid Admin Credentials' });
         }
 
         const token = jwt.sign(
-            { id: user._id, role: user.role },
+            { id: admin._id, role: admin.role },
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         );
 
-        res.json({ token, user: { id: user._id, username: user.username, role: user.role } });
+        res.json({ 
+            token, 
+            user: { id: admin._id, username: admin.username, role: admin.role } 
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
