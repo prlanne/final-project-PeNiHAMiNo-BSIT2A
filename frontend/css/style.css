@@ -1500,7 +1500,7 @@ body.dark-theme .swal2-cancel {
 
 .bb-toast-x:hover { background: #f1f5f9; color: #374151; }
 
-/* TYPE: SUCCESS */
+/* ---- TYPE: SUCCESS ---- */
 .bb-toast-success::before  { background: #22c55e; }
 .bb-toast-success::after   { background: #22c55e; }
 .bb-toast-success .bb-toast-icon {
@@ -1510,7 +1510,7 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-success .bb-toast-label { color: #15803d; }
 
-/* TYPE: ERROR */
+/* ---- TYPE: ERROR ---- */
 .bb-toast-error::before  { background: #ef4444; }
 .bb-toast-error::after   { background: #ef4444; }
 .bb-toast-error .bb-toast-icon {
@@ -1520,7 +1520,7 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-error .bb-toast-label { color: #b91c1c; }
 
-/* TYPE: WARNING */
+/* ---- TYPE: WARNING ---- */
 .bb-toast-warning::before  { background: #f59e0b; }
 .bb-toast-warning::after   { background: #f59e0b; }
 .bb-toast-warning .bb-toast-icon {
@@ -1530,7 +1530,7 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-warning .bb-toast-label { color: #b45309; }
 
-/* TYPE: INFO */
+/* ---- TYPE: INFO ---- */
 .bb-toast-info::before  { background: #3b82f6; }
 .bb-toast-info::after   { background: #3b82f6; }
 .bb-toast-info .bb-toast-icon {
@@ -1540,7 +1540,7 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-info .bb-toast-label { color: #1d4ed8; }
 
-/* DARK MODE TOASTS */
+/* ---- DARK MODE TOASTS ---- */
 .dark-theme .bb-toast-card {
     background: #1e293b;
     border-color: #334155;
@@ -1561,7 +1561,9 @@ body.dark-theme .swal2-cancel {
 .dark-theme .bb-toast-info .bb-toast-label { color: #93c5fd; }
 
 
-/* SIGN OUT & THANK YOU MODALS */
+/* ----------------------------------------------------------------
+   SIGN OUT & THANK YOU MODALS
+   ---------------------------------------------------------------- */
 
 .bb-modal-popup.swal2-popup {
     font-family: 'Poppins', sans-serif !important;
@@ -1581,7 +1583,7 @@ body.dark-theme .swal2-cancel {
     text-align: center !important;
 }
 
-/* MODAL ICON CIRCLES */
+/* ---- MODAL ICON CIRCLES ---- */
 .bb-modal-icon {
     width: 76px;
     height: 76px;
@@ -1632,7 +1634,7 @@ body.dark-theme .swal2-cancel {
 }
 .bb-modal-icon.bb-danger::after { border: 2px solid #ef4444; }
 
-/* MODAL TEXT */
+/* ---- MODAL TEXT ---- */
 .bb-modal-title {
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
@@ -1650,7 +1652,7 @@ body.dark-theme .swal2-cancel {
     margin: 0 0 4px;
 }
 
-/* MODAL BUTTONS */
+/* ---- MODAL BUTTONS ---- */
 .bb-modal-popup .swal2-actions {
     gap: 10px !important;
     margin-top: 28px !important;
@@ -1724,7 +1726,9 @@ body.dark-theme .swal2-cancel {
 }
 
 
-/* DARK MODE — MODALS */
+/* ----------------------------------------------------------------
+   DARK MODE — MODALS
+   ---------------------------------------------------------------- */
 .dark-theme .bb-modal-popup.swal2-popup {
     background: #1e293b !important;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3) !important;
@@ -1755,11 +1759,13 @@ body.dark-theme .swal2-cancel {
     border-color: #475569 !important;
 }
 
-/* Alert2 backdrop in dark mode */
+/* SweetAlert2 backdrop in dark mode */
 .dark-theme .swal2-backdrop-show { background: rgba(0, 0, 0, 0.6) !important; }
 
 
-/* MODAL ENTRANCE ANIMATION */
+/* ----------------------------------------------------------------
+   MODAL ENTRANCE ANIMATION
+   ---------------------------------------------------------------- */
 .bb-modal-popup.swal2-show {
     animation: bb-modal-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
 }
@@ -1775,9 +1781,15 @@ body.dark-theme .swal2-cancel {
     from { opacity: 1; transform: scale(1); }
     to   { opacity: 0; transform: scale(0.94); }
 }
-/* ENLARGED SAVED BANNER (NO X BUTTON) */
-/* COMPACT SUCCESS BANNER (NO X BUTTON) */
-/* TOAST CONTAINER - EXACT TOP CENTER */
+/* ----------------------------------------------------------------
+   ENLARGED SAVED BANNER (NO X BUTTON)
+   ---------------------------------------------------------------- */
+/* ----------------------------------------------------------------
+   COMPACT SUCCESS BANNER (NO X BUTTON)
+   ---------------------------------------------------------------- */
+/* ----------------------------------------------------------------
+   TOAST CONTAINER - EXACT TOP CENTER
+   ---------------------------------------------------------------- */
 
 #bb-toast-container {
     position: fixed !important;
@@ -1823,4 +1835,650 @@ body.dark-theme .swal2-cancel {
 /* Remove extra right padding since X is gone */
 .bb-toast-card > div[style*="flex:1"] {
     padding-right: 0 !important;
+}
+
+
+
+/* ============================================
+   BENTABOARD LANDING PAGE STYLES
+   Add this to the END of your existing style.css
+   or keep as separate landing.css file
+   ============================================ */
+
+/* Landing Body Background */
+.landing-body {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #f5f7fa 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+body.dark-theme .landing-body {
+    background: linear-gradient(135deg, #030408 0%, #090e17 50%, #0a1628 100%);
+}
+
+/* Landing Container */
+.landing-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Branding Section */
+.landing-brand {
+    margin-bottom: 3rem;
+}
+
+.landing-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: white;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 168, 255, 0.2);
+    margin-bottom: 1.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+body.dark-theme .landing-logo {
+    background: #1e293b;
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.3);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.landing-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.5rem;
+}
+
+body.dark-theme .landing-title {
+    color: #ffffff;
+}
+
+.landing-tagline {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 500;
+    font-style: italic;
+}
+
+body.dark-theme .landing-tagline {
+    color: #94a3b8;
+}
+
+/* Role Cards Grid */
+.landing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Individual Card */
+.landing-card {
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 2px solid transparent;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+body.dark-theme .landing-card {
+    background: #1e293b;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Seller Card Hover */
+.landing-card.seller-card:hover {
+    transform: translateY(-8px);
+    border-color: #22c55e;
+    box-shadow: 0 20px 40px rgba(34, 197, 94, 0.2);
+}
+
+body.dark-theme .landing-card.seller-card:hover {
+    box-shadow: 0 20px 40px rgba(34, 197, 94, 0.3);
+    border-color: #4ade80;
+}
+
+/* Admin Card Hover */
+.landing-card.admin-card:hover {
+    transform: translateY(-8px);
+    border-color: #ef4444;
+    box-shadow: 0 20px 40px rgba(239, 68, 68, 0.2);
+}
+
+body.dark-theme .landing-card.admin-card:hover {
+    box-shadow: 0 20px 40px rgba(239, 68, 68, 0.3);
+    border-color: #f87171;
+}
+
+/* Card Icon Wrapper */
+.card-icon-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s ease;
+}
+
+/* Seller Icon */
+.seller-icon {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    color: #22c55e;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15);
+}
+
+body.dark-theme .seller-icon {
+    background: linear-gradient(135deg, #052e16, #14532d);
+    color: #4ade80;
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+}
+
+/* Admin Icon */
+.admin-icon {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #ef4444;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15);
+}
+
+body.dark-theme .admin-icon {
+    background: linear-gradient(135deg, #450a0a, #7f1d1d);
+    color: #f87171;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25);
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+}
+
+body.dark-theme .card-title {
+    color: #f1f5f9;
+}
+
+/* Card Description */
+.card-description {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+body.dark-theme .card-description {
+    color: #94a3b8;
+}
+
+/* Buttons */
+.btn-seller {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+}
+
+.btn-seller:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+    color: white;
+}
+
+.btn-admin {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.btn-admin:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+    color: white;
+}
+
+/* Version Text */
+.landing-version {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+body.dark-theme .landing-version {
+    color: #64748b;
+}
+
+/* Exit Animation */
+.landing-card {
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .landing-container {
+        padding: 1.5rem;
+    }
+    
+    .landing-title {
+        font-size: 2rem;
+    }
+    
+    .landing-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .landing-card {
+        padding: 2rem 1.5rem;
+    }
+}
+    /* PRINT STYLES */
+    @media print {
+        /* Hide everything except the report */
+        .sidebar,
+        .benta-clock,
+        #logoutBtn,
+        .nav-links,
+        .mt-auto,
+        .btn,
+        .badge,
+        #adminReportFilter,
+        .d-flex.justify-content-end.mb-4,
+        button,
+        #sellerSearchBox,
+        #sellerListView {
+            display: none !important;
+        }
+
+        * {
+            background: white !important;
+            color: black !important;
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+
+        html, body {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+            font-family: 'Poppins', 'Courier New', monospace !important;
+        }
+
+        .main-content {
+            margin: 0 !important;
+            padding: 30px 40px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            display: block !important;
+        }
+
+        /* Hide View All Reports header */
+        .main-content > div:first-child {
+            text-align: center !important;
+            margin-bottom: 25px !important;
+        }
+
+        .main-content > div:first-child h2 {
+            font-size: 22px !important;
+            font-weight: 700 !important;
+            margin: 0 0 5px 0 !important;
+            text-align: center !important;
+        }
+
+        .main-content > div:first-child p {
+            display: none !important;
+        }
+
+        /* Seller Info Card */
+        #singleSellerReportView > .custom-card:first-of-type {
+            border: 2px solid #000 !important;
+            border-radius: 0 !important;
+            padding: 15px 20px !important;
+            margin-bottom: 20px !important;
+            text-align: center !important;
+            background: #fafafa !important;
+        }
+
+        #singleSellerReportView > .custom-card:first-of-type .bg-primary {
+            background: #000 !important;
+        }
+
+        #singleSellerReportView > .custom-card:first-of-type h4 {
+            font-size: 18px !important;
+            font-weight: 700 !important;
+        }
+
+        #singleSellerReportView > .custom-card:first-of-type .ms-auto {
+            display: none !important;
+        }
+
+        /* Summary Cards Row */
+        .row.g-3.text-center.mb-4 {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            margin: 0 -5px 20px -5px !important;
+            border: 2px solid #000 !important;
+            padding: 10px !important;
+        }
+
+        .row.g-3.text-center.mb-4 > div {
+            flex: 0 0 33.33% !important;
+            max-width: 33.33% !important;
+            padding: 5px !important;
+        }
+
+        .weather-detail-box {
+            border: 1px solid #ccc !important;
+            border-radius: 0 !important;
+            padding: 10px 5px !important;
+            text-align: center !important;
+            background: white !important;
+        }
+
+        .weather-detail-box i {
+            display: none !important;
+        }
+
+        .weather-detail-box p {
+            font-size: 9px !important;
+            margin: 0 0 3px 0 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            color: #666 !important;
+            font-weight: 600 !important;
+        }
+
+        .weather-detail-box h4 {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            margin: 0 !important;
+        }
+
+        /* Transaction Table */
+        .custom-card.p-4:last-of-type {
+            border: 2px solid #000 !important;
+            border-radius: 0 !important;
+            padding: 0 !important;
+        }
+
+        .custom-card.p-4:last-of-type h5 {
+            display: none !important;
+        }
+
+        .table-responsive {
+            overflow: visible !important;
+        }
+
+        .table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            margin: 0 !important;
+        }
+
+        .table thead th {
+            background: #000 !important;
+            color: white !important;
+            font-weight: 700 !important;
+            font-size: 10px !important;
+            padding: 8px 10px !important;
+            text-align: left !important;
+            border: none !important;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+        }
+
+        .table tbody td {
+            padding: 8px 10px !important;
+            border-bottom: 1px solid #ddd !important;
+            font-size: 10px !important;
+        }
+
+        .table tbody tr:nth-child(even) td {
+            background: #f9f9f9 !important;
+        }
+
+        .table .badge {
+            border: 1px solid #000 !important;
+            border-radius: 3px !important;
+            padding: 2px 8px !important;
+            font-size: 8px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+        }
+
+        .table .bg-success-subtle {
+            background: #e8f5e9 !important;
+            color: #2e7d32 !important;
+            border-color: #2e7d32 !important;
+        }
+
+        .table .bg-danger-subtle {
+            background: #ffebee !important;
+            color: #c62828 !important;
+            border-color: #c62828 !important;
+        }
+
+        .table .bg-primary-subtle {
+            background: #e3f2fd !important;
+            color: #1565c0 !important;
+            border-color: #1565c0 !important;
+        }
+
+        .table .text-success {
+            color: #2e7d32 !important;
+            font-weight: 700 !important;
+        }
+
+        .table .text-danger {
+            color: #c62828 !important;
+            font-weight: 700 !important;
+        }
+
+        .table .fw-bold {
+            font-weight: 700 !important;
+        }
+
+        /* Footer */
+        #singleSellerReportView::after {
+            content: "";
+            display: block !important;
+            text-align: center !important;
+            margin-top: 30px !important;
+            padding-top: 15px !important;
+            border-top: 2px dashed #000 !important;
+            font-size: 10px !important;
+            color: #666 !important;
+        }
+
+        /* Generated date footer */
+        .main-content::after {
+            content: "Generated: " attr(data-print-date);
+            display: block !important;
+            text-align: center !important;
+            font-size: 9px !important;
+            color: #999 !important;
+            margin-top: 20px !important;
+            padding-top: 10px !important;
+            border-top: 1px solid #ddd !important;
+        }
+
+        @page {
+            margin: 0.4in;
+            size: A4;
+        }
+    }
+
+    /* SCREEN STYLES (Keep your existing styles) */
+    #singleSellerReportView .btn-outline-secondary {
+        margin-bottom: 20px;
+    }
+
+    #sellerSearchBox {
+        max-width: 350px;
+    }
+
+    .seller-row {
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .seller-row:hover {
+        background: rgba(0, 168, 255, 0.05);
+    }
+
+    
+/* Admin Sidebar - Red accent border */
+.admin-sidebar {
+    border-right: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
+
+body.dark-theme .admin-sidebar {
+    border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Admin Action Cards */
+.admin-action-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.admin-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .admin-action-card:hover {
+    box-shadow: 0 12px 24px rgba(239, 68, 68, 0.15);
+}
+
+/* Admin Card Icon */
+.admin-card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Admin Badge */
+.admin-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border-radius: 50px;
+    padding: 5px 15px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Theme Toggle in Settings */
+.theme-toggle-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+body.dark-theme .theme-toggle-card {
+    background: var(--card-bg);
+    border-color: var(--border);
+}
+
+/* Danger Zone Card */
+.danger-zone-card {
+    border: 2px solid rgba(239, 68, 68, 0.3) !important;
+    background: rgba(239, 68, 68, 0.02) !important;
+}
+
+body.dark-theme .danger-zone-card {
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* Admin Table Styles */
+.admin-table th {
+    background: rgba(239, 68, 68, 0.05) !important;
+    color: #dc2626 !important;
+}
+
+body.dark-theme .admin-table th {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #f87171 !important;
+}
+
+/* Admin Nav Active */
+.admin-sidebar .nav-links a.active {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.1);
+}
+
+body.dark-theme .admin-sidebar .nav-links a.active {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+    box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.15);
+}
+
+.admin-sidebar .nav-links a.active::before {
+    background-color: #ef4444 !important;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+/* Switch to Seller link */
+.switch-seller-link {
+    color: #22c55e !important;
+    font-weight: 600 !important;
+}
+
+.switch-seller-link:hover {
+    background: rgba(34, 197, 94, 0.1) !important;
+    color: #4ade80 !important;
 }
