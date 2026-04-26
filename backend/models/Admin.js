@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+// ✅ Use a separate connection for the test database
+const adminConnection = mongoose.createConnection(
+    process.env.MONGO_URI.replace('bentaboard', 'test')
+);
+
+const AdminSchema = new mongoose.Schema({
     username: { 
         type: String, 
         required: true, 
@@ -24,9 +29,8 @@ const UserSchema = new mongoose.Schema({
     },
     role: { 
         type: String, 
-        required: true,
-        default: 'Seller',
-        enum: ['Admin', 'Seller', 'Buyer'] 
+        default: 'Admin',
+        enum: ['Admin']
     },
     created_at: { 
         type: Date, 
@@ -34,9 +38,8 @@ const UserSchema = new mongoose.Schema({
     }
 }, { 
     versionKey: false,
-    collection: 'users'
+    collection: 'admins'
 });
 
-// ✅ Save to 'test' database
-const db = mongoose.connection.useDb('test');
-module.exports = db.model('User', UserSchema);
+// ✅ Export using the test database connection
+module.exports = adminConnection.model('Admin', AdminSchema);
