@@ -21,8 +21,12 @@ const createProduct = async (req, res) => {
 
 const getProducts = async (req, res) => {
     try {
-        // ✅ FIX: Only return products belonging to the logged-in user
-        const products = await Product.find({ userId: req.user.id });
+        // If admin requests with ?userId=, return that user's products
+        const targetUserId = (req.user.role === 'Admin' && req.query.userId) 
+            ? req.query.userId 
+            : req.user.id;
+            
+        const products = await Product.find({ userId: targetUserId });
         res.status(200).json(products);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching products', error: error.message });
