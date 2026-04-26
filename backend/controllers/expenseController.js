@@ -20,12 +20,15 @@ const logExpense = async (req, res) => {
 
 const getExpenses = async (req, res) => {
     try {
-        // ✅ FIX: Only return expenses belonging to the logged-in user
-        const expenses = await Expense.find({ userId: req.user.id }).sort({ dateLogged: -1 });
+        // If admin requests with ?userId=, return that user's expenses
+        const targetUserId = (req.user.role === 'Admin' && req.query.userId) 
+            ? req.query.userId 
+            : req.user.id;
+            
+        const expenses = await Expense.find({ userId: targetUserId }).sort({ dateLogged: -1 });
         res.status(200).json(expenses);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching expenses', error: error.message });
     }
 };
-
 module.exports = { logExpense, getExpenses };
