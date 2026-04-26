@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome | BentaBoard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="landing.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="landing-body">
+    
+    <div class="landing-container">
+        <!-- Logo & Branding -->
+        <div class="landing-brand">
+            <img src="img/bentaboard.png" alt="BentaBoard Logo" class="landing-logo">
+            <h1 class="landing-title">BentaBoard</h1>
+            <p class="landing-tagline">"From bawat benta to tunay na kita—track it right."</p>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="landing-cards">
+            <!-- Seller Card -->
+            <div class="landing-card seller-card" onclick="selectRole('seller')">
+                <div class="card-icon-wrapper seller-icon">
+                    <i data-lucide="store" style="width: 48px; height: 48px;"></i>
+                </div>
+                <h3 class="card-title">Seller</h3>
+                <p class="card-description">Manage your store, track sales, inventory, and view profit reports.</p>
+                <button class="btn btn-seller">
+                    Continue as Seller
+                    <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="landing-card admin-card" onclick="selectRole('admin')">
+                <div class="card-icon-wrapper admin-icon">
+                    <i data-lucide="shield-check" style="width: 48px; height: 48px;"></i>
+                </div>
+                <h3 class="card-title">Admin</h3>
+                <p class="card-description">System administration, user management, and platform oversight.</p>
+                <button class="btn btn-admin">
+                    Continue as Admin
+                    <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Version Info -->
+        <p class="landing-version">BentaBoard v1.0 • BSIT 2A</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        lucide.createIcons();
+
+        function selectRole(role) {
+            // Store the selected role temporarily
+            localStorage.setItem('bb_selected_role', role);
+            
+            // Add exit animation
+            const cards = document.querySelectorAll('.landing-card');
+            cards.forEach(card => card.style.opacity = '0.5');
+            
+            setTimeout(() => {
+                if (role === 'seller') {
+                    window.location.href = 'login.html';
+                } else if (role === 'admin') {
+                    window.location.href = 'admin-login.html';
+                }
+            }, 300);
+        }
+
+        // If user is already logged in, redirect to hub
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
