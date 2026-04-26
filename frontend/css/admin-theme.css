@@ -1,0 +1,116 @@
+/* BENTABOARD ADMIN THEME & STYLES */
+
+/* Admin Sidebar - Red accent border */
+.admin-sidebar {
+    border-right: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
+
+body.dark-theme .admin-sidebar {
+    border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Admin Action Cards */
+.admin-action-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.admin-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .admin-action-card:hover {
+    box-shadow: 0 12px 24px rgba(239, 68, 68, 0.15);
+}
+
+/* Admin Card Icon */
+.admin-card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Admin Badge */
+.admin-badge {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border-radius: 50px;
+    padding: 5px 15px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Theme Toggle in Settings */
+.theme-toggle-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+body.dark-theme .theme-toggle-card {
+    background: var(--card-bg);
+    border-color: var(--border);
+}
+
+/* Danger Zone Card */
+.danger-zone-card {
+    border: 2px solid rgba(239, 68, 68, 0.3) !important;
+    background: rgba(239, 68, 68, 0.02) !important;
+}
+
+body.dark-theme .danger-zone-card {
+    border-color: rgba(239, 68, 68, 0.4) !important;
+    background: rgba(239, 68, 68, 0.05) !important;
+}
+
+/* Admin Table Styles */
+.admin-table th {
+    background: rgba(239, 68, 68, 0.05) !important;
+    color: #dc2626 !important;
+}
+
+body.dark-theme .admin-table th {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #f87171 !important;
+}
+
+/* Admin Nav Active */
+.admin-sidebar .nav-links a.active {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.1);
+}
+
+body.dark-theme .admin-sidebar .nav-links a.active {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #f87171 !important;
+    box-shadow: inset 0 0 15px rgba(239, 68, 68, 0.15);
+}
+
+.admin-sidebar .nav-links a.active::before {
+    background-color: #ef4444 !important;
+    box-shadow: 0 0 10px #ef4444;
+}
+
+/* Switch to Seller link */
+.switch-seller-link {
+    color: #22c55e !important;
+    font-weight: 600 !important;
+}
+
+.switch-seller-link:hover {
+    background: rgba(34, 197, 94, 0.1) !important;
+    color: #4ade80 !important;
+}
