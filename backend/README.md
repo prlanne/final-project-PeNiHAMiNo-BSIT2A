@@ -23,19 +23,23 @@ The core server-side logic for the BentaBoard Sales and Task Management System. 
 ├── /config
 │   └── db.js
 ├── /models
+│   ├── Admin.js
 │   ├── Expense.js
 │   └── Product.js
 │   └── Purchase.js
-│   └──Sale.js
-│   └──User.js
+│   └── Sale.js
+│   └── User.js
 ├── /controllers
 │   ├── authControllers.js
+│   ├── dataControllers.js
 │   ├── expenseController.js
 │   └── productControllers.js
-│   └──saleController.js
-│   └──userController.js
+│   └── purchaseControllers.js
+│   └── saleController.js
+│   └── userController.js
 ├── /routes
 │   ├── auth.js
+│   ├── dataRoutes.js
 │   ├── expenseRoutes.js
 │   ├── productRoutes.js
 │   └── purchaseRoutes.js
@@ -87,6 +91,7 @@ All routes are prefixed with `/api`.
 | **Product** | `name`, `price`, `stock`, `createdAt` |
 | **Sale** | `productName`, `quantity`, `total`, `saleDate` |
 | **Expense** | `category`, `amount`, `dateLogged` |
+| **Product** | `name`, `price`, `stock` |
 | **Purchase** | `productName`, `supplierName`, `quantity`, `unitCost`, `totalCost` |
 
 ---
