@@ -32,6 +32,65 @@ function getAuthHeaders() {
     };
 }
 
+// ADMIN AUTH (for admin-login.html) 
+async function handleAdminAuth(e, type) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const loginData = {
+        username: formData.get('loginUser'),
+        password: formData.get('loginPass')
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginData)
+        });
+        const data = await response.json();
+        
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('bb_user', data.user.username);
+            localStorage.setItem('bb_welcome_triggered', 'true');
+            window.location.href = 'admin-dashboard.html';
+        } else {
+            bentaNotify.show('error', 'ERROR', data.msg || 'Invalid Admin Credentials');
+        }
+    } catch (err) {
+        bentaNotify.show('error', 'ERROR', 'Could not connect to the server.');
+    }
+}
+
+// ADMIN THEME TOGGLE (for admin-settings.html) 
+function toggleAdminTheme() {
+    const isDark = document.body.classList.toggle('dark-theme');
+    const theme = isDark ? 'dark' : 'light';
+    localStorage.setItem('bb_theme', theme);
+    
+    const themeSwitch = document.getElementById('adminThemeSwitch');
+    if (themeSwitch) themeSwitch.checked = isDark;
+}
+
+// ADMIN THEME ON PAGE LOAD 
+(function initAdminTheme() {
+    const savedTheme = localStorage.getItem('bb_theme') || 'light';
+    const isDark = savedTheme === 'dark';
+    
+    if (isDark) {
+        document.body.classList.add('dark-theme');
+    }
+    
+    const themeSwitch = document.getElementById('adminThemeSwitch');
+    if (themeSwitch) {
+        themeSwitch.checked = isDark;
+    }
+    
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+})();
+
 // REAL-TIME CLOCK
 function startBentaClock() {
     const clockElement = document.getElementById('realTimeClock');
@@ -45,87 +104,134 @@ function startBentaClock() {
     setInterval(updateTime, 1000);
 }
 
-// LOGOUT
-function executeLogout(e) {
-    if(e) e.preventDefault();
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm('Sign Out?', 'Are you sure you want to logout of the Admin Panel?', 'Logout', () => {
-            bentaNotify.show('success', 'THANK YOU!', 'Logging out of Admin Panel...', () => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('bb_user');
-                window.location.replace('role-select.html');
+// =============================================
+// UNIFORM NOTIFICATION SYSTEM (Custom icons for confirm, toast for show)
+// =============================================
+const _bbIcons = {
+    warning: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor"/></svg>`,
+    success: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    danger:  `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`
+};
+
+const bentaNotify = {
+    show: (icon, title, text, callback = null) => {
+        const cfg = {
+            success: { symbol: '✓', bg: '#f0fdf4', border: '#22c55e', color: '#16a34a' },
+            error:   { symbol: '✕', bg: '#fef2f2', border: '#ef4444', color: '#dc2626' },
+            warning: { symbol: '!', bg: '#fffbeb', border: '#f59e0b', color: '#d97706' },
+            info:    { symbol: 'i', bg: '#eff6ff', border: '#3b82f6', color: '#2563eb' }
+        };
+        const c = cfg[icon] || cfg.info;
+
+        let container = document.getElementById('bb-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'bb-toast-container';
+            container.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;';
+            document.body.appendChild(container);
+        }
+
+        const card = document.createElement('div');
+        card.style.cssText = `
+            pointer-events:all;display:flex;align-items:center;gap:15px;
+            background:${c.bg};border-radius:16px;padding:16px 18px;
+            min-width:340px;max-width:440px;box-shadow:0 10px 28px rgba(0,0,0,0.1);
+            border:1.5px solid ${c.border};font-family:'Poppins',sans-serif;
+            opacity:0;transform:translateY(-32px);transition:all 0.35s ease;cursor:pointer;
+        `;
+        card.innerHTML = `
+            <div style="width:38px;height:38px;border-radius:50%;background:${c.bg};border:2px solid ${c.border};
+                display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:${c.color};flex-shrink:0;">
+                ${c.symbol}
+            </div>
+            <div style="flex:1;min-width:0;">
+                <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:${c.color};">${title}</div>
+                <div style="font-size:0.9rem;font-weight:500;color:#374151;">${text}</div>
+            </div>
+        `;
+        container.appendChild(card);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
             });
         });
-    } else {
-        localStorage.removeItem('token');
-        localStorage.removeItem('bb_user');
-        window.location.replace('role-select.html');
+
+        function dismiss() {
+            clearTimeout(timer);
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(-32px)';
+            setTimeout(() => {
+                card.remove();
+                if (callback) callback();
+            }, 350);
+        }
+
+        const timer = setTimeout(dismiss, 3500);
+        card.addEventListener('click', dismiss);
+    },
+    confirm: (title, text, confirmText, callback, dangerMode = true) => {
+        // Custom confirm dialog with yellow warning icon (logout, delete, etc.)
+        const btnClass = dangerMode ? 'bb-btn-danger' : 'bb-btn-primary';
+        Swal.fire({
+            html: `
+                <div class="bb-modal-icon bb-warning">${_bbIcons.warning}</div>
+                <p class="bb-modal-title">${title.toUpperCase()}</p>
+                <p class="bb-modal-body">${text}</p>
+            `,
+            showCancelButton: true,
+            confirmButtonText: confirmText.toUpperCase(),
+            cancelButtonText: 'CANCEL',
+            reverseButtons: true,
+            customClass: {
+                popup: 'bb-modal-popup',
+                confirmButton: btnClass,
+                cancelButton: 'bb-btn-cancel',
+                actions: 'bb-modal-actions'
+            },
+            buttonsStyling: false,
+            showClass: { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
+            hideClass: { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
+        }).then((result) => {
+            if (result.isConfirmed) callback();
+        });
     }
-}
+};
 
-// TOAST NOTIFICATION (standalone)
-function adminToast(type, message) {
-    const cleanMsg = String(message).replace(/^[\u2705\u274C\uD83D\uDEA8\u26A0\uFE0F\u2139\uFE0F\s]+/u, '').trim();
-    
-    const cfg = {
-        success: { icon: '✓', label: 'Success', bg: '#f0fdf4', border: '#22c55e', color: '#16a34a' },
-        error: { icon: '✕', label: 'Error', bg: '#fef2f2', border: '#ef4444', color: '#dc2626' },
-        warning: { icon: '!', label: 'Warning', bg: '#fffbeb', border: '#f59e0b', color: '#d97706' },
-        info: { icon: 'i', label: 'Info', bg: '#eff6ff', border: '#3b82f6', color: '#2563eb' }
-    };
-    const { icon, label, bg, border, color } = cfg[type] || cfg.info;
-
-    let container = document.getElementById('admin-toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'admin-toast-container';
-        container.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;';
-        document.body.appendChild(container);
-    }
-
-    const card = document.createElement('div');
-    card.style.cssText = `
-        pointer-events:all;display:flex;align-items:center;gap:15px;
-        background:${bg};border-radius:16px;padding:16px 18px;
-        min-width:340px;max-width:440px;box-shadow:0 10px 28px rgba(0,0,0,0.1);
-        border:1.5px solid ${border};font-family:'Poppins',sans-serif;
-        opacity:0;transform:translateY(-32px);transition:all 0.35s ease;cursor:pointer;
-    `;
-
-    card.innerHTML = `
-        <div style="width:38px;height:38px;border-radius:50%;background:${bg};border:2px solid ${border};
-            display:flex;align-items:center;justify-content:center;font-weight:700;color:${color};flex-shrink:0;">
-            ${icon}
-        </div>
-        <div style="flex:1;min-width:0;">
-            <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:${color};">${label}</div>
-            <div style="font-size:0.9rem;font-weight:500;color:#374151;">${cleanMsg}</div>
-        </div>
-    `;
-    
-    container.appendChild(card);
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
+// ------------------------------------------------------------
+// LOGOUT (restored to original custom modals)
+// ------------------------------------------------------------
+function executeLogout(e) {
+    if (e) e.preventDefault();
+    bentaNotify.confirm('Sign Out?', 'Are you sure you want to logout of BentaBoard?', 'Logout', () => {
+        // Custom success modal (green check, THANK YOU!)
+        Swal.fire({
+            html: `
+                <div class="bb-modal-icon bb-success">${_bbIcons.success}</div>
+                <p class="bb-modal-title">THANK YOU!</p>
+                <p class="bb-modal-body">Thank you for using BentaBoard! We look forward to seeing you again.</p>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: 'CONTINUE',
+            customClass: {
+                popup:         'bb-modal-popup',
+                confirmButton: 'bb-btn-primary',
+                actions:       'bb-modal-actions'
+            },
+            buttonsStyling: false,
+            showClass:  { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
+            hideClass:  { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
+        }).then(() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('bb_user');
+            window.location.replace('role-select.html');
         });
     });
-
-    function dismiss() {
-        clearTimeout(timer);
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(-32px)';
-        setTimeout(() => card.remove(), 350);
-    }
-
-    const timer = setTimeout(dismiss, 3500);
-    card.addEventListener('click', dismiss);
 }
 
 // LOAD ADMIN DASHBOARD STATS
 async function loadAdminStats() {
     try {
-        // Get all users
         const usersRes = await fetch(`${ADMIN_API_BASE}/users`, { headers: getAuthHeaders() });
         if (usersRes.ok) {
             const users = await usersRes.json();
@@ -138,27 +244,26 @@ async function loadAdminStats() {
             if (document.getElementById('adminTotalAdmins')) document.getElementById('adminTotalAdmins').innerText = admins;
         }
 
-        // Get transaction counts
-        let totalTransactions = 0;
-        try {
-            const [salesRes, expensesRes, purchasesRes] = await Promise.all([
-                fetch(`${ADMIN_API_BASE}/sales`, { headers: getAuthHeaders() }),
-                fetch(`${ADMIN_API_BASE}/expenses`, { headers: getAuthHeaders() }),
-                fetch(`${ADMIN_API_BASE}/purchases`, { headers: getAuthHeaders() })
-            ]);
-            if (salesRes.ok) totalTransactions += (await salesRes.json()).length;
-            if (expensesRes.ok) totalTransactions += (await expensesRes.json()).length;
-            if (purchasesRes.ok) totalTransactions += (await purchasesRes.json()).length;
-        } catch(e) {}
-        
-        if (document.getElementById('adminTotalTransactions')) document.getElementById('adminTotalTransactions').innerText = totalTransactions;
+        // Fetch total revenue from all sales
+    try {
+    const salesRes = await fetch(`${ADMIN_API_BASE}/sales`, { headers: getAuthHeaders() });
+    if (salesRes.ok) {
+        const allSales = await salesRes.json();
+        const totalRevenue = allSales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+        if (document.getElementById('adminTotalRevenue')) {
+            document.getElementById('adminTotalRevenue').innerText = `₱${totalRevenue.toLocaleString()}`;
+        }
+    }
+} catch(e) {
+    console.warn('Could not load revenue data:', e);
+}
 
     } catch (err) {
         console.warn('Could not load admin stats:', err);
     }
 }
 
-// ==================== USER MANAGEMENT ====================
+// USER MANAGEMENT 
 async function loadUsersForManagement() {
     const tbody = document.getElementById('adminUsersTableBody');
     if (!tbody) return;
@@ -202,48 +307,31 @@ async function loadUsersForManagement() {
 }
 
 async function deleteUserAccount(userId, username) {
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm(
-            'Delete User?',
-            `Are you sure you want to delete <strong>${username}</strong>? This cannot be undone.`,
-            'Delete',
-            async () => {
-                try {
-                    const res = await fetch(`${ADMIN_API_BASE}/users/${userId}`, {
-                        method: 'DELETE',
-                        headers: getAuthHeaders()
-                    });
-                    if (res.ok) {
-                        adminToast('success', `User "${username}" deleted successfully.`);
-                        loadUsersForManagement();
-                        loadAdminStats();
-                    } else {
-                        adminToast('error', 'Failed to delete user.');
-                    }
-                } catch (err) {
-                    adminToast('error', 'Connection error.');
-                }
-            }
-        );
-    } else {
-        if (confirm(`Delete user "${username}"?`)) {
+    bentaNotify.confirm(
+        'Delete User?',
+        `Are you sure you want to delete <strong>${username}</strong>? This cannot be undone.`,
+        'Delete',
+        async () => {
             try {
                 const res = await fetch(`${ADMIN_API_BASE}/users/${userId}`, {
                     method: 'DELETE',
                     headers: getAuthHeaders()
                 });
                 if (res.ok) {
-                    adminToast('success', `User deleted.`);
+                    bentaNotify.show('success', 'SUCCESS', `User "${username}" deleted successfully.`);
                     loadUsersForManagement();
+                    loadAdminStats();
+                } else {
+                    bentaNotify.show('error', 'ERROR', 'Failed to delete user.');
                 }
-            } catch(e) {
-                adminToast('error', 'Error deleting user.');
+            } catch (err) {
+                bentaNotify.show('error', 'ERROR', 'Connection error.');
             }
         }
-    }
+    );
 }
 
-// ==================== ALL REPORTS ====================
+// ALL REPORTS 
 async function loadAllReports(filter = 'all') {
     const breakdownBody = document.getElementById('adminReportBreakdownBody');
     if (!breakdownBody) return;
@@ -259,7 +347,6 @@ async function loadAllReports(filter = 'all') {
         const expenses = expensesRes.ok ? await expensesRes.json() : [];
         const purchases = purchasesRes.ok ? await purchasesRes.json() : [];
 
-        // Apply filter
         const now = new Date();
         const filterData = (data, dateField) => {
             return data.filter(item => {
@@ -294,7 +381,6 @@ async function loadAllReports(filter = 'all') {
         if (document.getElementById('adminReportItems')) document.getElementById('adminReportItems').innerText = totalItems;
         if (document.getElementById('adminReportPurchases')) document.getElementById('adminReportPurchases').innerText = `₱${totalPurchases.toLocaleString()}`;
 
-        // Build breakdown table
         let rows = [];
         
         filteredSales.forEach(s => {
@@ -327,7 +413,6 @@ async function loadAllReports(filter = 'all') {
             });
         });
 
-        // Sort by date descending
         rows.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         if (rows.length === 0) {
@@ -354,53 +439,41 @@ async function loadAllReports(filter = 'all') {
     }
 }
 
-// ==================== SYSTEM SETTINGS ====================
+// SYSTEM SETTINGS 
 async function wipeAllSystemData() {
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm(
-            '⚠️ Wipe ALL System Data?',
-            'This will permanently delete <strong>ALL</strong> data across the entire platform - all users, products, sales, expenses, and purchases.',
-            'Continue',
-            () => {
-                bentaNotify.confirm(
-                    'FINAL WARNING',
-                    'This action <strong>cannot be undone</strong>. The entire database will be wiped. Are you absolutely sure?',
-                    'Wipe Everything',
-                    async () => {
-                        try {
-                            const res = await fetch(`${ADMIN_API_BASE}/data/wipe`, {
-                                method: 'DELETE',
-                                headers: getAuthHeaders()
-                            });
-                            if (res.ok) {
-                                adminToast('success', 'All system data has been permanently deleted.');
-                                if (document.getElementById('adminUsersTableBody')) loadUsersForManagement();
-                                if (document.getElementById('adminReportBreakdownBody')) loadAllReports();
-                                loadAdminStats();
-                            } else {
-                                adminToast('error', 'Failed to wipe data.');
-                            }
-                        } catch(e) {
-                            adminToast('error', 'Connection error.');
+    bentaNotify.confirm(
+        '⚠️ Wipe ALL System Data?',
+        'This will permanently delete <strong>ALL</strong> data across the entire platform - all users, products, sales, expenses, and purchases.',
+        'Continue',
+        () => {
+            bentaNotify.confirm(
+                'FINAL WARNING',
+                'This action <strong>cannot be undone</strong>. The entire database will be wiped. Are you absolutely sure?',
+                'Wipe Everything',
+                async () => {
+                    try {
+                        const res = await fetch(`${ADMIN_API_BASE}/data/wipe`, {
+                            method: 'DELETE',
+                            headers: getAuthHeaders()
+                        });
+                        if (res.ok) {
+                            bentaNotify.show('success', 'SUCCESS', 'All system data has been permanently deleted.');
+                            if (document.getElementById('adminUsersTableBody')) loadUsersForManagement();
+                            if (document.getElementById('adminReportBreakdownBody')) loadAllReports();
+                            loadAdminStats();
+                        } else {
+                            bentaNotify.show('error', 'ERROR', 'Failed to wipe data.');
                         }
+                    } catch(e) {
+                        bentaNotify.show('error', 'ERROR', 'Connection error.');
                     }
-                );
-            }
-        );
-    } else {
-        if (confirm('Wipe ALL system data? This cannot be undone!')) {
-            try {
-                await fetch(`${ADMIN_API_BASE}/data/wipe`, { method: 'DELETE', headers: getAuthHeaders() });
-                adminToast('success', 'Data wiped.');
-            } catch(e) {
-                adminToast('error', 'Error.');
-            }
+                }
+            );
         }
-    }
+    );
 }
 
-// ==================== SELLER LIST & PER-SELLER REPORTS ====================
-
+// SELLER LIST & PER-SELLER REPORTS 
 let allSellers = [];
 let currentSellerId = null;
 
@@ -600,9 +673,15 @@ async function loadSingleSellerReports(filter = 'all') {
     }
 }
 
-// ==================== INITIALIZATION ====================
+// =============================================
+// INITIALIZATION (with loading screen + admin welcome modal)
+// =============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!checkAdminAccess()) return;
+    const currentPage = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
+    
+    if (currentPage !== 'admin-login.html') {
+        if (!checkAdminAccess()) return;
+    }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
     startBentaClock();
@@ -612,13 +691,68 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Active nav link
-    const currentPage = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === currentPage) {
             link.classList.add('active');
         }
     });
+
+    // =============================================
+    // LOADING SCREEN FOR ADMIN DASHBOARD (soft red)
+    // =============================================
+    if (currentPage === 'admin-dashboard.html' || currentPage === '') {
+        const flag = localStorage.getItem('bb_welcome_triggered');
+        if (flag === 'true') {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingCounter = document.getElementById('loadingCounter');
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingTextContainer = document.querySelector('.loading-text');
+            const loadingContent = document.querySelector('.loading-content');
+
+            if (loadingOverlay && loadingCounter && loadingBar && loadingTextContainer) {
+                loadingOverlay.style.display = 'flex';
+                let progress = 0;
+                const loadingInterval = setInterval(() => {
+                    let increment = Math.floor(Math.random() * 4) + 1;
+                    progress += increment;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(loadingInterval);
+                        loadingCounter.innerText = progress;
+                        loadingBar.style.width = progress + '%';
+                        setTimeout(() => {
+                            loadingContent.classList.add('loading-complete');
+                            loadingTextContainer.innerHTML = 'SYSTEM READY <br><span style="font-size: 0.8rem; opacity: 0.8; letter-spacing: 2px;">ACCESS GRANTED</span>';
+                            setTimeout(() => {
+                                loadingOverlay.classList.add('exit-animation');
+                                setTimeout(() => {
+                                    loadingOverlay.style.display = 'none';
+                                    
+                                    // ========== ADMIN WELCOME MODAL (no coins, professional) ==========
+                                    const adminName = localStorage.getItem('bb_user') || 'Admin';
+                                    const nameEl = document.getElementById('adminWelcomeName');
+                                    if (nameEl) nameEl.innerText = adminName;
+                                    
+                                    const welcomeModal = new bootstrap.Modal(document.getElementById('adminWelcomeModal'));
+                                    welcomeModal.show();
+                                    // =================================================================
+                                    
+                                    localStorage.removeItem('bb_welcome_triggered');
+                                }, 600);
+                            }, 1300);
+                        }, 150);
+                    } else {
+                        loadingCounter.innerText = progress;
+                        loadingBar.style.width = progress + '%';
+                    }
+                }, 40);
+            } else {
+                localStorage.removeItem('bb_welcome_triggered');
+            }
+        }
+    }
+    // =============================================
 
     // Load page-specific data
     if (currentPage === 'admin-dashboard.html' || currentPage === '') {
@@ -630,8 +764,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadAdminStats();
     }
 
-        if (currentPage === 'admin-reports.html') {
-        loadSellersList();  // <-- CHANGED: Now loads seller list instead
+    if (currentPage === 'admin-reports.html') {
+        loadSellersList();
     }
 
     // Logout button
@@ -639,17 +773,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (logoutBtn) logoutBtn.addEventListener('click', executeLogout);
 
     // Report filter change
-        // Report filter change - now triggers single seller report
     const reportFilter = document.getElementById('adminReportFilter');
     if (reportFilter) {
         reportFilter.addEventListener('change', function() {
             if (currentSellerId) {
-                loadSingleSellerReports(this.value);  // <-- CHANGED
+                loadSingleSellerReports(this.value);
             }
         });
     }
 
-        // Set print date for admin reports
+    // Set print date for admin reports
     if (currentPage === 'admin-reports.html') {
         const mainContent = document.querySelector('.main-content');
         if (mainContent) {
@@ -666,52 +799,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
-
-        function toggleAdminTheme() {
-            const isDark = document.body.classList.toggle('dark-theme');
-            const theme = isDark ? 'dark' : 'light';
-            localStorage.setItem('bb_theme', theme);
-            
-            const themeSwitch = document.getElementById('adminThemeSwitch');
-            if (themeSwitch) themeSwitch.checked = isDark;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            const isDark = savedTheme === 'dark';
-            
-            if (isDark) {
-                document.body.classList.add('dark-theme');
-            }
-            
-            const themeSwitch = document.getElementById('adminThemeSwitch');
-            if (themeSwitch) themeSwitch.checked = isDark;
-        });
-
-  // Theme Loader
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
-    
-    // Theme Loader
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
-
-    //Theme Loader
-
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
