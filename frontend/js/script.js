@@ -50,113 +50,76 @@ function getAuthHeaders() {
     };
 }
 
-// --- BENTABOARD NOTIFICATION SYSTEM ---
-// Toast: replaces all browser alert() calls — pure JS card, no SweetAlert2
-function bentaToast(type, message) {
-    const cleanMsg = String(message).replace(/^[\u2705\u274C\uD83D\uDEA8\u26A0\uFE0F\u2139\uFE0F\s]+/u, '').trim();
+// =============================================
+// UNIFORM NOTIFICATION SYSTEM (Native SweetAlert2 Icons)
+// =============================================
 
-    const cfg = {
-        success: { icon: '✓', label: 'Success' },
-        error:   { icon: '✕', label: 'Error'   },
-        warning: { icon: '!', label: 'Warning'  },
-        info:    { icon: 'i', label: 'Info'     }
-    };
-    const { icon, label } = cfg[type] || cfg.info;
-
-    // Ensure container exists
-    let container = document.getElementById('bb-toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'bb-toast-container';
-        document.body.appendChild(container);
-    }
-
-    // Build card - NO X BUTTON for success messages
-    const isSuccess = type === 'success';
-    const card = document.createElement('div');
-    card.className = `bb-toast-card bb-toast-${type}`;
-    
-    if (isSuccess) {
-        // Success: No X button, just text and icon
-        card.innerHTML = `
-            <div class="bb-toast-icon">
-                <span>${icon}</span>
-            </div>
-            <div style="flex:1; min-width:0; text-align: center;">
-                <div class="bb-toast-label">${label}</div>
-                <div class="bb-toast-msg">${cleanMsg}</div>
-            </div>
-        `;
-    } else {
-        // Error/Warning/Info: Keep X button
-        card.innerHTML = `
-            <div class="bb-toast-icon">
-                <span>${icon}</span>
-            </div>
-            <div style="flex:1; min-width:0;">
-                <div class="bb-toast-label">${label}</div>
-                <div class="bb-toast-msg">${cleanMsg}</div>
-            </div>
-            <button class="bb-toast-x" aria-label="Close">&times;</button>
-        `;
-    }
-    
-    container.appendChild(card);
-
-    // Animate in
-    requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('bb-show')));
-
-    // Dismiss logic
-    function dismiss() {
-        clearTimeout(timer);
-        card.classList.remove('bb-show');
-        card.classList.add('bb-hide');
-        setTimeout(() => card.remove(), 320);
-    }
-
-    const timer = setTimeout(dismiss, 3500);
-    
-    // Only add X button listener if it exists
-    const xButton = card.querySelector('.bb-toast-x');
-    if (xButton) {
-        xButton.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
-    }
-    card.addEventListener('click', dismiss);
-}
-
-// SVG icons used in modals
+// Icons for custom logout modals
 const _bbIcons = {
     warning: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor"/></svg>`,
     success: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
     danger:  `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`
 };
 
-// Modal: enhanced Sign Out / Thank You / confirm dialogs
 const bentaNotify = {
     show: (icon, title, text, callback = null) => {
-        const iconType = icon === 'success' ? 'bb-success' : 'bb-warning';
-        const svgKey   = icon === 'success' ? 'success' : 'warning';
-        Swal.fire({
-            html: `
-                <div class="bb-modal-icon ${iconType}">${_bbIcons[svgKey]}</div>
-                <p class="bb-modal-title">${title.toUpperCase()}</p>
-                <p class="bb-modal-body">${text}</p>
-            `,
-            showConfirmButton: true,
-            confirmButtonText: 'CONTINUE',
-            customClass: {
-                popup:         'bb-modal-popup',
-                confirmButton: 'bb-btn-primary',
-                actions:       'bb-modal-actions'
-            },
-            buttonsStyling: false,
-            showClass:  { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
-            hideClass:  { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
-        }).then(() => {
-            if (callback) callback();
+        const cfg = {
+            success: { symbol: '✓', bg: '#f0fdf4', border: '#22c55e', color: '#16a34a' },
+            error:   { symbol: '✕', bg: '#fef2f2', border: '#ef4444', color: '#dc2626' },
+            warning: { symbol: '!', bg: '#fffbeb', border: '#f59e0b', color: '#d97706' },
+            info:    { symbol: 'i', bg: '#eff6ff', border: '#3b82f6', color: '#2563eb' }
+        };
+        const c = cfg[icon] || cfg.info;
+
+        let container = document.getElementById('bb-toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'bb-toast-container';
+            container.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;';
+            document.body.appendChild(container);
+        }
+
+        const card = document.createElement('div');
+        card.style.cssText = `
+            pointer-events:all;display:flex;align-items:center;gap:15px;
+            background:${c.bg};border-radius:16px;padding:16px 18px;
+            min-width:340px;max-width:440px;box-shadow:0 10px 28px rgba(0,0,0,0.1);
+            border:1.5px solid ${c.border};font-family:'Poppins',sans-serif;
+            opacity:0;transform:translateY(-32px);transition:all 0.35s ease;cursor:pointer;
+        `;
+        card.innerHTML = `
+            <div style="width:38px;height:38px;border-radius:50%;background:${c.bg};border:2px solid ${c.border};
+                display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;color:${c.color};flex-shrink:0;">
+                ${c.symbol}
+            </div>
+            <div style="flex:1;min-width:0;">
+                <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:${c.color};">${title}</div>
+                <div style="font-size:0.9rem;font-weight:500;color:#374151;">${text}</div>
+            </div>
+        `;
+        container.appendChild(card);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            });
         });
+
+        function dismiss() {
+            clearTimeout(timer);
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(-32px)';
+            setTimeout(() => {
+                card.remove();
+                if (callback) callback();
+            }, 350);
+        }
+
+        const timer = setTimeout(dismiss, 3500);
+        card.addEventListener('click', dismiss);
     },
     confirm: (title, text, confirmText, callback, dangerMode = true) => {
+        // Custom confirm dialog with yellow warning icon (for logout etc.)
         const btnClass = dangerMode ? 'bb-btn-danger' : 'bb-btn-primary';
         Swal.fire({
             html: `
@@ -166,17 +129,17 @@ const bentaNotify = {
             `,
             showCancelButton: true,
             confirmButtonText: confirmText.toUpperCase(),
-            cancelButtonText:  'CANCEL',
+            cancelButtonText: 'CANCEL',
             reverseButtons: true,
             customClass: {
-                popup:         'bb-modal-popup',
+                popup: 'bb-modal-popup',
                 confirmButton: btnClass,
-                cancelButton:  'bb-btn-cancel',
-                actions:       'bb-modal-actions'
+                cancelButton: 'bb-btn-cancel',
+                actions: 'bb-modal-actions'
             },
             buttonsStyling: false,
-            showClass:  { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
-            hideClass:  { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
+            showClass: { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
+            hideClass: { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
         }).then((result) => {
             if (result.isConfirmed) callback();
         });
@@ -190,7 +153,6 @@ const STORAGE_KEYS = {
     expenses: `bb_expenses_${uid}`
 };
 
-// DATA (loaded from localStorage cache; refreshed from API on every page load) 
 let products   = JSON.parse(localStorage.getItem(STORAGE_KEYS.products))  || [];
 let salesLog   = JSON.parse(localStorage.getItem(STORAGE_KEYS.sales))     || [];
 let expenseLog = JSON.parse(localStorage.getItem(STORAGE_KEYS.expenses))  || [];
@@ -199,19 +161,14 @@ let currentTheme = localStorage.getItem('bb_theme') || 'light';
 let isLoggedIn   = localStorage.getItem('token') !== null;
 let salesChartInstance = null;
 
-// ROUTING GUARD 
 const currentPageName = window.location.pathname.split('/').pop() || 'role-select.html';
 const isAuthPage = (currentPageName === 'login.html' || currentPageName === 'register.html' || currentPageName === 'admin-login.html' || currentPageName === 'admin-register.html' || currentPageName === 'role-select.html');
 const isLandingPage = (currentPageName === 'role-select.html' || currentPageName === '' || currentPageName === '/');
 
-// If not logged in and trying to access a protected page, go to role-select
 if (!isLoggedIn && !isAuthPage) window.location.replace('role-select.html');
-
-// If logged in and on any auth page OR landing page, go to hub
 if (isLoggedIn && (isAuthPage || isLandingPage)) window.location.replace('index.html');
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
 
-// FLASH PREVENTION FIX: Force loading screen to show instantly
 if ((currentPageName === 'index.html' || currentPageName === '') && localStorage.getItem('bb_welcome_triggered') === 'true') {
     const antiFlashStyle = document.createElement('style');
     antiFlashStyle.id = 'anti-flash-style';
@@ -222,7 +179,6 @@ if ((currentPageName === 'index.html' || currentPageName === '') && localStorage
     document.documentElement.appendChild(antiFlashStyle);
 }
 
-// THE CORE FIX: Load all user data from MongoDB on page load.
 async function loadUserDataFromAPI() {
     if (!isLoggedIn || isAuthPage) return;
 
@@ -279,7 +235,6 @@ async function loadUserDataFromAPI() {
     }
 }
 
-// AUTH FUNCTIONS 
 async function handleAuth(e, type) {
     e.preventDefault();
     const form = e.target;
@@ -301,14 +256,15 @@ async function handleAuth(e, type) {
             });
             const data = await response.json();
             if (response.ok) {
-                bentaToast('success', 'Account created! Redirecting to login...');
-                setTimeout(() => { window.location.href = 'login.html'; }, 1800);
+                bentaNotify.show('success', 'SUCCESS', 'Account created! Redirecting to login...', () => {
+                    window.location.href = 'login.html';
+                });
                 form.reset();
             } else {
-                bentaToast('error', 'Signup Error: ' + (data.msg || data.error || 'User already exists'));
+                bentaNotify.show('error', 'ERROR', data.msg || data.error || 'User already exists');
             }
         } catch (err) {
-            bentaToast('error', 'Connection failed. Is your backend server running on port 3000?');
+            bentaNotify.show('error', 'ERROR', 'Connection failed. Is your backend server running on port 3000?');
         }
     } else {
         const loginData = {
@@ -328,18 +284,38 @@ async function handleAuth(e, type) {
                 localStorage.setItem('bb_welcome_triggered', 'true');
                 window.location.href = 'index.html';
             } else {
-                bentaToast('error', 'Login Failed: ' + (data.msg || 'Invalid credentials'));
+                bentaNotify.show('error', 'ERROR', data.msg || 'Invalid credentials');
             }
         } catch (err) {
-            bentaToast('error', 'Could not connect to the server.');
+            bentaNotify.show('error', 'ERROR', 'Could not connect to the server.');
         }
     }
 }
 
+// ------------------------------------------------------------
+// LOGOUT (restored to original custom modals)
+// ------------------------------------------------------------
 function executeLogout(e) {
     if(e) e.preventDefault();
     bentaNotify.confirm('Sign Out?', 'Are you sure you want to logout of BentaBoard?', 'Logout', () => {
-        bentaNotify.show('success', 'THANK YOU!', 'Thank you for using BentaBoard! We look forward to seeing you again.', () => {
+        // Custom success modal (green check, THANK YOU!)
+        Swal.fire({
+            html: `
+                <div class="bb-modal-icon bb-success">${_bbIcons.success}</div>
+                <p class="bb-modal-title">THANK YOU!</p>
+                <p class="bb-modal-body">Thank you for using BentaBoard! We look forward to seeing you again.</p>
+            `,
+            showConfirmButton: true,
+            confirmButtonText: 'CONTINUE',
+            customClass: {
+                popup:         'bb-modal-popup',
+                confirmButton: 'bb-btn-primary',
+                actions:       'bb-modal-actions'
+            },
+            buttonsStyling: false,
+            showClass:  { popup: 'swal2-show', backdrop: 'swal2-backdrop-show' },
+            hideClass:  { popup: 'swal2-hide', backdrop: 'swal2-backdrop-hide' }
+        }).then(() => {
             localStorage.removeItem('token');
             localStorage.removeItem('bb_user');
             window.location.replace('login.html');
@@ -347,8 +323,6 @@ function executeLogout(e) {
     });
 }
 
-// SYSTEM FUNCTIONS -
-// REAL-TIME CLOCK LOGIC
 function startBentaClock() {
     const clockElement = document.getElementById('realTimeClock');
     if (!clockElement) return; 
@@ -444,10 +418,10 @@ async function addProduct(e) {
                 renderInventory();
                 populateSaleSelect();
                 form.reset();
-                bentaToast('success', 'Product has been saved!');
+                bentaNotify.show('success', 'SUCCESS', 'Product has been saved!');
             }
         } catch (error) {
-            bentaToast('error', 'Error: Check if server is running on port 3000.');
+            bentaNotify.show('error', 'ERROR', 'Check if server is running on port 3000.');
         }
     }
 }
@@ -488,15 +462,15 @@ async function recordSale(e) {
                 renderSalesLog();
                 populateSaleSelect();
                 form.reset();
-                bentaToast('success', 'Sale has been saved!');
+                bentaNotify.show('success', 'SUCCESS', 'Sale has been saved!');
             } else {
-                bentaToast('error', 'Failed to save sale.');
+                bentaNotify.show('error', 'ERROR', 'Failed to save sale.');
             }
         } catch (error) {
-            bentaToast('error', 'Fatal Error: Could not connect to backend.');
+            bentaNotify.show('error', 'ERROR', 'Could not connect to backend.');
         }
     } else {
-        bentaToast('warning', 'Insufficient stock or invalid product selection!');
+        bentaNotify.show('warning', 'WARNING', 'Insufficient stock or invalid product selection!');
     }
 }
 
@@ -522,10 +496,10 @@ async function logExpense(e) {
                 saveData();
                 renderExpenseLog();
                 form.reset();
-                bentaToast('success', 'Expense has been saved!');
+                bentaNotify.show('success', 'SUCCESS', 'Expense has been saved!');
             }
         } catch (error) {
-            bentaToast('error', 'Connection Error: Server might be down.');
+            bentaNotify.show('error', 'ERROR', 'Server might be down.');
         }
     }
 }
@@ -611,7 +585,7 @@ async function deleteProduct(index) {
             saveData();
             renderInventory();
             populateSaleSelect();
-            bentaToast('success', 'Product deleted successfully.');
+            bentaNotify.show('success', 'SUCCESS', 'Product deleted successfully.');
         }
     );
 }
@@ -687,7 +661,6 @@ window.toggleSystemTheme = () => {
 document.addEventListener('DOMContentLoaded', async () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    // ✅ NEW DYNAMIC ACTIVE LINK LOGIC
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === currentPageName) {
@@ -751,7 +724,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 setTimeout(() => {
                                     loadingOverlay.style.display = 'none';
 
-                                    // CLEANUP FIX: Remove the anti-flash lock once animation finishes                                    
                                     const antiFlash = document.getElementById('anti-flash-style');
                                     if (antiFlash) antiFlash.remove();
 
@@ -760,6 +732,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     const nameEl       = document.getElementById('welcomePopupName');
                                     if (nameEl) nameEl.innerText = userName;
                                     welcomeModal.show();
+                                    
+                                    // Trigger coin cannon confetti
+                                    setTimeout(() => {
+                                        launchCoinCannonConfetti();
+                                    }, 100);
+                                    
+                                    // Clean up coins when modal is dismissed
+                                    const cleanupCoins = () => {
+                                        const container = document.querySelector('.coin-confetti-container');
+                                        const leftCannon = document.querySelector('.coin-cannon-left');
+                                        const rightCannon = document.querySelector('.coin-cannon-right');
+                                        if (container) container.remove();
+                                        if (leftCannon) leftCannon.remove();
+                                        if (rightCannon) rightCannon.remove();
+                                    };
+                                    
+                                    document.getElementById('welcomeMotivationalModal').addEventListener('hidden.bs.modal', cleanupCoins);
+                                    const accessBtn = document.getElementById('accessDashboardBtn');
+                                    if (accessBtn) {
+                                        accessBtn.addEventListener('click', () => {
+                                            setTimeout(cleanupCoins, 500);
+                                        });
+                                    }
+                                    
                                     localStorage.removeItem('bb_welcome_triggered');
                                 }, 600);
                             }, 1300);
@@ -775,6 +771,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const nameEl       = document.getElementById('welcomePopupName');
                 if (nameEl) nameEl.innerText = userName;
                 welcomeModal.show();
+                
+                setTimeout(() => {
+                    launchCoinCannonConfetti();
+                }, 100);
+                
+                const cleanupCoins = () => {
+                    const container = document.querySelector('.coin-confetti-container');
+                    const leftCannon = document.querySelector('.coin-cannon-left');
+                    const rightCannon = document.querySelector('.coin-cannon-right');
+                    if (container) container.remove();
+                    if (leftCannon) leftCannon.remove();
+                    if (rightCannon) rightCannon.remove();
+                };
+                
+                document.getElementById('welcomeMotivationalModal').addEventListener('hidden.bs.modal', cleanupCoins);
+                const accessBtn = document.getElementById('accessDashboardBtn');
+                if (accessBtn) {
+                    accessBtn.addEventListener('click', () => {
+                        setTimeout(cleanupCoins, 500);
+                    });
+                }
+                
                 localStorage.removeItem('bb_welcome_triggered');
             }
         }
@@ -789,24 +807,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const totalCostDisplay = document.getElementById('totalCostDisplay');
     const purchasesLogBody = document.getElementById('purchasesLogBody');
 
-// Set print date for reports page
-if (window.location.pathname.includes('reports.html')) {
-    const container = document.querySelector('.main-content .container');
-    if (container) {
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        }) + ' at ' + now.toLocaleTimeString('en-US', { 
-            hour: 'numeric', 
-            minute: '2-digit' 
-        });
-        container.setAttribute('data-print-date', dateStr);
+    if (window.location.pathname.includes('reports.html')) {
+        const container = document.querySelector('.main-content .container');
+        if (container) {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }) + ' at ' + now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit' 
+            });
+            container.setAttribute('data-print-date', dateStr);
+        }
     }
-}
-
-    
 
     async function renderPurchasesTable() {
         if (!purchasesLogBody) return;
@@ -849,17 +864,17 @@ if (window.location.pathname.includes('reports.html')) {
                     body:    JSON.stringify(purchaseData)
                 });
                 if (response.ok) {
-                    bentaToast('success', 'Purchase synced to MongoDB!');
+                    bentaNotify.show('success', 'SUCCESS', 'Purchase synced to MongoDB!');
                     purchaseForm.reset();
                     document.getElementById('purchaseDate').valueAsDate = new Date();
                     totalCostDisplay.textContent = "0.00";
                     renderPurchasesTable();
                 } else {
                     const err = await response.json();
-                    bentaToast('error', `Error: ${err.message}`);
+                    bentaNotify.show('error', 'ERROR', err.message);
                 }
             } catch (error) {
-                bentaToast('error', 'Backend connection failed.');
+                bentaNotify.show('error', 'ERROR', 'Backend connection failed.');
             }
         });
     }
@@ -878,8 +893,7 @@ if (window.location.pathname.includes('reports.html')) {
     renderPurchasesTable();
 });
 
-//          SETTINGS WIPE DATA LOGIC
-
+// SETTINGS WIPE DATA LOGIC
 async function wipeAllSystemData() {
     bentaNotify.confirm(
         'Wipe All System Data?',
@@ -916,14 +930,14 @@ async function wipeAllSystemData() {
                             }
                             if (salesChartInstance) renderChart(currentFilter);
 
-                            bentaToast('success', 'All system data has been permanently deleted.');
+                            bentaNotify.show('success', 'SUCCESS', 'All system data has been permanently deleted.');
                         } else {
                             const err = await response.json();
-                            bentaToast('error', `Failed to wipe data: ${err.message}`);
+                            bentaNotify.show('error', 'ERROR', `Failed to wipe data: ${err.message}`);
                         }
                     } catch (error) {
                         console.error('Wipe error:', error);
-                        bentaToast('error', 'Could not connect to server. Please check your connection.');
+                        bentaNotify.show('error', 'ERROR', 'Could not connect to server. Please check your connection.');
                     }
                 }
             );
@@ -956,7 +970,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('bb_user', newName);
                 currentUser = newName;
                 if (userNameDisplay) userNameDisplay.innerText = newName;
-                bentaToast('success', 'Profile name updated successfully!');
+                bentaNotify.show('success', 'SUCCESS', 'Profile name updated successfully!');
             }
         });
     }
@@ -968,7 +982,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBtn = document.getElementById('searchBtn');
     const geoBtn    = document.getElementById('geoBtn');
 
-    // Only run this code if we are actually on the Weather page
     if (cityInput && searchBtn && geoBtn) {
         const API_KEY = '61a3e1f7cc44db9a650ac15efb9862b4';
         const errorContainer = document.getElementById('errorContainer');
@@ -1081,729 +1094,157 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (p) => fetchWeatherData(p.coords.latitude, p.coords.longitude, "Sensor"),
-                    () => { /* Silent fail per request */ }
+                    () => { }
                 );
             }
         });
 
-        // Auto trigger location fetch on page load
         geoBtn.click();
     }
 });
-    // ADMIN SCRIPT - BentaBoard Admin Functions
 
-const ADMIN_API_BASE = 'http://127.0.0.1:3000/api';
 
-let currentUser = localStorage.getItem('bb_user') || "Admin";
+// COIN BURST 
+function launchCoinCannonConfetti() {
+    const existing = document.querySelector('.coin-confetti-container');
+    if (existing) existing.remove();
 
-// Check if user is Admin
-function checkAdminAccess() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.replace('role-select.html');
-        return false;
-    }
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        if (payload.role !== 'Admin') {
-            window.location.replace('index.html');
-            return false;
-        }
-        return true;
-    } catch {
-        window.location.replace('role-select.html');
-        return false;
-    }
-}
+    const container = document.createElement('div');
+    container.className = 'coin-confetti-container';
+    document.body.appendChild(container);
 
-function getAuthHeaders() {
-    const token = localStorage.getItem('token');
-    return {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-    };
-}
-
-// REAL-TIME CLOCK
-function startBentaClock() {
-    const clockElement = document.getElementById('realTimeClock');
-    if (!clockElement) return;
-    function updateTime() {
-        clockElement.innerText = new Date().toLocaleTimeString('en-US', {
-            hour: 'numeric', minute: '2-digit', hour12: true
-        });
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
-}
-
-// LOGOUT
-function executeLogout(e) {
-    if(e) e.preventDefault();
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm('Sign Out?', 'Are you sure you want to logout of the Admin Panel?', 'Logout', () => {
-            bentaNotify.show('success', 'THANK YOU!', 'Logging out of Admin Panel...', () => {
-                localStorage.removeItem('token');
-                localStorage.removeItem('bb_user');
-                window.location.replace('role-select.html');
-            });
-        });
-    } else {
-        localStorage.removeItem('token');
-        localStorage.removeItem('bb_user');
-        window.location.replace('role-select.html');
-    }
-}
-
-// TOAST NOTIFICATION (standalone)
-function adminToast(type, message) {
-    const cleanMsg = String(message).replace(/^[\u2705\u274C\uD83D\uDEA8\u26A0\uFE0F\u2139\uFE0F\s]+/u, '').trim();
-    
-    const cfg = {
-        success: { icon: '✓', label: 'Success', bg: '#f0fdf4', border: '#22c55e', color: '#16a34a' },
-        error: { icon: '✕', label: 'Error', bg: '#fef2f2', border: '#ef4444', color: '#dc2626' },
-        warning: { icon: '!', label: 'Warning', bg: '#fffbeb', border: '#f59e0b', color: '#d97706' },
-        info: { icon: 'i', label: 'Info', bg: '#eff6ff', border: '#3b82f6', color: '#2563eb' }
-    };
-    const { icon, label, bg, border, color } = cfg[type] || cfg.info;
-
-    let container = document.getElementById('admin-toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'admin-toast-container';
-        container.style.cssText = 'position:fixed;top:30px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:none;';
-        document.body.appendChild(container);
-    }
-
-    const card = document.createElement('div');
-    card.style.cssText = `
-        pointer-events:all;display:flex;align-items:center;gap:15px;
-        background:${bg};border-radius:16px;padding:16px 18px;
-        min-width:340px;max-width:440px;box-shadow:0 10px 28px rgba(0,0,0,0.1);
-        border:1.5px solid ${border};font-family:'Poppins',sans-serif;
-        opacity:0;transform:translateY(-32px);transition:all 0.35s ease;cursor:pointer;
+    // Ultra-Shiny High-Contrast Gold Coin SVG
+    const coinTemplate = document.createElement('div');
+    coinTemplate.innerHTML = `
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#7a5200"/>
+                    <stop offset="20%" stop-color="#d49c19"/>
+                    <stop offset="50%" stop-color="#fff5cc"/>
+                    <stop offset="80%" stop-color="#a37410"/>
+                    <stop offset="100%" stop-color="#e6b022"/>
+                </linearGradient>
+                <linearGradient id="faceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="30%" stop-color="#ffe600"/>
+                    <stop offset="60%" stop-color="#ffb300"/>
+                    <stop offset="90%" stop-color="#cc7a00"/>
+                    <stop offset="100%" stop-color="#ffcc00"/>
+                </linearGradient>
+                <linearGradient id="glareGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="rgba(255,255,255,1)"/>
+                    <stop offset="20%" stop-color="rgba(255,255,255,0.7)"/>
+                    <stop offset="40%" stop-color="rgba(255,255,255,0)"/>
+                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                </linearGradient>
+            </defs>
+            <path d="M 15,45 A 35,22 0 0,0 85,45 L 85,55 A 35,22 0 0,1 15,55 Z" fill="url(#edgeGrad)"/>
+            <ellipse cx="50" cy="45" rx="35" ry="22" fill="url(#faceGrad)"/>
+            <ellipse cx="50" cy="45" rx="30" ry="19" fill="none" stroke="#b37700" stroke-width="1.5"/>
+            <g transform="translate(50, 46.5) scale(1, 0.65)">
+                <text x="0" y="0" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="900" fill="#8f5b00" filter="drop-shadow(1px 1px 0px rgba(255,255,255,0.7))">$</text>
+            </g>
+            <ellipse cx="50" cy="45" rx="35" ry="22" fill="url(#glareGrad)"/>
+        </svg>
     `;
 
-    card.innerHTML = `
-        <div style="width:38px;height:38px;border-radius:50%;background:${bg};border:2px solid ${border};
-            display:flex;align-items:center;justify-content:center;font-weight:700;color:${color};flex-shrink:0;">
-            ${icon}
-        </div>
-        <div style="flex:1;min-width:0;">
-            <div style="font-size:0.75rem;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:${color};">${label}</div>
-            <div style="font-size:0.9rem;font-weight:500;color:#374151;">${cleanMsg}</div>
-        </div>
-    `;
-    
-    container.appendChild(card);
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        });
-    });
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
 
-    function dismiss() {
-        clearTimeout(timer);
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(-32px)';
-        setTimeout(() => card.remove(), 350);
+    function createSparkle(x, y) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'confetti-sparkle';
+        sparkle.style.left = '0px';
+        sparkle.style.top = '0px';
+        container.appendChild(sparkle);
+
+        const endX = x + (Math.random() - 0.5) * 200;
+        const endY = y - (Math.random() * 150 + 50);
+
+        sparkle.animate([
+            { transform: `translate(${x}px, ${y}px) scale(1)`, opacity: 1 },
+            { transform: `translate(${endX}px, ${endY}px) scale(0)`, opacity: 0 }
+        ], { duration: 800 + Math.random() * 400, easing: 'ease-out', fill: 'forwards' });
+
+        setTimeout(() => sparkle.remove(), 1300);
     }
 
-    const timer = setTimeout(dismiss, 3500);
-    card.addEventListener('click', dismiss);
-}
-
-// LOAD ADMIN DASHBOARD STATS
-async function loadAdminStats() {
-    try {
-        // Get all users
-        const usersRes = await fetch(`${ADMIN_API_BASE}/users`, { headers: getAuthHeaders() });
-        if (usersRes.ok) {
-            const users = await usersRes.json();
-            const totalUsers = users.length;
-            const sellers = users.filter(u => u.role === 'Seller').length;
-            const admins = users.filter(u => u.role === 'Admin').length;
-
-            if (document.getElementById('adminTotalUsers')) document.getElementById('adminTotalUsers').innerText = totalUsers;
-            if (document.getElementById('adminTotalSellers')) document.getElementById('adminTotalSellers').innerText = sellers;
-            if (document.getElementById('adminTotalAdmins')) document.getElementById('adminTotalAdmins').innerText = admins;
-        }
-
-        // Get transaction counts
-        let totalTransactions = 0;
-        try {
-            const [salesRes, expensesRes, purchasesRes] = await Promise.all([
-                fetch(`${ADMIN_API_BASE}/sales`, { headers: getAuthHeaders() }),
-                fetch(`${ADMIN_API_BASE}/expenses`, { headers: getAuthHeaders() }),
-                fetch(`${ADMIN_API_BASE}/purchases`, { headers: getAuthHeaders() })
-            ]);
-            if (salesRes.ok) totalTransactions += (await salesRes.json()).length;
-            if (expensesRes.ok) totalTransactions += (await expensesRes.json()).length;
-            if (purchasesRes.ok) totalTransactions += (await purchasesRes.json()).length;
-        } catch(e) {}
+    // Core Logic: Generates a perfectly smooth mathematical arc
+    function fireAsymmetricalWave(side) {
+        // Randomize coin count per wave to make it feel organic
+        const coinsToFire = 12 + Math.floor(Math.random() * 10); 
         
-        if (document.getElementById('adminTotalTransactions')) document.getElementById('adminTotalTransactions').innerText = totalTransactions;
+        for (let i = 0; i < coinsToFire; i++) {
+            setTimeout(() => {
+                const coin = coinTemplate.cloneNode(true);
+                const isBlurred = Math.random() > 0.75;
+                coin.className = `coin-particle ${isBlurred ? 'coin-dof-blur' : 'coin-dof-focus'}`;
+                container.appendChild(coin);
 
-    } catch (err) {
-        console.warn('Could not load admin stats:', err);
-    }
-}
+                // Start Positions (Randomized vertical height)
+                const launchHeight = screenHeight * (0.4 + Math.random() * 0.3);
+                const startX = side === 'left' ? -60 : screenWidth + 60;
+                const startY = launchHeight;
 
-// ==================== USER MANAGEMENT ====================
-async function loadUsersForManagement() {
-    const tbody = document.getElementById('adminUsersTableBody');
-    if (!tbody) return;
+                // Random Trajectories
+                const direction = side === 'left' ? 1 : -1;
+                const distanceX = (screenWidth * 0.3 + Math.random() * (screenWidth * 0.5)) * direction;
+                const endY = screenHeight + 100; // Past the bottom of the screen
+                const arcHeight = 300 + Math.random() * 400; // How high it arcs upward
 
-    try {
-        const res = await fetch(`${ADMIN_API_BASE}/users`, { headers: getAuthHeaders() });
-        if (!res.ok) throw new Error('Failed to fetch users');
-        
-        const users = await res.json();
-        
-        if (users.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No users found.</td></tr>`;
-            return;
-        }
+                // Random Scales and Spins
+                const maxScale = 0.6 + Math.random() * 0.6;
+                const totalSpin = (Math.random() > 0.5 ? 1 : -1) * (360 + Math.random() * 720);
+                const duration = 2200 + Math.random() * 1000;
 
-        tbody.innerHTML = users.map(user => `
-            <tr>
-                <td class="fw-bold text-dark">${user.username}</td>
-                <td>${user.full_name || 'N/A'}</td>
-                <td>${user.email || 'N/A'}</td>
-                <td>
-                    <span class="badge rounded-pill ${user.role === 'Admin' ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success'} px-3 py-1">
-                        ${user.role}
-                    </span>
-                </td>
-                <td class="text-muted small">${new Date(user.created_at).toLocaleDateString()}</td>
-                <td>
-                    ${user.role !== 'Admin' ? `
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteUserAccount('${user._id}', '${user.username}')">
-                            <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> Delete
-                        </button>
-                    ` : '<span class="text-muted small">Protected</span>'}
-                </td>
-            </tr>
-        `).join('');
+                // Build a custom 20-step keyframe animation using a Sine Parabola
+                const keyframes = [];
+                const steps = 20;
 
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Error loading users.</td></tr>`;
-    }
-}
+                for (let step = 0; step <= steps; step++) {
+                    const t = step / steps; // t goes from 0 to 1
 
-async function deleteUserAccount(userId, username) {
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm(
-            'Delete User?',
-            `Are you sure you want to delete <strong>${username}</strong>? This cannot be undone.`,
-            'Delete',
-            async () => {
-                try {
-                    const res = await fetch(`${ADMIN_API_BASE}/users/${userId}`, {
-                        method: 'DELETE',
-                        headers: getAuthHeaders()
+                    // X moves on an "ease-out" curve (starts fast, slows down horizontally)
+                    const easeOutT = t * (2 - t);
+                    const currentX = startX + (distanceX * easeOutT);
+
+                    // Y uses a smooth Sine curve combined with a linear fall to create a perfect gravity arc
+                    const currentY = startY + ((endY - startY) * t) - (arcHeight * Math.sin(t * Math.PI));
+
+                    // Opacity Logic: Fade in instantly, fade out completely at the end
+                    let currentOpacity = isBlurred ? 0.85 : 1;
+                    if (t < 0.05) currentOpacity = 0; // Prevent pop-in
+                    if (t > 0.8) currentOpacity = (1 - t) * 5 * (isBlurred ? 0.85 : 1); // Fades out nicely in the last 20%
+
+                    keyframes.push({
+                        transform: `translate(${currentX}px, ${currentY}px) scale(${maxScale}) rotate(${totalSpin * t}deg)`,
+                        opacity: currentOpacity
                     });
-                    if (res.ok) {
-                        adminToast('success', `User "${username}" deleted successfully.`);
-                        loadUsersForManagement();
-                        loadAdminStats();
-                    } else {
-                        adminToast('error', 'Failed to delete user.');
-                    }
-                } catch (err) {
-                    adminToast('error', 'Connection error.');
                 }
-            }
-        );
-    } else {
-        if (confirm(`Delete user "${username}"?`)) {
-            try {
-                const res = await fetch(`${ADMIN_API_BASE}/users/${userId}`, {
-                    method: 'DELETE',
-                    headers: getAuthHeaders()
+
+                // Execute hardware-accelerated animation
+                coin.animate(keyframes, {
+                    duration: duration,
+                    easing: 'linear', // The bezier math handles the easing natively
+                    fill: 'forwards'
                 });
-                if (res.ok) {
-                    adminToast('success', `User deleted.`);
-                    loadUsersForManagement();
-                }
-            } catch(e) {
-                adminToast('error', 'Error deleting user.');
-            }
+
+                if (i % 4 === 0) createSparkle(startX + (direction * 40), startY);
+
+                setTimeout(() => coin.remove(), duration + 100);
+            }, i * (10 + Math.random() * 20)); // Random staggered spawning
         }
     }
+
+    // Trigger completely randomized, asymmetrical waves
+    setTimeout(() => fireAsymmetricalWave('left'), 0);
+    setTimeout(() => fireAsymmetricalWave('right'), 150 + Math.random() * 200);
+    setTimeout(() => fireAsymmetricalWave('left'), 400 + Math.random() * 300);
+    setTimeout(() => fireAsymmetricalWave('right'), 500 + Math.random() * 400);
+
+    // Final cleanup
+    setTimeout(() => {
+        if (container) container.remove();
+    }, 5000);
 }
-
-// ==================== ALL REPORTS ====================
-async function loadAllReports(filter = 'all') {
-    const breakdownBody = document.getElementById('adminReportBreakdownBody');
-    if (!breakdownBody) return;
-
-    try {
-        const [salesRes, expensesRes, purchasesRes] = await Promise.all([
-            fetch(`${ADMIN_API_BASE}/sales`, { headers: getAuthHeaders() }),
-            fetch(`${ADMIN_API_BASE}/expenses`, { headers: getAuthHeaders() }),
-            fetch(`${ADMIN_API_BASE}/purchases`, { headers: getAuthHeaders() })
-        ]);
-
-        const sales = salesRes.ok ? await salesRes.json() : [];
-        const expenses = expensesRes.ok ? await expensesRes.json() : [];
-        const purchases = purchasesRes.ok ? await purchasesRes.json() : [];
-
-        // Apply filter
-        const now = new Date();
-        const filterData = (data, dateField) => {
-            return data.filter(item => {
-                const itemDate = new Date(item[dateField]);
-                if (isNaN(itemDate)) return true;
-                switch(filter) {
-                    case 'daily': return itemDate.toDateString() === now.toDateString();
-                    case 'weekly':
-                        const startOfWeek = new Date(now);
-                        startOfWeek.setDate(now.getDate() - now.getDay());
-                        startOfWeek.setHours(0,0,0,0);
-                        return itemDate >= startOfWeek;
-                    case 'monthly': return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
-                    case 'yearly': return itemDate.getFullYear() === now.getFullYear();
-                    default: return true;
-                }
-            });
-        };
-
-        const filteredSales = filterData(sales, 'saleDate');
-        const filteredExpenses = filterData(expenses, 'dateLogged');
-        const filteredPurchases = filterData(purchases, 'purchaseDate');
-
-        const totalSales = filteredSales.reduce((sum, s) => sum + (s.total || 0), 0);
-        const totalExp = filteredExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
-        const totalPurchases = filteredPurchases.reduce((sum, p) => sum + (p.totalCost || 0), 0);
-        const totalItems = filteredSales.reduce((sum, s) => sum + (s.quantity || 0), 0);
-
-        if (document.getElementById('adminReportSales')) document.getElementById('adminReportSales').innerText = `₱${totalSales.toLocaleString()}`;
-        if (document.getElementById('adminReportExp')) document.getElementById('adminReportExp').innerText = `₱${totalExp.toLocaleString()}`;
-        if (document.getElementById('adminReportNet')) document.getElementById('adminReportNet').innerText = `₱${(totalSales - totalExp).toLocaleString()}`;
-        if (document.getElementById('adminReportItems')) document.getElementById('adminReportItems').innerText = totalItems;
-        if (document.getElementById('adminReportPurchases')) document.getElementById('adminReportPurchases').innerText = `₱${totalPurchases.toLocaleString()}`;
-
-        // Build breakdown table
-        let rows = [];
-        
-        filteredSales.forEach(s => {
-            rows.push({
-                date: new Date(s.saleDate).toLocaleDateString(),
-                type: 'sale',
-                description: `${s.productName} (Qty: ${s.quantity})`,
-                amount: s.total,
-                user: s.userId || 'N/A'
-            });
-        });
-
-        filteredExpenses.forEach(e => {
-            rows.push({
-                date: new Date(e.dateLogged).toLocaleDateString(),
-                type: 'expense',
-                description: e.category,
-                amount: e.amount,
-                user: e.userId || 'N/A'
-            });
-        });
-
-        filteredPurchases.forEach(p => {
-            rows.push({
-                date: new Date(p.purchaseDate).toLocaleDateString(),
-                type: 'purchase',
-                description: `${p.productName} from ${p.supplierName} (Qty: ${p.quantity})`,
-                amount: p.totalCost,
-                user: p.userId || 'N/A'
-            });
-        });
-
-        // Sort by date descending
-        rows.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (rows.length === 0) {
-            breakdownBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No transactions found for selected period.</td></tr>`;
-        } else {
-            breakdownBody.innerHTML = rows.map(r => `
-                <tr>
-                    <td>${r.date}</td>
-                    <td>
-                        <span class="badge ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
-                            ${r.type.toUpperCase()}
-                        </span>
-                    </td>
-                    <td>${r.description}</td>
-                    <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
-                    <td class="text-muted small">${r.user}</td>
-                </tr>
-            `).join('');
-        }
-
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    } catch (err) {
-        console.error('Error loading reports:', err);
-    }
-}
-
-// ==================== SYSTEM SETTINGS ====================
-async function wipeAllSystemData() {
-    if (typeof bentaNotify !== 'undefined') {
-        bentaNotify.confirm(
-            '⚠️ Wipe ALL System Data?',
-            'This will permanently delete <strong>ALL</strong> data across the entire platform - all users, products, sales, expenses, and purchases.',
-            'Continue',
-            () => {
-                bentaNotify.confirm(
-                    'FINAL WARNING',
-                    'This action <strong>cannot be undone</strong>. The entire database will be wiped. Are you absolutely sure?',
-                    'Wipe Everything',
-                    async () => {
-                        try {
-                            const res = await fetch(`${ADMIN_API_BASE}/data/wipe`, {
-                                method: 'DELETE',
-                                headers: getAuthHeaders()
-                            });
-                            if (res.ok) {
-                                adminToast('success', 'All system data has been permanently deleted.');
-                                if (document.getElementById('adminUsersTableBody')) loadUsersForManagement();
-                                if (document.getElementById('adminReportBreakdownBody')) loadAllReports();
-                                loadAdminStats();
-                            } else {
-                                adminToast('error', 'Failed to wipe data.');
-                            }
-                        } catch(e) {
-                            adminToast('error', 'Connection error.');
-                        }
-                    }
-                );
-            }
-        );
-    } else {
-        if (confirm('Wipe ALL system data? This cannot be undone!')) {
-            try {
-                await fetch(`${ADMIN_API_BASE}/data/wipe`, { method: 'DELETE', headers: getAuthHeaders() });
-                adminToast('success', 'Data wiped.');
-            } catch(e) {
-                adminToast('error', 'Error.');
-            }
-        }
-    }
-}
-
-// ==================== SELLER LIST & PER-SELLER REPORTS ====================
-
-let allSellers = [];
-let currentSellerId = null;
-
-async function loadSellersList() {
-    const tbody = document.getElementById('adminSellersTableBody');
-    if (!tbody) return;
-
-    try {
-        const res = await fetch(`${ADMIN_API_BASE}/users`, { headers: getAuthHeaders() });
-        if (!res.ok) throw new Error('Failed to fetch users');
-        
-        const users = await res.json();
-        // Filter only sellers
-        allSellers = users.filter(u => u.role === 'Seller');
-
-        if (allSellers.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No sellers found.</td></tr>`;
-            return;
-        }
-
-        renderSellerTable(allSellers);
-    } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Error loading sellers.</td></tr>`;
-    }
-}
-
-function renderSellerTable(sellers) {
-    const tbody = document.getElementById('adminSellersTableBody');
-    if (!tbody) return;
-
-    tbody.innerHTML = sellers.map(seller => `
-        <tr>
-            <td>
-                <div class="d-flex align-items-center gap-2">
-                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                        <span class="text-white fw-bold small">${seller.full_name.charAt(0).toUpperCase()}</span>
-                    </div>
-                    <span class="fw-bold text-dark">${seller.full_name}</span>
-                </div>
-            </td>
-            <td>@${seller.username}</td>
-            <td class="text-muted">${seller.email || 'N/A'}</td>
-            <td class="text-muted small">${new Date(seller.created_at).toLocaleDateString()}</td>
-            <td>
-                <button class="btn btn-sm btn-primary btn-lift" onclick='viewSellerReports(${JSON.stringify(seller)})'>
-                    <i data-lucide="eye" style="width: 14px; height: 14px;"></i> View Reports
-                </button>
-            </td>
-        </tr>
-    `).join('');
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function filterSellerList() {
-    const searchTerm = document.getElementById('sellerSearchInput').value.toLowerCase();
-    const filtered = allSellers.filter(s => 
-        s.full_name.toLowerCase().includes(searchTerm) || 
-        s.username.toLowerCase().includes(searchTerm) ||
-        (s.email && s.email.toLowerCase().includes(searchTerm))
-    );
-    renderSellerTable(filtered);
-}
-
-function viewSellerReports(seller) {
-    currentSellerId = seller._id;
-    
-    // Hide seller list, show report view
-    document.getElementById('sellerListView').style.display = 'none';
-    document.getElementById('singleSellerReportView').style.display = 'block';
-    
-    // Set seller info
-    document.getElementById('sellerReportName').innerText = seller.full_name;
-    document.getElementById('sellerReportUsername').innerText = '@' + seller.username;
-    
-    // Load their reports
-    loadSingleSellerReports('all');
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function goBackToSellerList() {
-    document.getElementById('sellerListView').style.display = 'block';
-    document.getElementById('singleSellerReportView').style.display = 'none';
-    currentSellerId = null;
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-async function loadSingleSellerReports(filter = 'all') {
-    if (!currentSellerId) return;
-
-    const breakdownBody = document.getElementById('adminReportBreakdownBody');
-    if (!breakdownBody) return;
-
-    try {
-        // Fetch this seller's data using userId query param
-        const [salesRes, expensesRes, purchasesRes, productsRes] = await Promise.all([
-            fetch(`${ADMIN_API_BASE}/sales?userId=${currentSellerId}`, { headers: getAuthHeaders() }),
-            fetch(`${ADMIN_API_BASE}/expenses?userId=${currentSellerId}`, { headers: getAuthHeaders() }),
-            fetch(`${ADMIN_API_BASE}/purchases?userId=${currentSellerId}`, { headers: getAuthHeaders() }),
-            fetch(`${ADMIN_API_BASE}/products?userId=${currentSellerId}`, { headers: getAuthHeaders() })
-        ]);
-
-        const sales = salesRes.ok ? await salesRes.json() : [];
-        const expenses = expensesRes.ok ? await expensesRes.json() : [];
-        const purchases = purchasesRes.ok ? await purchasesRes.json() : [];
-        const products = productsRes.ok ? await productsRes.json() : [];
-
-        // Apply filter
-        const now = new Date();
-        const filterData = (data, dateField) => {
-            return data.filter(item => {
-                const itemDate = new Date(item[dateField]);
-                if (isNaN(itemDate)) return true;
-                switch(filter) {
-                    case 'daily': return itemDate.toDateString() === now.toDateString();
-                    case 'weekly':
-                        const startOfWeek = new Date(now);
-                        startOfWeek.setDate(now.getDate() - now.getDay());
-                        startOfWeek.setHours(0,0,0,0);
-                        return itemDate >= startOfWeek;
-                    case 'monthly': return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
-                    case 'yearly': return itemDate.getFullYear() === now.getFullYear();
-                    default: return true;
-                }
-            });
-        };
-
-        const filteredSales = filterData(sales, 'saleDate');
-        const filteredExpenses = filterData(expenses, 'dateLogged');
-        const filteredPurchases = filterData(purchases, 'purchaseDate');
-
-        const totalSales = filteredSales.reduce((sum, s) => sum + (s.total || 0), 0);
-        const totalExp = filteredExpenses.reduce((sum, e) => sum + (e.amount || 0), 0);
-        const totalPurchases = filteredPurchases.reduce((sum, p) => sum + (p.totalCost || 0), 0);
-        const totalItems = filteredSales.reduce((sum, s) => sum + (s.quantity || 0), 0);
-
-        if (document.getElementById('adminReportSales')) document.getElementById('adminReportSales').innerText = `₱${totalSales.toLocaleString()}`;
-        if (document.getElementById('adminReportExp')) document.getElementById('adminReportExp').innerText = `₱${totalExp.toLocaleString()}`;
-        if (document.getElementById('adminReportNet')) document.getElementById('adminReportNet').innerText = `₱${(totalSales - totalExp).toLocaleString()}`;
-        if (document.getElementById('adminReportItems')) document.getElementById('adminReportItems').innerText = totalItems;
-        if (document.getElementById('adminReportProducts')) document.getElementById('adminReportProducts').innerText = products.length;
-        if (document.getElementById('adminReportPurchases')) document.getElementById('adminReportPurchases').innerText = `₱${totalPurchases.toLocaleString()}`;
-
-        // Build breakdown table
-        let rows = [];
-        
-        filteredSales.forEach(s => {
-            rows.push({
-                date: new Date(s.saleDate).toLocaleDateString(),
-                type: 'sale',
-                description: `${s.productName} (Qty: ${s.quantity})`,
-                amount: s.total
-            });
-        });
-
-        filteredExpenses.forEach(e => {
-            rows.push({
-                date: new Date(e.dateLogged).toLocaleDateString(),
-                type: 'expense',
-                description: e.category,
-                amount: e.amount
-            });
-        });
-
-        filteredPurchases.forEach(p => {
-            rows.push({
-                date: new Date(p.purchaseDate).toLocaleDateString(),
-                type: 'purchase',
-                description: `${p.productName} from ${p.supplierName} (Qty: ${p.quantity})`,
-                amount: p.totalCost
-            });
-        });
-
-        // Sort by date descending
-        rows.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (rows.length === 0) {
-            breakdownBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">No transactions found for selected period.</td></tr>`;
-        } else {
-            breakdownBody.innerHTML = rows.map(r => `
-                <tr>
-                    <td>${r.date}</td>
-                    <td>
-                        <span class="badge ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
-                            ${r.type.toUpperCase()}
-                        </span>
-                    </td>
-                    <td>${r.description}</td>
-                    <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
-                </tr>
-            `).join('');
-        }
-
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    } catch (err) {
-        console.error('Error loading seller reports:', err);
-    }
-}
-
-// ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', async () => {
-    if (!checkAdminAccess()) return;
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    startBentaClock();
-
-    if (document.getElementById('userNameDisplay')) {
-        document.getElementById('userNameDisplay').innerText = currentUser;
-    }
-
-    // Active nav link
-    const currentPage = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === currentPage) {
-            link.classList.add('active');
-        }
-    });
-
-    // Load page-specific data
-    if (currentPage === 'admin-dashboard.html' || currentPage === '') {
-        loadAdminStats();
-    }
-
-    if (currentPage === 'admin-users.html') {
-        loadUsersForManagement();
-        loadAdminStats();
-    }
-
-        if (currentPage === 'admin-reports.html') {
-        loadSellersList();  // <-- CHANGED: Now loads seller list instead
-    }
-
-    // Logout button
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) logoutBtn.addEventListener('click', executeLogout);
-
-    // Report filter change
-        // Report filter change - now triggers single seller report
-    const reportFilter = document.getElementById('adminReportFilter');
-    if (reportFilter) {
-        reportFilter.addEventListener('change', function() {
-            if (currentSellerId) {
-                loadSingleSellerReports(this.value);  // <-- CHANGED
-            }
-        });
-    }
-
-        // Set print date for admin reports
-    if (currentPage === 'admin-reports.html') {
-        const mainContent = document.querySelector('.main-content');
-        if (mainContent) {
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            }) + ' at ' + now.toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit' 
-            });
-            mainContent.setAttribute('data-print-date', dateStr);
-        }
-    }
-});
-
-        function toggleAdminTheme() {
-            const isDark = document.body.classList.toggle('dark-theme');
-            const theme = isDark ? 'dark' : 'light';
-            localStorage.setItem('bb_theme', theme);
-            
-            const themeSwitch = document.getElementById('adminThemeSwitch');
-            if (themeSwitch) themeSwitch.checked = isDark;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            const isDark = savedTheme === 'dark';
-            
-            if (isDark) {
-                document.body.classList.add('dark-theme');
-            }
-            
-            const themeSwitch = document.getElementById('adminThemeSwitch');
-            if (themeSwitch) themeSwitch.checked = isDark;
-        });
-
-  // Theme Loader
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
-    
-    // Theme Loader
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
-
-    //Theme Loader
-
-        (function() {
-            const savedTheme = localStorage.getItem('bb_theme') || 'light';
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        })();
