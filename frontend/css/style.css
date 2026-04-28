@@ -190,7 +190,43 @@ body.dark-theme .btn-lift:hover { box-shadow: 0 10px 15px -3px rgba(0, 255, 255,
     box-shadow: inset 0 0 20px rgba(0, 168, 255, 0.3) !important;
     color: white !important;
 }
-body.dark-theme .card-profit { box-shadow: inset 0 0 25px rgba(0, 255, 255, 0.3) !important; }
+body.dark-theme .card-profit { box-shadow: inset 0 0 25px rgba(154, 245, 245, 0.3) !important; }
+
+/* Glassmorphism Holographic Light Techy Override */
+.card-profit { 
+    background: linear-gradient(135deg, rgba(50, 163, 228, 0.9), rgba(230, 244, 255, 0.6)) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    
+    border: 1px solid rgba(0, 168, 255, 0.3) !important;
+    
+    box-shadow: 0 8px 32px 0 rgba(0, 168, 255, 0.1) !important;
+    color: var(--primary-dark) !important; 
+}
+
+/* Text styling to match the clean glass look */
+.card-profit h1,
+.card-profit h2,
+.card-profit h3,
+.card-profit h4,
+.card-profit p {
+    color: #005599 !important;
+}
+
+/* Dark mode fallback for the glass effect */
+body.dark-theme .card-profit { 
+    background: linear-gradient(135deg, rgba(9, 14, 23, 0.8), rgba(0, 40, 80, 0.4)) !important;
+    border: 1px solid rgba(0, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 255, 255, 0.1) !important;
+}
+
+body.dark-theme .card-profit h1,
+body.dark-theme .card-profit h2,
+body.dark-theme .card-profit h3,
+body.dark-theme .card-profit h4,
+body.dark-theme .card-profit p {
+    color: var(--primary) !important; 
+}
 
 /* Auth Overlay Entrance */
 .auth-overlay { background: var(--body-bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;}
@@ -956,9 +992,6 @@ body.dark-theme input::placeholder {
     color: var(--text-muted) !important;
 }
 
-
-
-
 /* Weather and Reports Page */
 
 /* Best Sellers Grid - matches forecast-day style */
@@ -1272,7 +1305,7 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
         padding-right: 0 !important;
     }
 }
-/* --- BENTABOARD INTERACTIVE UI (Standardized Pop-up Formatting) --- */
+/* BENTABOARD INTERACTIVE UI (Standardized Pop-up Formatting) */
 
 /* 1. Global Reset: Stop side-notifications; force center alignment */
 .swal2-container.swal2-top-end,
@@ -1289,16 +1322,16 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    background-color: rgba(0, 0, 0, 0.5) !important; /* Standard dimmed background */
+    background-color: rgba(0, 0, 0, 0.5) !important; 
     z-index: 99999 !important;
 }
 
 /* 2. The Pop-up Box (Fixes the sidebar/messy issue) */
 .swal2-popup {
-    background: #ffffff !important; /* Standard window color from your standard photo */
+    background: #ffffff !important; 
     border-radius: 12px !important;
     border: 1px solid #c2d1e0 !important;
-    padding: 2.5rem 3rem !important; /* Extra padding like your standard example */
+    padding: 2.5rem 3rem !important; 
     width: auto !important;
     max-width: 450px !important;
     box-shadow: 0 15px 40px -10px rgba(0, 168, 255, 0.15) !important;
@@ -1310,20 +1343,20 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
 /* 3. Text & Title Formatting (Aligned with main theme) */
 .swal2-title {
     font-weight: 700 !important;
-    color: #0f172a !important; /* Dark text for light mode */
+    color: #0f172a !important; 
     font-size: 1.5rem !important;
     text-transform: uppercase !important;
     margin-bottom: 0.8rem !important;
 }
 
 .swal2-html-container {
-    color: #54657a !important; /* Muted text from your theme */
+    color: #54657a !important; 
     font-size: 1.1rem !important;
 }
 
 /* 4. Button Formatting (Aligned with BentaBoard main format) */
 .swal2-confirm {
-    background-color: #00a8ff !important; /* Primary Cyan */
+    background-color: #00a8ff !important; 
     border-radius: 8px !important;
     font-weight: 600 !important;
     color: #ffffff !important;
@@ -1332,17 +1365,17 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
 }
 
 .swal2-cancel {
-    background-color: #ff2a5f !important; /* Danger Red */
+    background-color: #ff2a5f !important; 
     border-radius: 8px !important;
     color: #ffffff !important;
     padding: 10px 30px !important;
     text-transform: uppercase !important;
 }
 
-/* --- Dark Mode Consistency Fixes --- */
+/* Dark Mode */
 body.dark-theme .swal2-popup {
-    background: #090e17 !important; /* Dark Card background variable */
-    border: 1px solid rgba(0, 255, 255, 0.3) !important; /* Cyber Cyan accent border */
+    background: #090e17 !important; 
+    border: 1px solid rgba(0, 255, 255, 0.3) !important; 
 }
 
 body.dark-theme .swal2-title {
@@ -1354,12 +1387,12 @@ body.dark-theme .swal2-html-container {
 }
 
 body.dark-theme .swal2-confirm {
-    background-color: #00ffff !important; /* Neon Cyan from dark theme */
-    color: #090e17 !important; /* Deep Dark text contrast */
+    background-color: #00ffff !important; 
+    color: #090e17 !important; 
 }
 
 body.dark-theme .swal2-cancel {
-    background-color: #ff2a5f !important; /* Keep the danger red accent */
+    background-color: #ff2a5f !important; 
 }
 
 #bb-toast-container {
@@ -1394,7 +1427,6 @@ body.dark-theme .swal2-cancel {
     position: relative;
     overflow: hidden;
     cursor: pointer;
-    /* Entry state */
     opacity: 0;
     transform: translateY(-32px);
     transition:
@@ -1478,7 +1510,7 @@ body.dark-theme .swal2-cancel {
     color: #374151;
 }
 
-/* Close × */
+/* Close */
 .bb-toast-x {
     margin-left: auto;
     flex-shrink: 0;
@@ -1500,7 +1532,6 @@ body.dark-theme .swal2-cancel {
 
 .bb-toast-x:hover { background: #f1f5f9; color: #374151; }
 
-/* ---- TYPE: SUCCESS ---- */
 .bb-toast-success::before  { background: #22c55e; }
 .bb-toast-success::after   { background: #22c55e; }
 .bb-toast-success .bb-toast-icon {
@@ -1510,7 +1541,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-success .bb-toast-label { color: #15803d; }
 
-/* ---- TYPE: ERROR ---- */
 .bb-toast-error::before  { background: #ef4444; }
 .bb-toast-error::after   { background: #ef4444; }
 .bb-toast-error .bb-toast-icon {
@@ -1520,7 +1550,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-error .bb-toast-label { color: #b91c1c; }
 
-/* ---- TYPE: WARNING ---- */
 .bb-toast-warning::before  { background: #f59e0b; }
 .bb-toast-warning::after   { background: #f59e0b; }
 .bb-toast-warning .bb-toast-icon {
@@ -1530,7 +1559,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-warning .bb-toast-label { color: #b45309; }
 
-/* ---- TYPE: INFO ---- */
 .bb-toast-info::before  { background: #3b82f6; }
 .bb-toast-info::after   { background: #3b82f6; }
 .bb-toast-info .bb-toast-icon {
@@ -1540,7 +1568,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-toast-info .bb-toast-label { color: #1d4ed8; }
 
-/* ---- DARK MODE TOASTS ---- */
 .dark-theme .bb-toast-card {
     background: #1e293b;
     border-color: #334155;
@@ -1561,9 +1588,7 @@ body.dark-theme .swal2-cancel {
 .dark-theme .bb-toast-info .bb-toast-label { color: #93c5fd; }
 
 
-/* ----------------------------------------------------------------
-   SIGN OUT & THANK YOU MODALS
-   ---------------------------------------------------------------- */
+/* SIGN OUT & THANK YOU MODALS */
 
 .bb-modal-popup.swal2-popup {
     font-family: 'Poppins', sans-serif !important;
@@ -1575,7 +1600,7 @@ body.dark-theme .swal2-cancel {
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14), 0 8px 24px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* Hide SweetAlert2's default header/title since we use html */
+
 .bb-modal-popup .swal2-title { display: none !important; }
 .bb-modal-popup .swal2-html-container {
     padding: 0 !important;
@@ -1583,7 +1608,6 @@ body.dark-theme .swal2-cancel {
     text-align: center !important;
 }
 
-/* ---- MODAL ICON CIRCLES ---- */
 .bb-modal-icon {
     width: 76px;
     height: 76px;
@@ -1595,7 +1619,6 @@ body.dark-theme .swal2-cancel {
     position: relative;
 }
 
-/* Pulse ring animation */
 .bb-modal-icon::after {
     content: '';
     position: absolute;
@@ -1610,7 +1633,6 @@ body.dark-theme .swal2-cancel {
     100% { opacity: 0;   transform: scale(1.25); }
 }
 
-/* Warning icon (Sign Out) */
 .bb-modal-icon.bb-warning {
     background: #fff7ed;
     border: 2.5px solid #f59e0b;
@@ -1618,7 +1640,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-modal-icon.bb-warning::after { border: 2px solid #f59e0b; }
 
-/* Success icon (Thank You) */
 .bb-modal-icon.bb-success {
     background: #f0fdf4;
     border: 2.5px solid #22c55e;
@@ -1626,7 +1647,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-modal-icon.bb-success::after { border: 2px solid #22c55e; }
 
-/* Delete / Danger icon */
 .bb-modal-icon.bb-danger {
     background: #fef2f2;
     border: 2.5px solid #ef4444;
@@ -1634,7 +1654,6 @@ body.dark-theme .swal2-cancel {
 }
 .bb-modal-icon.bb-danger::after { border: 2px solid #ef4444; }
 
-/* ---- MODAL TEXT ---- */
 .bb-modal-title {
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
@@ -1652,7 +1671,6 @@ body.dark-theme .swal2-cancel {
     margin: 0 0 4px;
 }
 
-/* ---- MODAL BUTTONS ---- */
 .bb-modal-popup .swal2-actions {
     gap: 10px !important;
     margin-top: 28px !important;
@@ -1660,7 +1678,6 @@ body.dark-theme .swal2-cancel {
     justify-content: center !important;
 }
 
-/* Primary blue button (Continue / Proceed) */
 .bb-btn-primary {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 700 !important;
@@ -1682,7 +1699,6 @@ body.dark-theme .swal2-cancel {
     box-shadow: 0 6px 18px rgba(59, 130, 246, 0.48) !important;
 }
 
-/* Danger red button (Logout / Delete) */
 .bb-btn-danger {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 700 !important;
@@ -1704,7 +1720,6 @@ body.dark-theme .swal2-cancel {
     box-shadow: 0 6px 18px rgba(239, 68, 68, 0.48) !important;
 }
 
-/* Outlined cancel button */
 .bb-btn-cancel {
     font-family: 'Poppins', sans-serif !important;
     font-weight: 700 !important;
@@ -1726,9 +1741,6 @@ body.dark-theme .swal2-cancel {
 }
 
 
-/* ----------------------------------------------------------------
-   DARK MODE — MODALS
-   ---------------------------------------------------------------- */
 .dark-theme .bb-modal-popup.swal2-popup {
     background: #1e293b !important;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3) !important;
@@ -1759,13 +1771,9 @@ body.dark-theme .swal2-cancel {
     border-color: #475569 !important;
 }
 
-/* SweetAlert2 backdrop in dark mode */
 .dark-theme .swal2-backdrop-show { background: rgba(0, 0, 0, 0.6) !important; }
 
 
-/* ----------------------------------------------------------------
-   MODAL ENTRANCE ANIMATION
-   ---------------------------------------------------------------- */
 .bb-modal-popup.swal2-show {
     animation: bb-modal-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
 }
@@ -1781,15 +1789,7 @@ body.dark-theme .swal2-cancel {
     from { opacity: 1; transform: scale(1); }
     to   { opacity: 0; transform: scale(0.94); }
 }
-/* ----------------------------------------------------------------
-   ENLARGED SAVED BANNER (NO X BUTTON)
-   ---------------------------------------------------------------- */
-/* ----------------------------------------------------------------
-   COMPACT SUCCESS BANNER (NO X BUTTON)
-   ---------------------------------------------------------------- */
-/* ----------------------------------------------------------------
-   TOAST CONTAINER - EXACT TOP CENTER
-   ---------------------------------------------------------------- */
+
 
 #bb-toast-container {
     position: fixed !important;
@@ -1806,7 +1806,6 @@ body.dark-theme .swal2-cancel {
     max-width: 90vw !important;
 }
 
-/* Ensure toast cards stay centered */
 .bb-toast-card {
     pointer-events: all !important;
     margin: 0 auto !important;
@@ -1827,25 +1826,18 @@ body.dark-theme .swal2-cancel {
     font-weight: 500 !important;
 }
 
-/* Hide the X button completely */
 .bb-toast-card .bb-toast-x {
     display: none !important;
 }
 
-/* Remove extra right padding since X is gone */
 .bb-toast-card > div[style*="flex:1"] {
     padding-right: 0 !important;
 }
 
 
 
-/* ============================================
-   BENTABOARD LANDING PAGE STYLES
-   Add this to the END of your existing style.css
-   or keep as separate landing.css file
-   ============================================ */
+/* BENTABOARD LANDING PAGE STYLES */
 
-/* Landing Body Background */
 .landing-body {
     background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #f5f7fa 100%);
     min-height: 100vh;
@@ -1859,7 +1851,6 @@ body.dark-theme .landing-body {
     background: linear-gradient(135deg, #030408 0%, #090e17 50%, #0a1628 100%);
 }
 
-/* Landing Container */
 .landing-container {
     width: 100%;
     max-width: 900px;
@@ -1867,7 +1858,6 @@ body.dark-theme .landing-body {
     text-align: center;
 }
 
-/* Branding Section */
 .landing-brand {
     margin-bottom: 3rem;
 }
@@ -1917,7 +1907,6 @@ body.dark-theme .landing-tagline {
     color: #94a3b8;
 }
 
-/* Role Cards Grid */
 .landing-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1925,7 +1914,6 @@ body.dark-theme .landing-tagline {
     margin-bottom: 2rem;
 }
 
-/* Individual Card */
 .landing-card {
     background: #ffffff;
     border-radius: 24px;
@@ -1943,7 +1931,6 @@ body.dark-theme .landing-card {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Seller Card Hover */
 .landing-card.seller-card:hover {
     transform: translateY(-8px);
     border-color: #22c55e;
@@ -1955,7 +1942,6 @@ body.dark-theme .landing-card.seller-card:hover {
     border-color: #4ade80;
 }
 
-/* Admin Card Hover */
 .landing-card.admin-card:hover {
     transform: translateY(-8px);
     border-color: #ef4444;
@@ -1967,7 +1953,6 @@ body.dark-theme .landing-card.admin-card:hover {
     border-color: #f87171;
 }
 
-/* Card Icon Wrapper */
 .card-icon-wrapper {
     width: 90px;
     height: 90px;
@@ -1979,7 +1964,6 @@ body.dark-theme .landing-card.admin-card:hover {
     transition: all 0.3s ease;
 }
 
-/* Seller Icon */
 .seller-icon {
     background: linear-gradient(135deg, #f0fdf4, #dcfce7);
     color: #22c55e;
@@ -1992,7 +1976,6 @@ body.dark-theme .seller-icon {
     box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
 }
 
-/* Admin Icon */
 .admin-icon {
     background: linear-gradient(135deg, #fef2f2, #fee2e2);
     color: #ef4444;
@@ -2005,7 +1988,6 @@ body.dark-theme .admin-icon {
     box-shadow: 0 8px 24px rgba(239, 68, 68, 0.25);
 }
 
-/* Card Title */
 .card-title {
     font-size: 1.5rem;
     font-weight: 700;
@@ -2018,7 +2000,6 @@ body.dark-theme .card-title {
     color: #f1f5f9;
 }
 
-/* Card Description */
 .card-description {
     font-size: 0.9rem;
     color: #64748b;
@@ -2030,7 +2011,6 @@ body.dark-theme .card-description {
     color: #94a3b8;
 }
 
-/* Buttons */
 .btn-seller {
     display: inline-flex;
     align-items: center;
@@ -2075,7 +2055,6 @@ body.dark-theme .card-description {
     color: white;
 }
 
-/* Version Text */
 .landing-version {
     font-size: 0.75rem;
     color: #94a3b8;
@@ -2087,12 +2066,10 @@ body.dark-theme .landing-version {
     color: #64748b;
 }
 
-/* Exit Animation */
 .landing-card {
     transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .landing-container {
         padding: 1.5rem;
@@ -2111,264 +2088,9 @@ body.dark-theme .landing-version {
         padding: 2rem 1.5rem;
     }
 }
-    /* PRINT STYLES */
-    @media print {
-        /* Hide everything except the report */
-        .sidebar,
-        .benta-clock,
-        #logoutBtn,
-        .nav-links,
-        .mt-auto,
-        .btn,
-        .badge,
-        #adminReportFilter,
-        .d-flex.justify-content-end.mb-4,
-        button,
-        #sellerSearchBox,
-        #sellerListView {
-            display: none !important;
-        }
 
-        * {
-            background: white !important;
-            color: black !important;
-            box-shadow: none !important;
-            text-shadow: none !important;
-        }
+/* BENTABOARD ADMIN THEME & STYLES */
 
-        html, body {
-            width: 100% !important;
-            height: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: white !important;
-            font-family: 'Poppins', 'Courier New', monospace !important;
-        }
-
-        .main-content {
-            margin: 0 !important;
-            padding: 30px 40px !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            display: block !important;
-        }
-
-        /* Hide View All Reports header */
-        .main-content > div:first-child {
-            text-align: center !important;
-            margin-bottom: 25px !important;
-        }
-
-        .main-content > div:first-child h2 {
-            font-size: 22px !important;
-            font-weight: 700 !important;
-            margin: 0 0 5px 0 !important;
-            text-align: center !important;
-        }
-
-        .main-content > div:first-child p {
-            display: none !important;
-        }
-
-        /* Seller Info Card */
-        #singleSellerReportView > .custom-card:first-of-type {
-            border: 2px solid #000 !important;
-            border-radius: 0 !important;
-            padding: 15px 20px !important;
-            margin-bottom: 20px !important;
-            text-align: center !important;
-            background: #fafafa !important;
-        }
-
-        #singleSellerReportView > .custom-card:first-of-type .bg-primary {
-            background: #000 !important;
-        }
-
-        #singleSellerReportView > .custom-card:first-of-type h4 {
-            font-size: 18px !important;
-            font-weight: 700 !important;
-        }
-
-        #singleSellerReportView > .custom-card:first-of-type .ms-auto {
-            display: none !important;
-        }
-
-        /* Summary Cards Row */
-        .row.g-3.text-center.mb-4 {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            margin: 0 -5px 20px -5px !important;
-            border: 2px solid #000 !important;
-            padding: 10px !important;
-        }
-
-        .row.g-3.text-center.mb-4 > div {
-            flex: 0 0 33.33% !important;
-            max-width: 33.33% !important;
-            padding: 5px !important;
-        }
-
-        .weather-detail-box {
-            border: 1px solid #ccc !important;
-            border-radius: 0 !important;
-            padding: 10px 5px !important;
-            text-align: center !important;
-            background: white !important;
-        }
-
-        .weather-detail-box i {
-            display: none !important;
-        }
-
-        .weather-detail-box p {
-            font-size: 9px !important;
-            margin: 0 0 3px 0 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-            color: #666 !important;
-            font-weight: 600 !important;
-        }
-
-        .weather-detail-box h4 {
-            font-size: 16px !important;
-            font-weight: 700 !important;
-            margin: 0 !important;
-        }
-
-        /* Transaction Table */
-        .custom-card.p-4:last-of-type {
-            border: 2px solid #000 !important;
-            border-radius: 0 !important;
-            padding: 0 !important;
-        }
-
-        .custom-card.p-4:last-of-type h5 {
-            display: none !important;
-        }
-
-        .table-responsive {
-            overflow: visible !important;
-        }
-
-        .table {
-            width: 100% !important;
-            border-collapse: collapse !important;
-            margin: 0 !important;
-        }
-
-        .table thead th {
-            background: #000 !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 10px !important;
-            padding: 8px 10px !important;
-            text-align: left !important;
-            border: none !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-        }
-
-        .table tbody td {
-            padding: 8px 10px !important;
-            border-bottom: 1px solid #ddd !important;
-            font-size: 10px !important;
-        }
-
-        .table tbody tr:nth-child(even) td {
-            background: #f9f9f9 !important;
-        }
-
-        .table .badge {
-            border: 1px solid #000 !important;
-            border-radius: 3px !important;
-            padding: 2px 8px !important;
-            font-size: 8px !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-        }
-
-        .table .bg-success-subtle {
-            background: #e8f5e9 !important;
-            color: #2e7d32 !important;
-            border-color: #2e7d32 !important;
-        }
-
-        .table .bg-danger-subtle {
-            background: #ffebee !important;
-            color: #c62828 !important;
-            border-color: #c62828 !important;
-        }
-
-        .table .bg-primary-subtle {
-            background: #e3f2fd !important;
-            color: #1565c0 !important;
-            border-color: #1565c0 !important;
-        }
-
-        .table .text-success {
-            color: #2e7d32 !important;
-            font-weight: 700 !important;
-        }
-
-        .table .text-danger {
-            color: #c62828 !important;
-            font-weight: 700 !important;
-        }
-
-        .table .fw-bold {
-            font-weight: 700 !important;
-        }
-
-        /* Footer */
-        #singleSellerReportView::after {
-            content: "";
-            display: block !important;
-            text-align: center !important;
-            margin-top: 30px !important;
-            padding-top: 15px !important;
-            border-top: 2px dashed #000 !important;
-            font-size: 10px !important;
-            color: #666 !important;
-        }
-
-        /* Generated date footer */
-        .main-content::after {
-            content: "Generated: " attr(data-print-date);
-            display: block !important;
-            text-align: center !important;
-            font-size: 9px !important;
-            color: #999 !important;
-            margin-top: 20px !important;
-            padding-top: 10px !important;
-            border-top: 1px solid #ddd !important;
-        }
-
-        @page {
-            margin: 0.4in;
-            size: A4;
-        }
-    }
-
-    /* SCREEN STYLES (Keep your existing styles) */
-    #singleSellerReportView .btn-outline-secondary {
-        margin-bottom: 20px;
-    }
-
-    #sellerSearchBox {
-        max-width: 350px;
-    }
-
-    .seller-row {
-        cursor: pointer;
-        transition: background 0.2s ease;
-    }
-
-    .seller-row:hover {
-        background: rgba(0, 168, 255, 0.05);
-    }
-
-    
-/* Admin Sidebar - Red accent border */
 .admin-sidebar {
     border-right: 1px solid rgba(239, 68, 68, 0.2) !important;
 }
@@ -2377,7 +2099,6 @@ body.dark-theme .admin-sidebar {
     border-right: 1px solid rgba(239, 68, 68, 0.15) !important;
 }
 
-/* Admin Action Cards */
 .admin-action-card {
     transition: all 0.3s ease;
     cursor: pointer;
@@ -2392,7 +2113,6 @@ body.dark-theme .admin-action-card:hover {
     box-shadow: 0 12px 24px rgba(239, 68, 68, 0.15);
 }
 
-/* Admin Card Icon */
 .admin-card-icon {
     width: 70px;
     height: 70px;
@@ -2403,7 +2123,6 @@ body.dark-theme .admin-action-card:hover {
     margin: 0 auto;
 }
 
-/* Admin Badge */
 .admin-badge {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
@@ -2415,7 +2134,6 @@ body.dark-theme .admin-action-card:hover {
     box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
-/* Theme Toggle in Settings */
 .theme-toggle-card {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -2432,7 +2150,6 @@ body.dark-theme .theme-toggle-card {
     border-color: var(--border);
 }
 
-/* Danger Zone Card */
 .danger-zone-card {
     border: 2px solid rgba(239, 68, 68, 0.3) !important;
     background: rgba(239, 68, 68, 0.02) !important;
@@ -2443,7 +2160,6 @@ body.dark-theme .danger-zone-card {
     background: rgba(239, 68, 68, 0.05) !important;
 }
 
-/* Admin Table Styles */
 .admin-table th {
     background: rgba(239, 68, 68, 0.05) !important;
     color: #dc2626 !important;
@@ -2454,7 +2170,6 @@ body.dark-theme .admin-table th {
     color: #f87171 !important;
 }
 
-/* Admin Nav Active */
 .admin-sidebar .nav-links a.active {
     background: rgba(239, 68, 68, 0.15) !important;
     color: #ef4444 !important;
@@ -2481,4 +2196,582 @@ body.dark-theme .admin-sidebar .nav-links a.active {
 .switch-seller-link:hover {
     background: rgba(34, 197, 94, 0.1) !important;
     color: #4ade80 !important;
+}
+
+/* ADMIN REPORTS PRINT STYLES */
+@media print {
+    .sidebar,
+    .benta-clock,
+    #logoutBtn,
+    .nav-links,
+    .mt-auto,
+    .btn,
+    .badge,
+    #adminReportFilter,
+    .d-flex.justify-content-end.mb-4,
+    button,
+    #sellerSearchBox,
+    #sellerListView {
+        display: none !important;
+    }
+
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    html, body {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        font-family: 'Poppins', 'Courier New', monospace !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+        padding: 30px 40px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+
+    .main-content > div:first-child {
+        text-align: center !important;
+        margin-bottom: 25px !important;
+    }
+
+    .main-content > div:first-child h2 {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        margin: 0 0 5px 0 !important;
+        text-align: center !important;
+    }
+
+    .main-content > div:first-child p {
+        display: none !important;
+    }
+
+    #singleSellerReportView > .custom-card:first-of-type {
+        border: 2px solid #000 !important;
+        border-radius: 0 !important;
+        padding: 15px 20px !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+        background: #fafafa !important;
+    }
+
+    #singleSellerReportView > .custom-card:first-of-type .bg-primary {
+        background: #000 !important;
+    }
+
+    #singleSellerReportView > .custom-card:first-of-type h4 {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+    }
+
+    #singleSellerReportView > .custom-card:first-of-type .ms-auto {
+        display: none !important;
+    }
+
+    .row.g-3.text-center.mb-4 {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        margin: 0 -5px 20px -5px !important;
+        border: 2px solid #000 !important;
+        padding: 10px !important;
+    }
+
+    .row.g-3.text-center.mb-4 > div {
+        flex: 0 0 33.33% !important;
+        max-width: 33.33% !important;
+        padding: 5px !important;
+    }
+
+    .weather-detail-box {
+        border: 1px solid #ccc !important;
+        border-radius: 0 !important;
+        padding: 10px 5px !important;
+        text-align: center !important;
+        background: white !important;
+    }
+
+    .weather-detail-box i {
+        display: none !important;
+    }
+
+    .weather-detail-box p {
+        font-size: 9px !important;
+        margin: 0 0 3px 0 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        color: #666 !important;
+        font-weight: 600 !important;
+    }
+
+    .weather-detail-box h4 {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+    }
+
+    .custom-card.p-4:last-of-type {
+        border: 2px solid #000 !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+    }
+
+    .custom-card.p-4:last-of-type h5 {
+        display: none !important;
+    }
+
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    .table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin: 0 !important;
+    }
+
+    .table thead th {
+        background: #000 !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 10px !important;
+        padding: 8px 10px !important;
+        text-align: left !important;
+        border: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+    }
+
+    .table tbody td {
+        padding: 8px 10px !important;
+        border-bottom: 1px solid #ddd !important;
+        font-size: 10px !important;
+    }
+
+    .table tbody tr:nth-child(even) td {
+        background: #f9f9f9 !important;
+    }
+
+    .table .badge {
+        border: 1px solid #000 !important;
+        border-radius: 3px !important;
+        padding: 2px 8px !important;
+        font-size: 8px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+    }
+
+    .table .bg-success-subtle {
+        background: #e8f5e9 !important;
+        color: #2e7d32 !important;
+        border-color: #2e7d32 !important;
+    }
+
+    .table .bg-danger-subtle {
+        background: #ffebee !important;
+        color: #c62828 !important;
+        border-color: #c62828 !important;
+    }
+
+    .table .bg-primary-subtle {
+        background: #e3f2fd !important;
+        color: #1565c0 !important;
+        border-color: #1565c0 !important;
+    }
+
+    .table .text-success {
+        color: #2e7d32 !important;
+        font-weight: 700 !important;
+    }
+
+    .table .text-danger {
+        color: #c62828 !important;
+        font-weight: 700 !important;
+    }
+
+    .table .fw-bold {
+        font-weight: 700 !important;
+    }
+
+    #singleSellerReportView::after {
+        content: "";
+        display: block !important;
+        text-align: center !important;
+        margin-top: 30px !important;
+        padding-top: 15px !important;
+        border-top: 2px dashed #000 !important;
+        font-size: 10px !important;
+        color: #666 !important;
+    }
+
+    .main-content::after {
+        content: "Generated: " attr(data-print-date);
+        display: block !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        color: #999 !important;
+        margin-top: 20px !important;
+        padding-top: 10px !important;
+        border-top: 1px solid #ddd !important;
+    }
+
+    @page {
+        margin: 0.4in;
+        size: A4;
+    }
+}
+
+/* Screen styles for admin reports */
+#singleSellerReportView .btn-outline-secondary {
+    margin-bottom: 20px;
+}
+
+#sellerSearchBox {
+    max-width: 350px;
+}
+
+.seller-row {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.seller-row:hover {
+    background: rgba(0, 168, 255, 0.05);
+}
+
+/* GOLD COIN BURST */
+
+.coin-confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.coin-particle {
+    position: absolute;
+    width: 60px; 
+    height: 60px;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.coin-particle svg {
+    width: 100%;
+    height: 100%;
+}
+
+.coin-dof-focus {
+    filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.4));
+    z-index: 10;
+}
+
+.coin-dof-blur {
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.2)) blur(2.5px);
+    z-index: 5;
+}
+
+.confetti-sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #ffffff 10%, #ffe600 50%, transparent 100%);
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+/* BENTABOARD MODAL STYLES */
+
+.bb-modal-popup.swal2-popup {
+    font-family: 'Poppins', sans-serif !important;
+    border-radius: 24px !important;
+    padding: 44px 40px 40px !important;
+    max-width: 400px !important;
+    width: 92% !important;
+    background: #ffffff !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14), 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+.bb-modal-popup .swal2-title {
+    display: none !important;
+}
+
+.bb-modal-popup .swal2-html-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+.bb-modal-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    position: relative;
+}
+
+.bb-modal-icon.bb-warning {
+    background: #fff7ed;
+    border: 2.5px solid #f59e0b;
+    color: #f59e0b;
+}
+
+.bb-modal-icon.bb-warning svg {
+    stroke: #f59e0b;
+}
+
+.bb-modal-icon.bb-success {
+    background: #f0fdf4;
+    border: 2.5px solid #22c55e;
+    color: #22c55e;
+}
+
+.bb-modal-icon.bb-success svg {
+    stroke: #22c55e;
+}
+
+.bb-modal-icon::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: bb-icon-pulse 2s ease-out infinite;
+}
+
+@keyframes bb-icon-pulse {
+    0% {
+        opacity: 0.6;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.25);
+    }
+}
+
+/* Modal Text */
+.bb-modal-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #0f172a;
+    margin: 0 0 10px;
+}
+
+.bb-modal-body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.65;
+    margin: 0 0 4px;
+}
+
+.bb-modal-popup .swal2-actions {
+    gap: 10px !important;
+    margin-top: 28px !important;
+    flex-wrap: wrap;
+    justify-content: center !important;
+}
+
+.bb-btn-primary {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.8px !important;
+    color: #ffffff !important;
+    background: #3b82f6 !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.38) !important;
+    min-width: 130px;
+}
+
+.bb-btn-primary:hover {
+    background: #2563eb !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(59, 130, 246, 0.48) !important;
+}
+
+/* Danger Button (Logout/Delete) */
+.bb-btn-danger {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.8px !important;
+    color: #ffffff !important;
+    background: #ef4444 !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.38) !important;
+    min-width: 130px;
+}
+
+.bb-btn-danger:hover {
+    background: #dc2626 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.48) !important;
+}
+
+/* Cancel Button */
+.bb-btn-cancel {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.8px !important;
+    color: #64748b !important;
+    background: transparent !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 50px !important;
+    padding: 10px 30px !important;
+    cursor: pointer !important;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s !important;
+    min-width: 130px;
+}
+
+.bb-btn-cancel:hover {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    transform: translateY(-2px) !important;
+}
+
+.bb-modal-popup.swal2-show {
+    animation: bb-modal-pop 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+
+.bb-modal-popup.swal2-hide {
+    animation: bb-modal-fade-out 0.22s ease-in both !important;
+}
+
+@keyframes bb-modal-pop {
+    from {
+        opacity: 0;
+        transform: scale(0.88) translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes bb-modal-fade-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+}
+
+/* DARK THEME MODAL STYLES */
+body.dark-theme .bb-modal-popup.swal2-popup {
+    background: #1e293b !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-theme .bb-modal-title {
+    color: #f1f5f9 !important;
+}
+
+body.dark-theme .bb-modal-body {
+    color: #94a3b8 !important;
+}
+
+body.dark-theme .bb-modal-icon.bb-warning {
+    background: #431407 !important;
+    border-color: #f59e0b !important;
+}
+
+body.dark-theme .bb-modal-icon.bb-success {
+    background: #052e16 !important;
+    border-color: #22c55e !important;
+}
+
+body.dark-theme .bb-btn-cancel {
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+}
+
+body.dark-theme .bb-btn-cancel:hover {
+    background: #334155 !important;
+    border-color: #475569 !important;
+}
+
+body.dark-theme .swal2-backdrop-show {
+    background: rgba(0, 0, 0, 0.6) !important;
+}
+/* ADMIN LOADING SCREEN – SOFT RED THEME */
+
+.admin-loading .loading-bar {
+    background-color: #ff4d4d;     
+    box-shadow: 0 0 12px #ff4d4d;
+}
+
+.admin-loading .loading-text {
+    color: #ff4d4d;                  
+}
+
+body.dark-theme .admin-loading .loading-bar {
+    background-color: #ff6b6b;
+    box-shadow: 0 0 12px #ff6b6b;
+}
+body.dark-theme .admin-loading .loading-text {
+    color: #ff8a8a;
+}
+
+.admin-loading .loading-logo {
+    animation: pulse-glow-red 1.5s infinite alternate;
+}
+@keyframes pulse-glow-red {
+    0%   { filter: drop-shadow(0 0 10px rgba(255, 77, 77, 0.4)); transform: scale(1); }
+    100% { filter: drop-shadow(0 0 25px rgba(255, 77, 77, 0.9)); transform: scale(1.08); }
+}
+
+body.dark-theme .admin-loading .loading-logo {
+    animation: pulse-glow-red-dark 1.5s infinite alternate;
+}
+@keyframes pulse-glow-red-dark {
+    0%   { filter: drop-shadow(0 0 10px rgba(255, 107, 107, 0.4)); transform: scale(1); }
+    100% { filter: drop-shadow(0 0 30px rgba(255, 107, 107, 0.9)); transform: scale(1.08); }
+}
+
+.admin-loading .loading-complete .loading-logo {
+    filter: drop-shadow(0 0 35px #ff6b6b) !important;
+    animation: none !important;
+}
+.admin-loading .loading-complete .loading-text {
+    color: #ff6b6b;
+    text-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+}
+body.dark-theme .admin-loading .loading-complete .loading-logo {
+    filter: drop-shadow(0 0 45px #ff6b6b) !important;
+}
+body.dark-theme .admin-loading .loading-complete .loading-text {
+    color: #ff8a8a;
+    text-shadow: 0 0 20px rgba(255, 138, 138, 0.6);
 }
