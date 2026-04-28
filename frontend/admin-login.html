@@ -51,42 +51,7 @@
 
     </div>
 
-    <script src="js/jscript.js"></script>
-    <script>
-        lucide.createIcons();
-
-        // Admin authentication - uses same API but with admin role
-        async function handleAdminAuth(e, type) {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-
-    const loginData = {
-        username: formData.get('loginUser'),
-        password: formData.get('loginPass')
-    };
-
-    try {
-        // Use /api/auth/login for admin login
-        const response = await fetch('http://localhost:3000/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(loginData)
-        });
-        const data = await response.json();
-        
-        if (response.ok) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('bb_user', data.user.username);
-            localStorage.setItem('bb_welcome_triggered', 'true');
-            window.location.href = 'admin-dashboard.html';
-        } else {
-            bentaToast('error', data.msg || 'Login Failed');
-        }
-    } catch (err) {
-        bentaToast('error', 'Could not connect to the server.');
-    }
-}
-    </script>
+    <script src="js/admin-script.js"></script>
+  
 </body>
 </html>
