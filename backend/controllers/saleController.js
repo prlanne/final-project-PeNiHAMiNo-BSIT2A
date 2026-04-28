@@ -40,12 +40,21 @@ const recordSale = async (req, res) => {
 
 const getSales = async (req, res) => {
     try {
-        // If admin requests with ?userId=, return that user's sales
-        const targetUserId = (req.user.role === 'Admin' && req.query.userId) 
-            ? req.query.userId 
-            : req.user.id;
+        let sales;
+        
+        if (req.user.role === 'Admin') {
+            if (req.query.userId) {
+                // Admin requesting specific user's sales
+                sales = await Sale.find({ userId: req.query.userId }).sort({ saleDate: -1 });
+            } else {
+                // Admin requesting ALL sales (for total revenue)
+                sales = await Sale.find({}).sort({ saleDate: -1 });
+            }
+        } else {
+            // Regular seller - only their own sales
+            sales = await Sale.find({ userId: req.user.id }).sort({ saleDate: -1 });
+        }
             
-        const sales = await Sale.find({ userId: targetUserId }).sort({ saleDate: -1 });
         res.status(200).json(sales);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching sales', error: error.message });
