@@ -7,12 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/admin-theme.css" rel="stylesheet">
     <link href="bentaboard-notifications.css" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <!-- Admin Sidebar (CLEAN - NO THEME TOGGLE) -->
+    <!-- Admin Sidebar -->
     <aside class="sidebar admin-sidebar">
         <div class="sidebar-header" id="sidebarLogoContainer">
             <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
@@ -49,7 +48,6 @@
         <p class="text-muted mb-4">Configure global platform settings and manage system data.</p>
 
         <div class="row g-4">
-            <!-- Platform Info -->
             <div class="col-md-6">
                 <div class="custom-card p-4">
                     <h5 class="fw-bold mb-3"><i data-lucide="info" class="text-primary me-2"></i>Platform Information</h5>
@@ -59,15 +57,14 @@
                     <div class="mb-2"><strong>API Status:</strong> <span class="text-success fw-bold">● Active</span></div>
                 </div>
 
-                <!-- THEME TOGGLE - Inside Settings Page -->
+                <!-- THEME TOGGLE -->
                 <div class="custom-card p-4 mt-4">
                     <h5 class="fw-bold mb-3"><i data-lucide="palette" class="text-warning me-2"></i>Appearance</h5>
                     <div class="theme-toggle-card">
                         <div class="d-flex align-items-center gap-3">
                             <i data-lucide="moon" class="text-muted"></i>
                             <div>
-                                <div class="fw-semibold">Dark Mode</div>
-                                <div class="text-muted small">Toggle system-wide theme</div>
+                                <div class="fw-semibold">System Theme</div>
                             </div>
                         </div>
                         <div class="form-check form-switch m-0 p-0">
