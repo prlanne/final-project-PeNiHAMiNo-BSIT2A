@@ -357,65 +357,7 @@ body.dark-theme .form-switch .form-check-input:focus {
     box-shadow: 0 0 0 0.25rem rgba(0, 255, 255, 0.25);
 }
 
-/* Print styles */
-@media print {
-    .sidebar,
-    .main-content h2,
-    .main-content p.text-muted.mb-1, 
-    .nav-links,
-    #sidebarLogoContainer,
-    #logoutBtn,
-    .mt-auto,
-    .main-content .d-flex.justify-content-between.align-items-center, 
-    .ms-print-hidden,
-    button { display: none !important; }
 
-    body {
-        background: white !important;
-        color: black !important;
-        display: block !important;
-        min-height: auto !important;
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        min-height: 100vh !important; 
-    }
-
-    .custom-card.p-5 {
-        border: none !important;
-        box-shadow: none !important;
-        width: 100% !important;
-        max-width: 800px !important; 
-        margin: 0 auto !important; 
-        padding: 2rem !important; 
-        page-break-inside: avoid;
-    }
-
-    .card-profit {
-        background: linear-gradient(135deg, #00a8ff, #ffffff) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        color: #0f172a !important;
-    }
-
-    .table th, .table td {
-        border-color: #c2d1e0 !important;
-        color: black !important;
-    }
-
-    .status-active-print {
-        background-color: #00c455 !important;
-        color: white !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-}
 
 /* BENTABOARD PURCHASES SECTION */
 .purchase-container {
@@ -1031,15 +973,9 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
     color: var(--text-main);
 }
 
-/* Print button in action bar */
-@media print {
-    .input-group .btn,
-    #reportTimeframeSelect {
-        display: none !important;
-    }
-}
-
-/* Print Styles Fix */
+/* =============================================
+   SELLER REPORTS – THERMAL RECEIPT PRINT STYLE
+   ============================================= */
 
 @media print {
     .sidebar,
@@ -1047,123 +983,183 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
     #logoutBtn,
     .nav-links,
     .mt-auto,
+    #reportTimeframeSelect,
+    .input-group,
+    .input-group-text,
     button,
     .btn,
-    .input-group,
-    #reportTimeframeSelect,
-    .input-group-text,
     .badge,
     .print-hide,
-    .col-md-6:has(#reportInsightsBox),
-    .col-md-6:has(#recentActivityPreview),
-    .container > .mb-5.border-bottom .btn,
     .row.mb-5.justify-content-center,
-    .d-flex.justify-content-between .badge,
-    #reportMainDisplay,
     [onclick="window.print()"],
-    #bestSellersGrid {
+    #bestSellersGrid,
+    .main-content h2,
+    .main-content > div > p.text-muted:first-of-type,
+    #reportMainDisplay,
+    .custom-card .d-flex.justify-content-between .badge,
+    .custom-card .border-top.pt-3,
+    .custom-card h5.fw-bold.text-dark.mb-3 {
         display: none !important;
     }
 
-    /* BASIC PAGE SETUP */
     * {
         background: white !important;
-        color: black !important;
+        color: #000 !important;
         box-shadow: none !important;
         text-shadow: none !important;
+        border-radius: 0 !important;
+        border-color: #000 !important;
+    }
+
+     body.dark-theme .custom-card,
+    body.dark-theme .custom-card:hover,
+    body.dark-theme .card,
+    body.dark-theme .shadow,
+    body.dark-theme [class*="shadow"] {
+        box-shadow: none !important;
+    }
+
+    .table i,
+    .table svg,
+    .table [data-lucide],
+    .table img {
+        color: #000 !important;
+        stroke: #000 !important;
+        fill: none !important;
     }
 
     html, body {
         width: 100% !important;
-        height: 100% !important;
+        height: auto !important;
         margin: 0 !important;
         padding: 0 !important;
         background: white !important;
-        font-family: 'Poppins', Arial, sans-serif !important;
+        font-family: 'Courier New', 'Poppins', monospace !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
     }
 
     .main-content {
         margin: 0 auto !important;
-        padding: 0.75in 0.5in !important;
+        padding: 20px 0 30px 0 !important;
         width: 100% !important;
-        max-width: 8.5in !important;
+        max-width: 360px !important;
         display: block !important;
         background: white !important;
     }
 
-    .container {
+    .main-content .container {
         max-width: 100% !important;
-        padding: 0 !important;
+        padding: 0 10px !important;
         margin: 0 !important;
     }
 
-    /* HEADER - CENTERED */
-    .container > .mb-5.border-bottom {
-        border-bottom: none !important;
-        padding-bottom: 10px !important;
-        margin-bottom: 30px !important;
-    }
-
-    h1 {
-        font-size: 28px !important;
-        font-weight: bold !important;
-        text-align: center !important;
-        margin: 0 0 5px 0 !important;
-        color: black !important;
-    }
-
-    h1 .text-primary {
-        color: #00a8ff !important;
-    }
-
-    h1 + p {
-        text-align: center !important;
-        margin: 0 0 40px 0 !important;
-        font-size: 12px !important;
-        color: #666 !important;
-    }
-
-    /* FINANCIAL SUMMARY CARD */
-    .custom-card {
-        border: 1px solid #ccc !important;
-        padding: 25px !important;
-        margin-bottom: 30px !important;
-        border-radius: 8px !important;
-        background: white !important;
-    }
-
-    .custom-card .d-flex.justify-content-between {
-        border-bottom: 2px solid #00a8ff !important;
-        padding-bottom: 12px !important;
-        margin-bottom: 25px !important;
-    }
-
-    .custom-card h4 {
-        font-size: 20px !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        color: black !important;
-    }
-
-    /* METRIC CARDS - 4 COLUMNS */
-    .row.g-3.text-center {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        margin: 0 -10px !important;
-    }
-
-    .row.g-3.text-center > div {
-        flex: 0 0 25% !important;
-        max-width: 25% !important;
+    .main-content .container.py-2 {
         padding: 0 10px !important;
     }
 
-    .weather-detail-box {
-        border: 1px solid #ddd !important;
-        border-radius: 8px !important;
-        padding: 15px 5px !important;
+    /* HEADER */
+    .main-content > .container > .mb-5.border-bottom {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
         text-align: center !important;
-        background: #f8f8f8 !important;
+    }
+
+    .main-content h1 {
+        display: block !important;
+        font-size: 15px !important;
+        font-weight: 900 !important;
+        text-align: center !important;
+        margin: 0 0 3px 0 !important;
+        color: #000 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+    }
+
+    .main-content h1 .text-primary {
+        color: #000 !important;
+    }
+
+    .main-content > .container > .mb-5.border-bottom > p {
+        display: block !important;
+        text-align: center !important;
+        margin: 0 0 12px 0 !important;
+        font-size: 8px !important;
+        color: #000 !important;
+    }
+
+    .main-content > .container > .mb-5.border-bottom::after {
+       
+        display: block !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        color: #000 !important;
+        letter-spacing: -1px !important;
+        margin-bottom: 14px !important;
+    }
+
+    /* CARDS */
+    .custom-card {
+        border: none !important;
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+        border-radius: 0 !important;
+        background: white !important;
+    }
+
+    .custom-card .px-4 {
+        padding: 0 !important;
+    }
+
+    .custom-card .d-flex.justify-content-between {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .custom-card .d-flex.justify-content-between h4 {
+        display: block !important;
+        font-size: 11px !important;
+        font-weight: 900 !important;
+        margin: 0 !important;
+        color: #000 !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        width: 100% !important;
+    }
+
+    .custom-card .d-flex.justify-content-between i {
+        display: none !important;
+    }
+
+        /* METRICS ROW - 4 ACROSS IN 1 LINE */
+    .row.g-3.text-center.mt-3.mb-4 {
+        display: table !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+        margin: 4px 0 12px 0 !important;
+        padding: 0 !important;
+        border-spacing: 6px !important;
+    }
+
+    .row.g-3.text-center.mt-3.mb-4 > div.col-6.col-md-3 {
+        display: table-cell !important;
+        text-align: center !important;
+        vertical-align: top !important;
+        width: 25% !important;
+        padding: 0 !important;
+    }
+
+    .weather-detail-box {
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: center !important;
+        background: transparent !important;
+        line-height: 1 !important;
     }
 
     .weather-detail-box i {
@@ -1171,38 +1167,68 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
     }
 
     .weather-detail-box p {
-        font-size: 11px !important;
-        margin: 0 0 5px 0 !important;
-        color: #666 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 6px !important;
+        margin: 0 0 2px 0 !important;
+        padding: 0 !important;
+        color: #000 !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
+        letter-spacing: 0.3px !important;
+        font-weight: 700 !important;
+        line-height: 1 !important;
     }
 
     .weather-detail-box h4 {
-        font-size: 24px !important;
-        font-weight: bold !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 12px !important;
+        font-weight: 900 !important;
         margin: 0 !important;
-        color: black !important;
+        padding: 0 !important;
+        color: #000 !important;
+        line-height: 1 !important;
     }
 
-    /* HIDE BEST SELLING PRODUCTS SECTION COMPLETELY */
-    h5.fw-bold,
-    .border-top {
-        display: none !important;
-    }
-
-    /* TRANSACTION HISTORY CARD */
-    .col-12 .custom-card {
-        padding: 25px !important;
-    }
-
-    .col-12 .custom-card .d-flex.justify-content-between {
-        border-bottom: 2px solid #00a8ff !important;
-        padding-bottom: 12px !important;
-        margin-bottom: 20px !important;
+    .row.g-3.text-center.mt-3.mb-4::after {
+        
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        color: #000 !important;
+        letter-spacing: -1px !important;
+        margin-top: 8px !important;
     }
 
     /* TRANSACTION TABLE */
+    .col-12 .custom-card {
+        padding: 14px 0 0 0 !important;
+        border: none !important;
+        margin-top: 0 !important;
+    }
+
+    .col-12 .custom-card .px-4 {
+        padding: 0 !important;
+    }
+
+    .col-12 .custom-card .d-flex.justify-content-between {
+        margin-bottom: 10px !important;
+    }
+
+    .col-12 .custom-card .d-flex.justify-content-between h4 {
+        font-size: 11px !important;
+        font-weight: 900 !important;
+        margin: 0 !important;
+        color: #000 !important;
+        text-align: center !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        width: 100% !important;
+    }
+
     .table-responsive {
         overflow: visible !important;
     }
@@ -1211,100 +1237,112 @@ body.dark-theme #bestSellersGrid .forecast-day:hover {
         width: 100% !important;
         border-collapse: collapse !important;
         margin: 0 !important;
+        font-size: 9px !important;
     }
 
-    .table th {
-        background: #00a8ff !important;
-        color: white !important;
-        font-weight: 600 !important;
-        font-size: 12px !important;
-        padding: 12px 15px !important;
+        .table thead th,
+    body.dark-theme .table thead th {
+        background: #000 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        font-weight: 900 !important;
+        font-size: 7px !important;
+        padding: 5px 6px !important;
         text-align: left !important;
         border: none !important;
+        border-right: 1px solid #fff !important;
         text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
+        letter-spacing: 1px !important;
     }
 
-    .table td {
-        padding: 12px 15px !important;
-        border-bottom: 1px solid #ddd !important;
-        font-size: 12px !important;
-        color: black !important;
-    }
-
-    .table td:first-child {
-        font-weight: normal !important;
-    }
-
-    .table td:last-child {
+    .table thead th:last-child,
+    body.dark-theme .table thead th:last-child {
         text-align: right !important;
-        font-weight: bold !important;
+        border-right: none !important;
     }
 
-    .table .text-success {
-        color: #10b981 !important;
-        font-weight: 600 !important;
+    .table tbody td {
+        padding: 5px 6px !important;
+        border: none !important;
+        border-bottom: 1px dotted #ccc !important;
+        border-right: 1px solid #ddd !important;
+        font-size: 9px !important;
+        color: #000 !important;
+        vertical-align: top !important;
+        word-break: break-word !important;
     }
 
-    .table .text-danger {
-        color: #ef4444 !important;
-        font-weight: 600 !important;
+    .table tbody td:first-child { 
+        width: 20% !important; 
+        font-size: 8px !important;
     }
-
-    /* Hide icons in table */
-    .table i {
-        display: none !important;
-    }
-
-    /* Empty state styling */
-    .table .text-center {
+    .table tbody td:nth-child(2) { 
+        width: 12% !important; 
+        display: table-cell !important;
+        font-size: 8px !important;
+        font-weight: 700 !important;
         text-align: center !important;
     }
-
-    .table .text-center p {
-        margin: 10px 0 !important;
+    .table tbody td:nth-child(3) { 
+        width: 38% !important; 
+        font-size: 8px !important;
+    }
+    .table tbody td:last-child { 
+        text-align: right !important; 
+        font-weight: 700 !important; 
+        width: 30% !important; 
+        border-right: none !important;
     }
 
-    /* PAGE SETUP */
-    @page {
-        margin: 0.4in;
-        size: A4;
-    }
+    .table .text-success,
+    .table .text-danger { color: #000 !important; font-weight: 700 !important; }
+    .table i { display: none !important; }
 
-    /* GENERATED DATE - FIXED POSITION AT BOTTOM */
-    .benta-clock {
-        display: none !important;
+    /* FOOTER */
+    .col-12 .custom-card::after {
+       
+        display: block !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        color: #000 !important;
+        letter-spacing: -1px !important;
+        margin-top: 10px !important;
     }
+    
+    
 
-    /* Remove any existing ::after content */
     .main-content::after {
-        display: none !important;
+        content: none !important;
     }
 
-    /* Add generated date in the container instead */
-    .container::after {
+  
+    .main-content .container::after {
         content: "Generated: " attr(data-print-date);
         display: block !important;
         text-align: center !important;
-        font-size: 11px !important;
-        color: #888 !important;
-        margin-top: 30px !important;
-        padding-top: 15px !important;
-        border-top: 1px solid #ddd !important;
+        font-size: 7px !important;
+        color: #000 !important;
+        margin-top: 14px !important;
+    }
+
+       .main-content .container > .row:last-child::after {
+        content: "THANK YOU FOR USING BENTABOARD";
+        display: block !important;
         width: 100% !important;
+        text-align: center !important;
+        font-size: 9px !important;
+        color: #000 !important;
+        letter-spacing: 2px !important;
+        margin-top: 4px !important;
     }
 
-    /* Ensure proper spacing */
-    .row {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    .col-12, .col-md-3, .col-6 {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+    @page {
+        margin: 0.15in;
+        size: auto;
     }
 }
+
 /* BENTABOARD INTERACTIVE UI (Standardized Pop-up Formatting) */
 
 /* 1. Global Reset: Stop side-notifications; force center alignment */
@@ -2299,23 +2337,37 @@ body.dark-theme .admin-sidebar .nav-links a.active {
         background: white !important;
     }
 
-    .weather-detail-box i {
+        .weather-detail-box i {
         display: none !important;
     }
 
+    .weather-detail-box p.text-muted.small.m-0.fw-medium,
     .weather-detail-box p {
-        font-size: 9px !important;
-        margin: 0 0 3px 0 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 7px !important;
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+        color: #000 !important;
         text-transform: uppercase !important;
-        letter-spacing: 1px !important;
-        color: #666 !important;
-        font-weight: 600 !important;
+        letter-spacing: 0.3px !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+        order: -1 !important;
     }
 
+    .weather-detail-box h4.text-dark.fw-bold,
     .weather-detail-box h4 {
-        font-size: 16px !important;
-        font-weight: 700 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 14px !important;
+        font-weight: 900 !important;
         margin: 0 !important;
+        padding: 0 !important;
+        color: #000 !important;
+        line-height: 1.1 !important;
     }
 
     .custom-card.p-4:last-of-type {
@@ -2410,17 +2462,6 @@ body.dark-theme .admin-sidebar .nav-links a.active {
         border-top: 2px dashed #000 !important;
         font-size: 10px !important;
         color: #666 !important;
-    }
-
-    .main-content::after {
-        content: "Generated: " attr(data-print-date);
-        display: block !important;
-        text-align: center !important;
-        font-size: 9px !important;
-        color: #999 !important;
-        margin-top: 20px !important;
-        padding-top: 10px !important;
-        border-top: 1px solid #ddd !important;
     }
 
     @page {
