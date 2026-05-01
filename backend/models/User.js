@@ -37,6 +37,4 @@ const UserSchema = new mongoose.Schema({
     collection: 'users'
 });
 
-// ✅ Save to 'test' database
-const db = mongoose.connection.useDb('test');
-module.exports = db.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);

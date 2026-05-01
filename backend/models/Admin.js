@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 
-// ✅ Use a separate connection for the test database
-const adminConnection = mongoose.createConnection(
-    process.env.MONGO_URI.replace('bentaboard', 'test')
-);
-
 const AdminSchema = new mongoose.Schema({
     username: { 
         type: String, 
@@ -41,5 +36,4 @@ const AdminSchema = new mongoose.Schema({
     collection: 'admins'
 });
 
-// ✅ Export using the test database connection
-module.exports = adminConnection.model('Admin', AdminSchema);
+module.exports = mongoose.model('Admin', AdminSchema);

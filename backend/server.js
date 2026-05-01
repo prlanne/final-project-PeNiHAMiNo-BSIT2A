@@ -5,13 +5,14 @@ const mongoose = require("mongoose");
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
-// IMPORT ROUTES (Fixed paths to match your folder)
+// IMPORT ROUTES 
 const usersRouter = require("./routes/userRoutes");
 const authRoutes = require("./routes/auth"); 
 const productRouter = require("./routes/productRoutes");
 const saleRouter = require("./routes/saleRoutes"); 
 const expenseRouter = require("./routes/expenseRoutes");
 const purchaseRouter = require("./routes/purchaseRoutes"); 
+const dataRouter = require("./routes/dataRoutes");  
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/products", productRouter);
 app.use("/api/sales", saleRouter);
 app.use("/api/expenses", expenseRouter);
 app.use("/api/purchases", purchaseRouter); 
+app.use("/api/data", dataRouter);  
 
 // Test route
 app.get("/api/health", (req, res) => res.json({ status: "ok", message: "BentaBoard API is active" }));
@@ -57,9 +59,5 @@ async function start() {
     process.exit(1);
   }
 }
-
-const dataRouter = require("./routes/dataRoutes");
-// ... with other routes
-app.use("/api/data", dataRouter);
 
 start();
