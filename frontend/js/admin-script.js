@@ -1,6 +1,6 @@
 // ADMIN SCRIPT - BentaBoard Admin Functions
 
-const ADMIN_API_BASE = 'http://127.0.0.1:3000/api';
+const ADMIN_API_BASE = 'http://localhost:3000/api';
 
 let currentUser = localStorage.getItem('bb_user') || "Admin";
 
@@ -44,7 +44,7 @@ async function handleAdminAuth(e, type) {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
+        const response = await fetch(`${ADMIN_API_BASE}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
@@ -104,9 +104,8 @@ function startBentaClock() {
     setInterval(updateTime, 1000);
 }
 
-// =============================================
-// UNIFORM NOTIFICATION SYSTEM (Custom icons for confirm, toast for show)
-// =============================================
+
+// NOTIFICATION SYSTEM 
 const _bbIcons = {
     warning: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.5" r="0.5" fill="currentColor"/></svg>`,
     success: `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
@@ -171,7 +170,6 @@ const bentaNotify = {
         card.addEventListener('click', dismiss);
     },
     confirm: (title, text, confirmText, callback, dangerMode = true) => {
-        // Custom confirm dialog with yellow warning icon (logout, delete, etc.)
         const btnClass = dangerMode ? 'bb-btn-danger' : 'bb-btn-primary';
         Swal.fire({
             html: `
@@ -198,13 +196,10 @@ const bentaNotify = {
     }
 };
 
-// ------------------------------------------------------------
-// LOGOUT (restored to original custom modals)
-// ------------------------------------------------------------
+// LOGOUT 
 function executeLogout(e) {
     if (e) e.preventDefault();
     bentaNotify.confirm('Sign Out?', 'Are you sure you want to logout of BentaBoard?', 'Logout', () => {
-        // Custom success modal (green check, THANK YOU!)
         Swal.fire({
             html: `
                 <div class="bb-modal-icon bb-success">${_bbIcons.success}</div>
@@ -244,8 +239,7 @@ async function loadAdminStats() {
             if (document.getElementById('adminTotalAdmins')) document.getElementById('adminTotalAdmins').innerText = admins;
         }
 
-        // Fetch total revenue from all sales
-    try {
+        try {
     const salesRes = await fetch(`${ADMIN_API_BASE}/sales`, { headers: getAuthHeaders() });
     if (salesRes.ok) {
         const allSales = await salesRes.json();
@@ -257,6 +251,7 @@ async function loadAdminStats() {
 } catch(e) {
     console.warn('Could not load revenue data:', e);
 }
+
 
     } catch (err) {
         console.warn('Could not load admin stats:', err);
@@ -418,19 +413,20 @@ async function loadAllReports(filter = 'all') {
         if (rows.length === 0) {
             breakdownBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No transactions found for selected period.</td></tr>`;
         } else {
-            breakdownBody.innerHTML = rows.map(r => `
-                <tr>
-                    <td>${r.date}</td>
-                    <td>
-                        <span class="badge ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
-                            ${r.type.toUpperCase()}
-                        </span>
-                    </td>
-                    <td>${r.description}</td>
-                    <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
-                    <td class="text-muted small">${r.user}</td>
-                </tr>
-            `).join('');
+           breakdownBody.innerHTML = rows.map(r => `
+    <tr>
+        <td>${r.date}</td>
+        <td>
+            <span class="badge screen-only ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
+                ${r.type.toUpperCase()}
+            </span>
+            <span class="print-only-text">${r.type.toUpperCase()}</span>
+        </td>
+        <td>${r.description}</td>
+        <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
+        <td class="text-muted small">${r.user}</td>
+    </tr>
+`).join('');
         }
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -653,18 +649,19 @@ async function loadSingleSellerReports(filter = 'all') {
         if (rows.length === 0) {
             breakdownBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">No transactions found for selected period.</td></tr>`;
         } else {
-            breakdownBody.innerHTML = rows.map(r => `
-                <tr>
-                    <td>${r.date}</td>
-                    <td>
-                        <span class="badge ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
-                            ${r.type.toUpperCase()}
-                        </span>
-                    </td>
-                    <td>${r.description}</td>
-                    <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
-                </tr>
-            `).join('');
+           breakdownBody.innerHTML = rows.map(r => `
+    <tr>
+        <td>${r.date}</td>
+        <td>
+            <span class="badge screen-only ${r.type === 'sale' ? 'bg-success-subtle text-success' : r.type === 'expense' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
+                ${r.type.toUpperCase()}
+            </span>
+            <span class="print-only-text">${r.type.toUpperCase()}</span>
+        </td>
+        <td>${r.description}</td>
+        <td class="fw-bold ${r.type === 'expense' ? 'text-danger' : 'text-success'}">₱${r.amount.toLocaleString()}</td>
+    </tr>
+`).join('');
         }
 
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -673,9 +670,8 @@ async function loadSingleSellerReports(filter = 'all') {
     }
 }
 
-// =============================================
-// INITIALIZATION (with loading screen + admin welcome modal)
-// =============================================
+
+// INITIALIZATION 
 document.addEventListener('DOMContentLoaded', async () => {
     const currentPage = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
     
@@ -690,7 +686,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('userNameDisplay').innerText = currentUser;
     }
 
-    // Active nav link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === currentPage) {
@@ -698,9 +693,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // =============================================
     // LOADING SCREEN FOR ADMIN DASHBOARD (soft red)
-    // =============================================
     if (currentPage === 'admin-dashboard.html' || currentPage === '') {
         const flag = localStorage.getItem('bb_welcome_triggered');
         if (flag === 'true') {
@@ -729,14 +722,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 setTimeout(() => {
                                     loadingOverlay.style.display = 'none';
                                     
-                                    // ========== ADMIN WELCOME MODAL (no coins, professional) ==========
+                                    // ADMIN WELCOME MODAL 
                                     const adminName = localStorage.getItem('bb_user') || 'Admin';
                                     const nameEl = document.getElementById('adminWelcomeName');
                                     if (nameEl) nameEl.innerText = adminName;
                                     
                                     const welcomeModal = new bootstrap.Modal(document.getElementById('adminWelcomeModal'));
                                     welcomeModal.show();
-                                    // =================================================================
                                     
                                     localStorage.removeItem('bb_welcome_triggered');
                                 }, 600);
@@ -752,7 +744,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
-    // =============================================
 
     // Load page-specific data
     if (currentPage === 'admin-dashboard.html' || currentPage === '') {
