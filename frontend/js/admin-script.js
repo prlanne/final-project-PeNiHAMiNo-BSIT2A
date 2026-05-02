@@ -444,7 +444,7 @@ async function wipeAllSystemData() {
         () => {
             bentaNotify.confirm(
                 'FINAL WARNING',
-                'This action <strong>cannot be undone</strong>. The entire database will be wiped. Are you absolutely sure?',
+                'This action <strong>cannot be undone</strong>. The entire database will be wiped. Are you sure?',
                 'Wipe Everything',
                 async () => {
                     try {
@@ -564,7 +564,6 @@ async function loadSingleSellerReports(filter = 'all') {
     if (!breakdownBody) return;
 
     try {
-        // Fetch this seller's data using userId query param
         const [salesRes, expensesRes, purchasesRes, productsRes] = await Promise.all([
             fetch(`${ADMIN_API_BASE}/sales?userId=${currentSellerId}`, { headers: getAuthHeaders() }),
             fetch(`${ADMIN_API_BASE}/expenses?userId=${currentSellerId}`, { headers: getAuthHeaders() }),
@@ -693,7 +692,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // LOADING SCREEN FOR ADMIN DASHBOARD (soft red)
+    // LOADING SCREEN FOR ADMIN DASHBOARD
     if (currentPage === 'admin-dashboard.html' || currentPage === '') {
         const flag = localStorage.getItem('bb_welcome_triggered');
         if (flag === 'true') {
