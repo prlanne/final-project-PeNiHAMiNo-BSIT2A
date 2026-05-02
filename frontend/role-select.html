@@ -51,12 +51,117 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/role-select.js"></script>
     <script>
         lucide.createIcons();
+
+        // Enhanced Professional Confetti with Tiny Sparks for Seller Welcome
+        function launchSellerWelcomeConfetti() {
+            const container = document.createElement('div');
+            container.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;';
+            document.body.appendChild(container);
+
+            const colors = ['#00a8ff', '#0d9cff', '#1a90ff', '#00d4aa', '#00e5b8', '#ffd700', '#ffc700', '#1e40af', '#0369a1'];
+            
+            // Create SVG spark (tiny 4-pointed star)
+            function createSpark(size, color) {
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('width', size);
+                svg.setAttribute('height', size);
+                svg.setAttribute('fill', color);
+                
+                const sparkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                // 4-pointed sparkle star shape
+                sparkPath.setAttribute('d', 'M12,2 L13.5,8 L19,9 L14.5,13.5 L16,19 L12,15.5 L8,19 L9.5,13.5 L5,9 L10.5,8 Z');
+                sparkPath.setAttribute('fill', color);
+                
+                svg.appendChild(sparkPath);
+                return svg;
+            }
+
+            function createConfetti(startDelay = 0) {
+                const confetti = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = 4 + Math.random() * 6; // Tiny sparks: 4-10px
+                const x = Math.random() * window.innerWidth;
+                const duration = 2500 + Math.random() * 2000;
+                const delay = startDelay + Math.random() * 800;
+                const hasGlow = Math.random() > 0.5; // 50% chance of glow effect
+                
+                // Create spark shape
+                const sparkElement = createSpark(size, color);
+                
+                const confettiEl = document.createElement('div');
+                confettiEl.appendChild(sparkElement);
+                
+                const animationName = hasGlow ? 'sparkGlow' : 'sparkPulse';
+                confettiEl.style.cssText = `
+                    position: absolute;
+                    left: ${x}px;
+                    top: -10px;
+                    opacity: 0.75;
+                    animation: 
+                        confettiFall ${duration}ms linear ${delay}ms forwards,
+                        ${animationName} ${800 + Math.random() * 1200}ms ease-in-out ${delay}ms infinite;
+                    filter: ${hasGlow ? `drop-shadow(0 0 3px ${color})` : `drop-shadow(0 0 2px ${color})`};
+                `;
+                
+                container.appendChild(confettiEl);
+                setTimeout(() => confettiEl.remove(), duration + delay);
+            }
+
+            // Add enhanced CSS animations if not already present
+            if (!document.getElementById('seller-confetti-keyframes')) {
+                const style = document.createElement('style');
+                style.id = 'seller-confetti-keyframes';
+                style.innerHTML = `
+                    @keyframes confettiFall {
+                        to {
+                            transform: translateY(${window.innerHeight + 10}px) rotate(720deg);
+                            opacity: 0;
+                        }
+                    }
+                    @keyframes sparkPulse {
+                        0%, 100% { opacity: 0.6; filter: drop-shadow(0 0 2px currentColor); }
+                        50% { opacity: 1; filter: drop-shadow(0 0 6px currentColor); }
+                    }
+                    @keyframes sparkGlow {
+                        0%, 100% { filter: drop-shadow(0 0 3px rgba(0, 168, 255, 0.5)); }
+                        50% { filter: drop-shadow(0 0 10px rgba(0, 212, 170, 0.8)); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Create multiple waves for more visual impact
+            const totalConfetti = 40; // Seller gets slightly less than welcome
+            const wavesCount = 3;
+            const confettiPerWave = Math.ceil(totalConfetti / wavesCount);
+            
+            for (let wave = 0; wave < wavesCount; wave++) {
+                const waveDelay = wave * 200;
+                for (let i = 0; i < confettiPerWave; i++) {
+                    setTimeout(() => {
+                        createConfetti(waveDelay);
+                    }, i * 30);
+                }
+            }
+
+            // Cleanup after animation completes
+            setTimeout(() => {
+                if (container) container.remove();
+            }, 4500);
+        }
 
         function selectRole(role) {
             // Store the selected role temporarily
             localStorage.setItem('bb_selected_role', role);
+            
+            // Launch confetti for seller selection only
+            if (role === 'seller') {
+                launchSellerWelcomeConfetti();
+            }
             
             // Add exit animation
             const cards = document.querySelectorAll('.landing-card');
@@ -71,11 +176,8 @@
             }, 300);
         }
 
-        // If user is already logged in, redirect to hub
-        const token = localStorage.getItem('token');
-        if (token) {
-            window.location.href = 'index.html';
-        }
+        // REMOVED: Auto-redirect when token exists
+        // This ensures role-select is always the first page
     </script>
 </body>
 </html>
