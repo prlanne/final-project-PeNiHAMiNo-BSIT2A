@@ -2,10 +2,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Admin = require('../models/Admin');
+const VerificationCode = require('../models/VerificationCode'); //NEW
 
 const register = async (req, res) => {
     try {
-        const { username, email, password, full_name, role } = req.body;
+        const { username, email, password, full_name, role, isVerified } = req.body;
+
+        // ✅ NEW — Seller registration requires email verification
+        // Admin registration bypasses this check
+        if (role !== 'Admin' && isVerified !== true && isVerified !== 'true') {
+            return res.status(400).json({ msg: 'Email not verified. Please verify your email first.' });
+        }
 
         const userExists = await User.findOne({ $or: [{ username }, { email }] });
         const adminExists = await Admin.findOne({ $or: [{ username }, { email }] });
@@ -35,10 +42,15 @@ const register = async (req, res) => {
                 email,
                 password: hashedPassword,
                 full_name,
-                role: role || 'Seller'
+                role: role || 'Seller',
+                isVerified: true  // Mark as verified since they passed verification
             });
 
             await newUser.save();
+
+            // NEW — Clean up any leftover verification codes for this email
+            await VerificationCode.deleteMany({ email: email.toLowerCase().trim() });
+
             console.log(`✅ User registered: ${username} as ${role || 'Seller'}`);
             res.status(201).json({ msg: 'User registered successfully!' });
         }
