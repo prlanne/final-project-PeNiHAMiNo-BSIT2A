@@ -3,7 +3,11 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Register | BentaBoard</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -14,40 +18,76 @@
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
 
         <div class="auth-card custom-card w-100" style="max-width: 450px;" id="signupFormContainer">
+            
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="step1Dot">1</div>
+                <div class="step-line" id="stepLine"></div>
+                <div class="step-dot inactive" id="step2Dot">2</div>
+            </div>
+
             <div class="text-center mb-4">
                 <img src="img/bentaboard.png" alt="BentaBoard Logo" style="width: 70px; height: 70px; margin-bottom: 15px; border-radius: 50%;">
-                <h2 class="fw-bold tracking-tight">Create Account</h2>
-                <p class="text-muted small">Get started with BentaBoard</p>
+                <h2 class="fw-bold tracking-tight" id="formTitle">Create Account</h2>
+                <p class="text-muted small" id="formSubtitle">Get started with BentaBoard</p>
             </div>
             
-            <form id="signupForm" onsubmit="handleAuth(event, 'signup')">
+            <!-- Step 1: Registration Form -->
+            <form id="signupForm" onsubmit="handleSignupStep1(event)">
                 <div class="mb-3">
                     <label class="form-label fw-semibold small text-muted">Full Name</label>
-                    <input type="text" class="form-control py-2" name="regName" placeholder="e.g. John Doe" required>
+                    <input type="text" class="form-control py-2" name="regName" id="regName" placeholder="e.g. John Doe" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold small text-muted">Username</label>
-                    <input type="text" class="form-control py-2" name="regUser" placeholder="Choose a username" required>
+                    <input type="text" class="form-control py-2" name="regUser" id="regUser" placeholder="Choose a username" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-semibold small text-muted">Email Address</label>
-                    <input type="email" class="form-control py-2" name="regEmail" placeholder="name@example.com" required>
+                    <label class="form-label fw-semibold small text-muted">Gmail Address</label>
+                    <input type="email" class="form-control py-2" name="regEmail" id="regEmail" placeholder="yourname@gmail.com" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold small text-muted">Password</label>
-                    <input type="password" class="form-control py-2" name="regPass" placeholder="Create a password" required>
+                    <input type="password" class="form-control py-2" name="regPass" id="regPass" placeholder="Create a password" required minlength="6">
                 </div>
-                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold btn-lift mt-2">Create Account</button>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold btn-lift mt-2" id="submitBtn">
+                    <i data-lucide="mail" style="width: 18px; height: 18px;"></i> Send Verification Code
+                </button>
+            </form>
+            
+            <!-- Step 2: Verification Code -->
+            <form id="verifyForm" style="display: none;" onsubmit="handleVerifyCode(event)">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-muted">Verification Code</label>
+                    <input type="text" class="form-control verification-input" name="verifyCode" id="verifyCode" 
+                           placeholder="000000" maxlength="6" pattern="[0-9]{6}" required
+                           inputmode="numeric" autocomplete="one-time-code">
+                    <small class="text-muted">Enter the 6-digit code sent to your Gmail</small>
+                </div>
+                <div id="verifiedEmailDisplay" class="text-center mb-3" style="display: none;">
+                    <span class="badge bg-success-subtle text-success px-3 py-2">
+                        <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> 
+                        Code sent to: <strong id="sentEmailDisplay"></strong>
+                    </span>
+                </div>
+                <button type="submit" class="btn btn-success w-100 py-2 fw-bold btn-lift mt-2" id="verifyBtn">
+                    <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i> Verify & Create Account
+                </button>
+                <button type="button" class="btn btn-outline-secondary w-100 py-2 mt-2" onclick="goBackToSignup()">
+                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Back
+                </button>
+                <button type="button" class="btn btn-link text-muted w-100 mt-1" onclick="resendCode()" id="resendBtn" style="display: none;">
+                    <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i> Resend Code
+                </button>
             </form>
             
             <div class="text-center mt-4">
                 <p class="text-muted small">Already have an account? <a href="login.html" class="text-primary fw-bold text-decoration-none">Login</a></p>
-                <!-- ADD THIS to register.html, right after the "Already have an account? Login" paragraph -->
-<p class="text-muted small mt-2">
-    <a href="role-select.html" class="text-primary fw-bold text-decoration-none">
-        <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Back to Role Selection
-    </a>
-</p>
+                <p class="text-muted small mt-2">
+                    <a href="role-select.html" class="text-primary fw-bold text-decoration-none">
+                        <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Back to Role Selection
+                    </a>
+                </p>
             </div>
         </div>
 
