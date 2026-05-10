@@ -5,16 +5,20 @@ const isLandingPage = (currentPageName === 'role-select.html' || currentPageName
 
 // ONLY redirect to role-select if NOT logged in AND trying to access protected pages
 if (!isLoggedIn && !isAuthPage && !isLandingPage) {
+    console.log('🔐 Not authenticated, redirecting to role selection');
     window.location.replace('role-select.html');
 }
 
 // ONLY redirect to index if logged in AND on auth pages (login/register), NOT on role-select
 if (isLoggedIn && isAuthPage && !isLandingPage) {
+    console.log('✅ Already authenticated, redirecting to dashboard');
     window.location.replace('index.html');
 }
 
+// Set theme
 document.body.classList.toggle('dark-theme', currentTheme === 'dark');
 
+// Anti-flash of unstyled content for dashboard
 if ((currentPageName === 'index.html' || currentPageName === '') && localStorage.getItem('bb_welcome_triggered') === 'true') {
     const antiFlashStyle = document.createElement('style');
     antiFlashStyle.id = 'anti-flash-style';
@@ -403,3 +407,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('SW registered: ', registration);
+            })
+            .catch(registrationError => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
+
