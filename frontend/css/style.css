@@ -2093,6 +2093,34 @@ body.dark-theme .card-description {
     color: white;
 }
 
+.btn-install {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #00a8ff, #0077cc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 168, 255, 0.3);
+    margin-top: 20px;
+}
+
+.btn-install:hover {
+    background: linear-gradient(135deg, #0077cc, #005599);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 168, 255, 0.4);
+    color: white;
+}
+
+.install-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
 .landing-version {
     font-size: 0.75rem;
     color: #94a3b8;
@@ -2816,3 +2844,862 @@ body.dark-theme .admin-loading .loading-complete .loading-text {
     color: #ff8a8a;
     text-shadow: 0 0 20px rgba(255, 138, 138, 0.6);
 }
+
+/* REGISTRATION VERIFICATION STYLES */
+.verification-input {
+    letter-spacing: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    padding: 15px;
+}
+
+.verification-input::placeholder {
+    letter-spacing: 12px;
+    font-size: 24px;
+    color: #ccc;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.step-dot {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.step-dot.active {
+    background: #00a8ff;
+    color: white;
+    box-shadow: 0 0 15px rgba(0, 168, 255, 0.4);
+}
+
+.step-dot.inactive {
+    background: #e2e8f0;
+    color: #94a3b8;
+}
+
+.step-dot.completed {
+    background: #22c55e;
+    color: white;
+}
+
+.step-line {
+    width: 40px;
+    height: 2px;
+    background: #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.step-line.completed {
+    background: #22c55e;
+}
+
+/* ============================= */
+/* COMPREHENSIVE MOBILE STYLES */
+/* ============================= */
+
+/* Mobile Base Styles (Max Width 768px) */
+@media (max-width: 768px) {
+    /* Disable Zoom on Input Focus */
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+    
+    /* Body & Layout */
+    body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+    }
+    
+    * {
+        -webkit-user-scalable: no !important;
+        user-scalable: no !important;
+    }
+
+    /* Sidebar – Responsive or Hidden */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1.5rem 1rem;
+        margin-bottom: 1rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        left: 0;
+        top: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 168, 255, 0.2);
+    }
+
+    body.dark-theme .sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+    }
+
+    .sidebar-header {
+        gap: 10px;
+        margin-bottom: 0;
+    }
+
+    .sidebar-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sidebar-brand {
+        display: none;
+    }
+
+    .sidebar-nav {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--sidebar-bg);
+        flex-direction: column;
+        z-index: 99;
+        padding: 1rem;
+        gap: 0.5rem;
+        border-bottom: 1px solid rgba(0, 168, 255, 0.2);
+    }
+
+    .sidebar-nav.active {
+        display: flex;
+    }
+
+    .sidebar-nav a {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem;
+    }
+
+    /* Main Content */
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    /* Containers & Cards */
+    .container, .container-lg, .container-md, .container-sm {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+        max-width: 100% !important;
+    }
+
+    .custom-card, .card {
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+
+    /* Typography */
+    h1 {
+        font-size: 1.75rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.875rem !important;
+    }
+
+    h3 {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+
+    h4 {
+        font-size: 1.1rem !important;
+    }
+
+    h5 {
+        font-size: 1rem !important;
+    }
+
+    h6 {
+        font-size: 0.95rem !important;
+    }
+
+    p, span, label {
+        font-size: 0.95rem !important;
+        line-height: 1.5;
+    }
+
+    small, .small {
+        font-size: 0.85rem !important;
+    }
+
+    /* Buttons - Touch Friendly */
+    .btn {
+        padding: 10px 16px !important;
+        font-size: 0.95rem !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
+        border-radius: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+
+    .btn-seller, .btn-admin, .btn-install, .btn-primary, .btn-secondary, .btn-danger, .btn-success, .btn-warning {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .btn-sm {
+        padding: 6px 12px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .btn-lg {
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+    }
+
+    /* Form Controls */
+    .form-control, .form-select, input, textarea, select {
+        padding: 10px 12px !important;
+        font-size: 0.95rem !important;
+        min-height: 44px !important;
+        border-radius: 8px !important;
+        width: 100% !important;
+    }
+
+    .form-label {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .input-group {
+        margin-bottom: 1rem;
+    }
+
+    /* Tables - Responsive */
+    .table {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .table thead th {
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .table tbody td {
+        padding: 10px 8px !important;
+        font-size: 0.85rem !important;
+    }
+
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 16px;
+    }
+
+    .modal-header, .modal-footer {
+        padding: 1.25rem !important;
+    }
+
+    .modal-body {
+        padding: 1.5rem !important;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Grid Layouts - Stack on Mobile */
+    .row {
+        margin-right: -0.5rem !important;
+        margin-left: -0.5rem !important;
+    }
+
+    [class*="col-"] {
+        padding-right: 0.5rem !important;
+        padding-left: 0.5rem !important;
+    }
+
+    /* 100% width on mobile */
+    .col, .col-12, .col-sm-12, .col-md-6, .col-lg-4, .col-xl-3 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Landing Page Mobile */
+    .landing-container {
+        padding: 1rem !important;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .landing-brand {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .landing-logo {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .landing-title {
+        font-size: 1.75rem !important;
+        margin: 1rem 0 0.5rem !important;
+    }
+
+    .landing-tagline {
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+    }
+
+    .landing-cards {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+    }
+
+    .landing-card {
+        padding: 1.5rem !important;
+    }
+
+    .card-icon-wrapper {
+        width: 50px !important;
+        height: 50px !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .card-title {
+        font-size: 1.2rem !important;
+    }
+
+    .card-description {
+        font-size: 0.85rem !important;
+        line-height: 1.4;
+    }
+
+    /* Auth Forms */
+    .auth-card {
+        max-width: 100% !important;
+        border-radius: 16px;
+        padding: 1.5rem !important;
+    }
+
+    .auth-overlay {
+        padding: 1rem 0 !important;
+    }
+
+    .auth-card .form-control {
+        margin-bottom: 1rem !important;
+    }
+
+    /* Badges */
+    .badge {
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Alerts */
+    .alert {
+        padding: 1rem !important;
+        font-size: 0.9rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* Nav Links */
+    .nav-links {
+        font-size: 0.9rem !important;
+    }
+
+    .nav-links a {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    /* Dropdowns */
+    .dropdown-menu {
+        font-size: 0.9rem !important;
+        min-width: 150px !important;
+    }
+
+    .dropdown-item {
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* Admin Dashboard Specific */
+    .admin-action-card {
+        padding: 1.5rem 1rem !important;
+    }
+
+    .admin-card-icon {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    /* Charts - Responsive Height */
+    #analyticsChartContainer {
+        height: 300px !important;
+        max-width: 100%;
+    }
+
+    /* Install Container */
+    .install-container {
+        margin-top: 1.5rem;
+        width: 100%;
+    }
+
+    .btn-install {
+        width: 100% !important;
+    }
+
+    /* Sidebar Toggle for Mobile */
+    .sidebar-toggle {
+        display: block !important;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.5rem;
+        padding: 0;
+        margin-right: 1rem;
+    }
+
+    /* Hide on Mobile */
+    .hide-mobile {
+        display: none !important;
+    }
+
+    /* Show only on Mobile */
+    .show-mobile {
+        display: block !important;
+    }
+
+    /* Flexbox Utilities */
+    .d-flex {
+        flex-wrap: wrap;
+    }
+
+    /* Spacing Adjustments */
+    .mb-1, .my-1 { margin-bottom: 0.5rem !important; }
+    .mb-2, .my-2 { margin-bottom: 0.75rem !important; }
+    .mb-3, .my-3 { margin-bottom: 1rem !important; }
+    .mb-4, .my-4 { margin-bottom: 1.25rem !important; }
+    .mb-5, .my-5 { margin-bottom: 1.5rem !important; }
+
+    .mt-1 { margin-top: 0.5rem !important; }
+    .mt-2 { margin-top: 0.75rem !important; }
+    .mt-3 { margin-top: 1rem !important; }
+    .mt-4 { margin-top: 1.25rem !important; }
+    .mt-5 { margin-top: 1.5rem !important; }
+
+    .px-1, .px-2, .px-3, .px-4 { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+
+    /* Prevent Horizontal Scroll */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* Touch Scrolling */
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Extra Small Devices (Max Width 480px) */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 0.75rem;
+    }
+
+    .container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.25rem !important;
+    }
+
+    h3 {
+        font-size: 1.1rem !important;
+    }
+
+    .btn {
+        padding: 8px 12px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .form-control, input, textarea, select {
+        padding: 8px 10px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .landing-logo {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .landing-title {
+        font-size: 1.5rem !important;
+    }
+
+    .auth-card {
+        padding: 1.25rem !important;
+    }
+
+    /* Sidebar Compact */
+    .sidebar {
+        padding: 1rem 0.75rem;
+    }
+
+    .sidebar-header {
+        gap: 8px;
+    }
+
+    .sidebar-logo {
+        width: 35px !important;
+        height: 35px !important;
+    }
+}
+
+/* Install Modal Styles */
+.install-modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+body.dark-theme .install-modal-content {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+}
+
+.install-modal-header {
+    background: linear-gradient(135deg, #00a8ff 0%, #0077cc 100%);
+    color: white;
+    padding: 2rem 1.5rem 1.5rem;
+    border: none;
+    position: relative;
+}
+
+.install-modal-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.install-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.install-modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+.install-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.install-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.install-modal-body {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.install-icon {
+    margin-bottom: 1.5rem;
+    color: #00a8ff;
+}
+
+body.dark-theme .install-icon {
+    color: #00ffff;
+}
+
+.install-description {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+body.dark-theme .install-description {
+    color: #94a3b8;
+}
+
+.install-features {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+body.dark-theme .feature-item {
+    color: #cbd5e1;
+}
+
+.install-modal-footer {
+    padding: 1.5rem;
+    border: none;
+    background: #f8fafc;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+body.dark-theme .install-modal-footer {
+    background: #0f172a;
+}
+
+.install-skip-btn {
+    background: #e2e8f0;
+    border: none;
+    color: #64748b;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.install-skip-btn:hover {
+    background: #cbd5e1;
+    transform: translateY(-2px);
+}
+
+body.dark-theme .install-skip-btn {
+    background: #334155;
+    color: #94a3b8;
+}
+
+body.dark-theme .install-skip-btn:hover {
+    background: #475569;
+}
+
+.install-now-btn {
+    background: linear-gradient(135deg, #00a8ff 0%, #0077cc 100%);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+}
+
+.install-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
+}
+
+body.dark-theme .install-now-btn {
+    background: linear-gradient(135deg, #00ffff 0%, #00cccc 100%);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+body.dark-theme .install-now-btn:hover {
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.4);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+/* Modal Animation */
+.modal.fade .modal-dialog {
+    transform: scale(0.8) translateY(-50px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1) translateY(0);
+}
+
+/* Install Popup Notification */
+.install-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: none;
+    animation: slideIn 0.5s ease-out;
+}
+
+.install-popup-content {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 320px;
+    max-width: 400px;
+    border: 1px solid #e2e8f0;
+}
+
+body.dark-theme .install-popup-content {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.install-popup-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #f1f5f9;
+    padding: 6px;
+    flex-shrink: 0;
+}
+
+body.dark-theme .install-popup-logo {
+    background: #334155;
+}
+
+.install-popup-text {
+    flex: 1;
+}
+
+.install-popup-text h6 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.25rem 0;
+}
+
+body.dark-theme .install-popup-text h6 {
+    color: #f1f5f9;
+}
+
+.install-popup-text p {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+}
+
+body.dark-theme .install-popup-text p {
+    color: #94a3b8;
+}
+
+.install-popup-btn {
+    background: linear-gradient(135deg, #00a8ff 0%, #0077cc 100%);
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 168, 255, 0.3);
+}
+
+.install-popup-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 168, 255, 0.4);
+}
+
+body.dark-theme .install-popup-btn {
+    background: linear-gradient(135deg, #00ffff 0%, #00cccc 100%);
+    box-shadow: 0 2px 8px rgba(0, 255, 255, 0.3);
+}
+
+body.dark-theme .install-popup-btn:hover {
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
+}
+
+.install-popup-close {
+    background: none;
+    border: none;
+    color: #64748b;
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.install-popup-close:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+body.dark-theme .install-popup-close:hover {
+    background: #334155;
+    color: #cbd5e1;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
