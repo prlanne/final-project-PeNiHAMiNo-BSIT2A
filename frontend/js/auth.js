@@ -1,6 +1,6 @@
 // AUTHENTICATION & API SETUP
-const API_BASE_URL = 'http://localhost:3000/api';
-const AUTH_API_URL = 'http://localhost:3000/api/users';
+const API_BASE_URL = '/api';
+const AUTH_API_URL = 'api/users';
 
 // Store registration data temporarily
 let pendingRegistration = {
