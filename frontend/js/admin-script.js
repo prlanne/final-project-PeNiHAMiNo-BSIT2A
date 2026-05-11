@@ -1,6 +1,6 @@
 // ADMIN SCRIPT - BentaBoard Admin Functions
 
-const ADMIN_API_BASE = 'http://localhost:3000/api';
+const ADMIN_API_BASE = '/api';
 
 let currentUser = localStorage.getItem('bb_user') || "Admin";
 
