@@ -1,7 +1,8 @@
 // MAIN GLOBAL INITIALIZATION
-const currentPageName = window.location.pathname.split('/').pop() || 'role-select.html';
+const currentPageName = window.location.pathname.split('/').pop();
+const isRootPage = currentPageName === '';
 const isAuthPage = (currentPageName === 'login.html' || currentPageName === 'register.html' || currentPageName === 'admin-login.html' || currentPageName === 'admin-register.html' || currentPageName === 'role-select.html');
-const isLandingPage = (currentPageName === 'role-select.html' || currentPageName === '' || currentPageName === '/');
+const isLandingPage = (currentPageName === 'role-select.html' || isRootPage);
 
 // ONLY redirect to role-select if NOT logged in AND trying to access protected pages
 if (!isLoggedIn && !isAuthPage && !isLandingPage) {
@@ -271,8 +272,55 @@ async function loadUserDataFromAPI() {
     }
 }
 
+function setupMobileSidebar() {
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarHeader = document.querySelector('.sidebar-header');
+    const navLinks = sidebar?.querySelector('.nav-links');
+
+    if (!sidebar || !sidebarHeader || !navLinks || sidebarHeader.querySelector('.sidebar-menu-toggle')) return;
+
+    const adminBadge = Array.from(sidebar.children).find(child =>
+        child.classList.contains('text-center') && child.classList.contains('mb-3')
+    );
+    const userActions = Array.from(sidebar.children).find(child =>
+        child.classList.contains('mt-auto')
+    );
+    const mobilePanel = document.createElement('div');
+    mobilePanel.className = 'sidebar-mobile-panel';
+    navLinks.after(mobilePanel);
+    mobilePanel.appendChild(navLinks);
+    if (adminBadge) mobilePanel.appendChild(adminBadge);
+    if (userActions) mobilePanel.appendChild(userActions);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'sidebar-menu-toggle';
+    toggle.setAttribute('aria-label', 'Toggle navigation menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<i data-lucide="menu"></i>';
+
+    toggle.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle('sidebar-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    sidebarHeader.appendChild(toggle);
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    setupMobileSidebar();
 
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
@@ -360,6 +408,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 loadingOverlay.classList.add('exit-animation');
                                 setTimeout(() => {
                                     loadingOverlay.style.display = 'none';
+                                    document.documentElement.classList.remove('bb-boot-loading');
                                     const antiFlash = document.getElementById('anti-flash-style');
                                     if (antiFlash) antiFlash.remove();
                                     const userName    = localStorage.getItem('bb_user') || "User";
@@ -387,6 +436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }, 40);
             } else {
+                document.documentElement.classList.remove('bb-boot-loading');
                 const userName    = localStorage.getItem('bb_user') || "User";
                 const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeMotivationalModal'));
                 const nameEl      = document.getElementById('welcomePopupName');
@@ -407,17 +457,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
-
-// Register Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
 

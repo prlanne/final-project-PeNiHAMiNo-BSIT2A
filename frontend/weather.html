@@ -4,17 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BentaBoard Weather Insights | Real-Time Local Data</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/poppins-300.ttf" as="font" type="font/ttf" crossorigin>
+
+    <link rel="preload" href="fonts/poppins-400.ttf" as="font" type="font/ttf" crossorigin>
+
+    <link rel="preload" href="fonts/poppins-500.ttf" as="font" type="font/ttf" crossorigin>
+
+    <link rel="preload" href="fonts/poppins-600.ttf" as="font" type="font/ttf" crossorigin>
+
+    <link rel="preload" href="fonts/poppins-700.ttf" as="font" type="font/ttf" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style.css?v=20260513-logo-font" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
-</head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#00a8ff">
+    <link rel="apple-touch-icon" href="/img/icons/icon-192.png">
+    <link rel="icon" type="image/png" href="/img/icons/icon-192.png"></head>
 <body class="bg-body-tertiary">
 
     <aside class="sidebar">
        <div class="sidebar-header" id="sidebarLogoContainer">
-            <img src="img/bentaboard.png" alt="BentaBoard Logo" class="sidebar-logo">
+            <span class="sidebar-logo" aria-label="BentaBoard Logo"></span>
             <div class="sidebar-header-text">
                 <h1 class="m-0 text-white" style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.5px;">BentaBoard</h1>
                 <p class="m-0" style="font-size: 0.75rem; color: #9ca3af;">“From bawat benta to tunay na kita—track it right.”</p>
@@ -161,5 +172,6 @@
     <script src="js/shared.js"></script>
     <script src="js/weatherAPI.js"></script>
     <script src="js/main.js"></script>
-</body>
+    <script src="/js/pwa-register.js"></script>
+    <script src="/js/pwa-install.js"></script></body>
 </html>

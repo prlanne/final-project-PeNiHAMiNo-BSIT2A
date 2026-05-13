@@ -75,6 +75,18 @@ const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ msg: 'Invalid Credentials' });
 
+        if (!user.isVerified) {
+            return res.status(403).json({
+                code: 'EMAIL_NOT_VERIFIED',
+                msg: 'Please verify your email before logging in.',
+                user: {
+                    username: user.username,
+                    email: user.email,
+                    full_name: user.full_name
+                }
+            });
+        }
+
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,
