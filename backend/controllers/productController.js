@@ -4,7 +4,7 @@ const createProduct = async (req, res) => {
     try {
         const { name, price, stock } = req.body;
 
-        // ✅ FIX: Associate the new product with the logged-in user
+        //  FIX: Associate the new product with the logged-in user
         const newProduct = new Product({
             userId: req.user.id,
             name,
