@@ -22,6 +22,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// First-time entry should open the role selection page, not the dashboard shell.
+app.get("/", (req, res) => {
+    res.redirect("/role-select.html");
+});
+
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, "../frontend")));
 
