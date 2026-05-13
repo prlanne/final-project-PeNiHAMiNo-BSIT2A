@@ -1,13 +1,17 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
+const User = require('../models/User');
 
 const login = async (req, res) => {
     try {
         const { username, password } = req.body;
         
-        //  Only search in Admin collection
-        const admin = await Admin.findOne({ username });
+        let admin = await Admin.findOne({ username });
+
+        if (!admin) {
+            admin = await User.findOne({ username, role: 'Admin' });
+        }
 
         if (!admin) {
             return res.status(400).json({ msg: 'Invalid Admin Credentials' });
