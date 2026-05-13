@@ -557,6 +557,52 @@ function goBackToSellerList() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
+function setupMobileSidebar() {
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarHeader = document.querySelector('.sidebar-header');
+    const navLinks = sidebar?.querySelector('.nav-links');
+
+    if (!sidebar || !sidebarHeader || !navLinks || sidebarHeader.querySelector('.sidebar-menu-toggle')) return;
+
+    const adminBadge = Array.from(sidebar.children).find(child =>
+        child.classList.contains('text-center') && child.classList.contains('mb-3')
+    );
+    const userActions = Array.from(sidebar.children).find(child =>
+        child.classList.contains('mt-auto')
+    );
+    const mobilePanel = document.createElement('div');
+    mobilePanel.className = 'sidebar-mobile-panel';
+    navLinks.after(mobilePanel);
+    mobilePanel.appendChild(navLinks);
+    if (adminBadge) mobilePanel.appendChild(adminBadge);
+    if (userActions) mobilePanel.appendChild(userActions);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'sidebar-menu-toggle';
+    toggle.setAttribute('aria-label', 'Toggle navigation menu');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.innerHTML = '<i data-lucide="menu"></i>';
+
+    toggle.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle('sidebar-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    sidebarHeader.appendChild(toggle);
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-open');
+            toggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
 async function loadSingleSellerReports(filter = 'all') {
     if (!currentSellerId) return;
 
@@ -673,12 +719,20 @@ async function loadSingleSellerReports(filter = 'all') {
 // INITIALIZATION 
 document.addEventListener('DOMContentLoaded', async () => {
     const currentPage = window.location.pathname.split('/').pop() || 'admin-dashboard.html';
+
+    if (currentPage === 'admin-login.html') {
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        if (adminLoginForm) {
+            adminLoginForm.addEventListener('submit', (e) => handleAdminAuth(e, 'login'));
+        }
+    }
     
     if (currentPage !== 'admin-login.html') {
         if (!checkAdminAccess()) return;
     }
 
     if (typeof lucide !== 'undefined') lucide.createIcons();
+    setupMobileSidebar();
     startBentaClock();
 
     if (document.getElementById('userNameDisplay')) {
@@ -720,6 +774,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 loadingOverlay.classList.add('exit-animation');
                                 setTimeout(() => {
                                     loadingOverlay.style.display = 'none';
+                                    document.documentElement.classList.remove('bb-boot-loading');
                                     
                                     // ADMIN WELCOME MODAL 
                                     const adminName = localStorage.getItem('bb_user') || 'Admin';
@@ -739,6 +794,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }, 40);
             } else {
+                document.documentElement.classList.remove('bb-boot-loading');
                 localStorage.removeItem('bb_welcome_triggered');
             }
         }

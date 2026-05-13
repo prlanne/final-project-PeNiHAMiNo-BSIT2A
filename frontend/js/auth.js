@@ -208,6 +208,98 @@ async function resendCode() {
     }
 }
 
+async function verifyExistingAccount(unverifiedUser, password) {
+    bentaNotify.confirm(
+        'Verify Email',
+        'Your account needs email verification before you can log in. Send a verification code now?',
+        'Send Code',
+        async () => {
+            try {
+                const sendResponse = await fetch(`${API_BASE_URL}/verify/send-code`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: unverifiedUser.email,
+                        username: unverifiedUser.username,
+                        full_name: unverifiedUser.full_name,
+                        password
+                    })
+                });
+
+                const sendData = await sendResponse.json();
+
+                if (!sendResponse.ok) {
+                    bentaNotify.show('error', 'ERROR', sendData.msg || 'Failed to send verification code.');
+                    return;
+                }
+
+                const result = await Swal.fire({
+                    html: `
+                        <div class="bb-modal-icon bb-success">${_bbIcons.success}</div>
+                        <p class="bb-modal-title">VERIFY EMAIL</p>
+                        <p class="bb-modal-body">Enter the 6-digit code sent to ${unverifiedUser.email}.</p>
+                    `,
+                    input: 'text',
+                    inputAttributes: {
+                        maxlength: 6,
+                        inputmode: 'numeric',
+                        autocomplete: 'one-time-code'
+                    },
+                    inputPlaceholder: '000000',
+                    showCancelButton: true,
+                    confirmButtonText: 'VERIFY',
+                    cancelButtonText: 'CANCEL',
+                    customClass: {
+                        popup: 'bb-modal-popup',
+                        confirmButton: 'bb-btn-primary',
+                        cancelButton: 'bb-btn-cancel',
+                        actions: 'bb-modal-actions',
+                        input: 'form-control verification-input'
+                    },
+                    buttonsStyling: false,
+                    preConfirm: (value) => {
+                        const code = String(value || '').trim();
+                        if (!/^\d{6}$/.test(code)) {
+                            Swal.showValidationMessage('Enter a valid 6-digit code.');
+                            return false;
+                        }
+                        return code;
+                    }
+                });
+
+                if (!result.isConfirmed) return;
+
+                const verifyResponse = await fetch(`${API_BASE_URL}/verify/check-code`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: unverifiedUser.email,
+                        code: result.value
+                    })
+                });
+
+                const verifyData = await verifyResponse.json();
+
+                if (verifyResponse.ok) {
+                    localStorage.setItem('token', verifyData.token);
+                    localStorage.setItem('bb_user', verifyData.user.username);
+                    localStorage.setItem('bb_welcome_triggered', 'true');
+
+                    bentaNotify.show('success', 'SUCCESS', 'Email verified! Redirecting...', () => {
+                        window.location.href = 'index.html';
+                    });
+                } else {
+                    bentaNotify.show('error', 'ERROR', verifyData.msg || 'Invalid or expired verification code.');
+                }
+            } catch (err) {
+                console.error('Existing account verification error:', err);
+                bentaNotify.show('error', 'ERROR', 'Connection failed. Please try again.');
+            }
+        },
+        false
+    );
+}
+
 // Original login handler (unchanged)
 async function handleAuth(e, type) {
     e.preventDefault();
@@ -231,6 +323,8 @@ async function handleAuth(e, type) {
                 localStorage.setItem('bb_user', data.user.username);
                 localStorage.setItem('bb_welcome_triggered', 'true');
                 window.location.href = 'index.html';
+            } else if (response.status === 403 && data.code === 'EMAIL_NOT_VERIFIED') {
+                await verifyExistingAccount(data.user, loginData.password);
             } else {
                 bentaNotify.show('error', 'ERROR', data.msg || 'Invalid credentials');
             }

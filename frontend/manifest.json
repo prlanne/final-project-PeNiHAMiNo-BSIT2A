@@ -1,0 +1,32 @@
+{
+  "name": "BentaBoard",
+  "short_name": "BentaBoard",
+  "description": "Track sales, inventory, expenses, purchases, analytics, and reports for small businesses.",
+  "start_url": "/role-select.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#e3eaf3",
+  "theme_color": "#00a8ff",
+  "categories": ["business", "productivity", "finance"],
+  "icons": [
+    {
+      "src": "/img/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
