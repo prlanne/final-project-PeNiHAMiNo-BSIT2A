@@ -43,7 +43,7 @@ const register = async (req, res) => {
                 password: hashedPassword,
                 full_name,
                 role: role || 'Seller',
-                isVerified: true  // Mark as verified since they passed verification
+                isVerified: true  
             });
 
             await newUser.save();

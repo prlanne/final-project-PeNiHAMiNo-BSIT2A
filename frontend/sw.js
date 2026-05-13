@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'bentaboard-v1';
+const CACHE_VERSION = 'bentaboard-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
@@ -57,7 +57,13 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(STATIC_CACHE)
-            .then((cache) => cache.addAll(STATIC_ASSETS))
+            .then((cache) => Promise.allSettled(
+                STATIC_ASSETS.map((asset) =>
+                    cache.add(asset).catch((err) => {
+                        console.warn('BentaBoard PWA cache skipped:', asset, err);
+                    })
+                )
+            ))
             .then(() => self.skipWaiting())
     );
 });
